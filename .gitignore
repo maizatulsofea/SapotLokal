@@ -1,0 +1,22 @@
+# Gradle / build output
+.gradle/
+build/
+*/build/
+
+# Android Studio / IDE
+.idea/
+*.iml
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Secrets and signing (never commit these)
+google-services.json
+*.jks
+*.keystore
+*.env
+
+# OS junk
+.DS_Store
+Thumbs.db
