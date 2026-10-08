@@ -1,6 +1,6 @@
 # SapotLokal — AI-Assisted Build Guide
 
-**Purpose of this file:** This is a working spec for an AI coding assistant (Claude Code, Copilot, etc.) to guide the developer through building SapotLokal phase by phase. Drop this file in the repo root. When starting a session, tell the AI: *"Read SAPOTLOKAL_BUILD_GUIDE.md and start Phase 1."*
+**Purpose of this file:** This is a working spec for an AI coding assistant (Claude Code, Copilot, etc.) to guide the developer through building SapotLokal phase by phase. Drop this file in the repo root. When starting a session, tell the AI: _"Read SAPOTLOKAL_BUILD_GUIDE.md and start Phase 1."_
 
 ---
 
@@ -54,22 +54,24 @@
 
 The tools below are the ones named in the Simple App Guide. No other tools are approved. **No library versions were specified in the source documents** — before installing anything, the AI must look up the current stable version of each item, tell the developer, and then **record the chosen version in this table** so it stays the source of truth.
 
-| Part of the App | Tool | Version | Notes |
-|---|---|---|---|
-| Platform | Android | **minSdk = Android 8.0 (API 26)** or newer | Works on most phones from the last several years |
-| App logic | Kotlin | Latest stable Kotlin supported by the current Android Gradle Plugin | Kotlin only — no new Java files |
-| JDK | Bundled with Android Studio | Whatever ships with the installed Android Studio | Used by Gradle to build; no separate JDK install |
-| App layout | XML | — | One layout file per screen/component |
-| Look and feel | Google Material Design (Material Components for Android) | *Record after lookup* | Rounded buttons, simple cards, familiar icons |
-| Accounts & login | Firebase Auth | *Record after lookup* | Email + password. Handles password storage — never store passwords in the database |
-| Live data | Firebase Realtime Database | *Record after lookup* | Stores users, vendors, points, vouchers, games, challenges; keeps all phones in sync |
-| Notifications | Firebase Cloud Messaging | *Record after lookup* | Level-ups, completed challenges, "reward ready" |
-| QR scan + generate | ZXing | *Record after lookup* | Camera scanning and QR generation |
-| Design mockups | Figma | — | Every screen is built to match its Figma design |
-| Code storage | GitHub | — | Commit at the end of every phase at minimum |
-| IDE | Android Studio (already installed) | Latest stable | SDK, emulator, and `adb` come with it |
+| Part of the App  | Tool                                                     | Version                                                    | Notes                                                                                                     |
+| ---------------- | -------------------------------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Platform         | Android                                                  | **minSdk = Android 8.0 (API 26)** or newer                 | Works on most phones from the last several years                                                          |
+| App logic        | Kotlin                                                   | Built-in with AGP 9.4.0 (no separate Kotlin plugin needed) | Kotlin only — no new Java files                                                                           |
+| JDK              | Bundled with Android Studio                              | JDK 17 (minimum required by AGP 9.x)                       | Used by Gradle to build; no separate JDK install                                                          |
+| App layout       | XML                                                      | —                                                          | One layout file per screen/component                                                                      |
+| Look and feel    | Google Material Design (Material Components for Android) | **1.14.0**                                                 | Rounded buttons, simple cards, familiar icons                                                             |
+| Accounts & login | Firebase Auth                                            | **34.19.0 (via BoM)**                                      | Email + password. Handles password storage — never store passwords in the database                        |
+| Live data        | Firebase Realtime Database                               | **34.19.0 (via BoM)**                                      | Stores users, vendors, points, vouchers, games, challenges; keeps all phones in sync                      |
+| Notifications    | Firebase Cloud Messaging                                 | **34.19.0 (via BoM)**                                      | Level-ups, completed challenges, "reward ready"                                                           |
+| QR scan          | ML Kit Barcode Scanning                                  | **17.3.0**                                                 | ⚠️ Replaces ZXing scanning — see `docs/erd-changes.md` Change 3. Actively maintained, works on Android 8+ |
+| QR generate      | ZXing core                                               | **3.5.3**                                                  | Used only to draw QR Bitmaps into an ImageView — no camera, no deprecated APIs                            |
+| Design mockups   | Figma                                                    | —                                                          | Every screen is built to match its Figma design                                                           |
+| Code storage     | GitHub                                                   | —                                                          | Commit at the end of every phase at minimum                                                               |
+| IDE              | Android Studio (already installed)                       | Latest stable (AGP 9.4.0, Gradle 9.6.0)                    | SDK, emulator, and `adb` come with it                                                                     |
 
 **Developer tooling needed:**
+
 - Android Studio (Android SDK, emulator, `adb`) — already installed
 - An **Android Emulator** with a **Google Play** system image (Android 8.0+) as the main test device — the developer has no physical phone yet. Emulator camera scanning needs setup (webcam or VirtualScene), so use the debug helper below for early phases
 - A **real Android phone** (8.0+, borrowed is fine) for a final test of camera scanning, focus, and notifications before Phase 7 is considered done
@@ -84,10 +86,10 @@ The tools below are the ones named in the Simple App Guide. No other tools are a
 
 ### 3.1 The two QR codes
 
-| Code | Shown by | Scanned by | Purpose |
-|---|---|---|---|
-| **Shop Code** (`QRCODE` entity) | Shop Owner, on their screen | Customer | Gives the customer points for visiting. Rotates every 60 seconds |
-| **Voucher Code** (`VOUCHER_USER.voucherCode`) | Customer, on their screen | Shop Owner | Lets the customer claim a reward they've already unlocked. Scan it, or the shop owner types it in by hand |
+| Code                                          | Shown by                    | Scanned by | Purpose                                                                                                   |
+| --------------------------------------------- | --------------------------- | ---------- | --------------------------------------------------------------------------------------------------------- |
+| **Shop Code** (`QRCODE` entity)               | Shop Owner, on their screen | Customer   | Gives the customer points for visiting. Rotates every 60 seconds                                          |
+| **Voucher Code** (`VOUCHER_USER.voucherCode`) | Customer, on their screen   | Shop Owner | Lets the customer claim a reward they've already unlocked. Scan it, or the shop owner types it in by hand |
 
 ### 3.2 Reward rule vs. voucher
 
@@ -110,17 +112,17 @@ A customer's progress toward a reward is **that shop's points only**. Points ear
 
 The ERD is the starting source of truth for entities and field names (it is decisive but not final — see Rule 10 for how changes are proposed and recorded). Firebase Realtime Database is a JSON tree, not tables — the AI should map each entity to a top-level node keyed by its ID, keep the field names exactly as written, and use the ID fields as foreign keys.
 
-| Entity | Fields | Relationships |
-|---|---|---|
-| `USER` | `userID` (PK), `userName`, `userEmail`, `role` | One user has many points, games, vouchers, user-challenges. One user ↔ one vendor (for Shop Owners) |
-| `VENDOR` | `vendorID` (PK), `userID` (FK), `vendorName`, `vendorCategory`, `vendorAddress`, `ssmNumber` | Has many points, reward rules, QR codes |
-| `QRCODE` | `qrcodeID` (PK), `vendorID` (FK), `qrcodeValue`, `qrcodeGenerateDate`, `qrcodeExpiryDate`, `isActive` | Belongs to one vendor |
-| `POINT` | `pointID` (PK), `userID` (FK), `vendorID` (FK), `pointEarnedAmount`, `pointRedeemedAmount`, `pointSource` | Ledger row linking a user to a vendor |
-| `VOUCHER` | `voucherID` (PK), `vendorID` (FK), `voucherName`, `voucherDescription`, `pointsRequired` | The reward rule. Belongs to one vendor |
-| `VOUCHER_USER` | `voucherUserID` (PK), `userID` (FK), `voucherID` (FK), `voucherCode`, `voucherStatus`, `voucherExpiryDate` | A customer's own copy of a reward |
-| `GAME` | `gameID` (PK), `userID` (FK), `gameType`, `gameAttempt`, `gamePointsRewarded` | Records a game play by a user |
-| `CHALLENGE` | `challengeID` (PK), `challengeTitle`, `challengeDescription`, `challengeTargetValue`, `challengeRewardPoint`, `isActive` | Defined once, used by many users |
-| `USER_CHALLENGE` | `userChallengeID` (PK), `userID` (FK), `challengeID` (FK), `currentValue`, `userChallengeStatus` | A user's progress on a challenge |
+| Entity           | Fields                                                                                                                   | Relationships                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `USER`           | `userID` (PK), `userName`, `userEmail`, `role`                                                                           | One user has many points, games, vouchers, user-challenges. One user ↔ one vendor (for Shop Owners) |
+| `VENDOR`         | `vendorID` (PK), `userID` (FK), `vendorName`, `vendorCategory`, `vendorAddress`, `ssmNumber`                             | Has many points, reward rules, QR codes                                                             |
+| `QRCODE`         | `qrcodeID` (PK), `vendorID` (FK), `qrcodeValue`, `qrcodeGenerateDate`, `qrcodeExpiryDate`, `isActive`                    | Belongs to one vendor                                                                               |
+| `POINT`          | `pointID` (PK), `userID` (FK), `vendorID` (FK), `pointEarnedAmount`, `pointRedeemedAmount`, `pointSource`                | Ledger row linking a user to a vendor                                                               |
+| `VOUCHER`        | `voucherID` (PK), `vendorID` (FK), `voucherName`, `voucherDescription`, `pointsRequired`                                 | The reward rule. Belongs to one vendor                                                              |
+| `VOUCHER_USER`   | `voucherUserID` (PK), `userID` (FK), `voucherID` (FK), `voucherCode`, `voucherStatus`, `voucherExpiryDate`               | A customer's own copy of a reward                                                                   |
+| `GAME`           | `gameID` (PK), `userID` (FK), `gameType`, `gameAttempt`, `gamePointsRewarded`                                            | Records a game play by a user                                                                       |
+| `CHALLENGE`      | `challengeID` (PK), `challengeTitle`, `challengeDescription`, `challengeTargetValue`, `challengeRewardPoint`, `isActive` | Defined once, used by many users                                                                    |
+| `USER_CHALLENGE` | `userChallengeID` (PK), `userID` (FK), `challengeID` (FK), `currentValue`, `userChallengeStatus`                         | A user's progress on a challenge                                                                    |
 
 **Passwords are not in `USER`** — Firebase Auth owns them.
 
@@ -137,6 +139,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 **Goal:** Android Studio project, Firebase project, and database structure are in place, with security rules that stop a buggy or malicious client from cheating.
 
 **What the AI should build:**
+
 - Ask the developer's OS, then confirm Android Studio, SDK, the Gradle JDK setting (Rule 11), and the emulator (Google Play system image, camera configured) are working
 - Android Studio project (**Kotlin**, XML, minSdk 26) with Material Design theme, Firebase connected, and ZXing added — each dependency version recorded in Section 2
 - `.gitignore` covering Firebase config and any secrets, plus a placeholder example file
@@ -150,6 +153,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 - Basic app shell: package structure, a Splash/Welcome screen (logo + loading), and navigation skeleton
 
 **Definition of Done:**
+
 - [ ] Project builds with Android Studio's bundled JDK and runs on the Android emulator
 - [ ] Firebase project created and connected (manual step — AI should tell you to do this)
 - [ ] Database structure and Security Rules written, and AI has explained in plain language what a cheating client could and couldn't do
@@ -163,6 +167,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 **Goal:** Customers and Shop Owners can sign up and log in, and the app routes each to the right home screen automatically.
 
 **What the AI should build:**
+
 - Sign-up flow that first asks **"Are you signing up as a Customer or a Shop Owner?"**
 - **Customer sign-up:** name, email, password — nothing extra
 - **Shop Owner sign-up:** name, email, password, **plus SSM Registration Number** (required — the account cannot be created if blank). Stored as `ssmNumber` on the `VENDOR` record along with the shop details. **No external verification of any kind**
@@ -171,6 +176,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 - Sensible input validation and readable error messages (wrong password, email already used, empty SSM field)
 
 **Definition of Done:**
+
 - [ ] You can sign up as a Customer and as a Shop Owner and both records appear in the database
 - [ ] Shop Owner sign-up is blocked when the SSM field is empty
 - [ ] Logging in lands each role on the correct placeholder home screen without asking for a role
@@ -183,6 +189,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 **Goal:** A customer can see their progress, browse shops, and earn points by scanning a shop code.
 
 **What the AI should build:**
+
 - **Customer Home Screen:** shows points, level, and a progress bar. Level thresholds come from config (Section 5)
 - **Find Shops:** a list of registered vendors, showing name, category, address, and the customer's progress at each
 - **Scan screen** (ZXing camera): reads the shop QR, validates it against the live database (real, active, not expired, belongs to a registered vendor), then writes a `POINT` ledger row with `pointSource` set to shop visit
@@ -191,6 +198,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 - Debug helper for testing without a second device (see Section 2 caveat)
 
 **Definition of Done:**
+
 - [ ] Customer Home shows accurate points and level, calculated from the `POINT` ledger
 - [ ] Find Shops lists every registered vendor
 - [ ] Scanning a valid shop code adds the configured points and the animation plays
@@ -204,6 +212,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 **Goal:** A shop owner can show a rotating QR, define reward rules, and redeem vouchers.
 
 **What the AI should build:**
+
 - **Shop Home Screen** for Shop Owners
 - **Show QR Code screen:** generates a QR with ZXing whose value changes every 60 seconds (TOTP-style) and records it in `QRCODE` (`qrcodeValue`, `qrcodeGenerateDate`, `qrcodeExpiryDate`, `isActive`). The customer-side validation from Phase 3 must accept only the current code
 - **Reward Rules page:** add, edit, and turn off multiple rules (`voucherName`, `voucherDescription`, `pointsRequired`) — e.g., 100 → 10% Discount, 200 → Free Cookie, 350 → Free Meal. Turning a rule off must not delete vouchers customers already earned from it (see Open Decision on this)
@@ -211,6 +220,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 - Redemption checks, all against the live database: the code is real, it belongs to **this** shop, it hasn't already been used, hasn't expired, and the customer's **current balance at this shop covers the reward's `pointsRequired`**. On success, mark the voucher used **and** write the `pointRedeemedAmount` ledger row in one atomic step so a half-finished redemption can't happen
 
 **Definition of Done:**
+
 - [ ] Shop QR visibly changes every 60 seconds, and an old screenshot no longer earns points
 - [ ] A shop owner can create multiple rules, edit them, and turn one off
 - [ ] Scanning a voucher from a different shop is rejected
@@ -225,6 +235,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 **Goal:** Vouchers appear automatically when points cross a threshold, and customers can see and use them.
 
 **What the AI should build:**
+
 - **Auto-voucher logic:** whenever a customer's points at a shop change, compare their balance for that shop against **every active** reward rule of that shop. For each threshold reached, create a `VOUCHER_USER` record with a unique `voucherCode`, status active, and `voucherExpiryDate` from config — **unless the customer already holds an active (unused, unexpired) voucher for that same rule**. **No duplicates** if the check runs twice. Creating a voucher does **not** deduct points; points are deducted only at redemption
 - **Cost on redemption:** when a voucher is redeemed, deduct `pointsRequired` from that shop's balance via a `pointRedeemedAmount` ledger row. After that, re-check the customer's remaining vouchers at that shop against the new balance (behavior per Open Decision #7), and show the updated balance on Home and Find Shops
 - **My Vouchers screen:** vouchers grouped by shop, each with its own QR code (ZXing) and readable code text. Label the highest-value qualifying voucher at each shop **"Best Choice"**. Do not hide the others
@@ -233,6 +244,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 - Security Rules updated so a customer cannot forge or change a voucher
 
 **Definition of Done:**
+
 - [ ] Reaching a threshold creates exactly one voucher for it
 - [ ] Crossing two thresholds at once creates both, and both show in My Vouchers with the highest labeled "Best Choice"
 - [ ] A used voucher is gone from My Vouchers and cannot be redeemed again
@@ -248,6 +260,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 **Goal:** The engagement features work and feed the same points ledger.
 
 **What the AI should build:**
+
 - **Level-up feel:** progress bar fill and a level-up moment when a threshold is crossed
 - **Spin the Wheel:** once per day, random points within the configured range. Enforce the daily limit against the database, not the phone's clock or local storage. Record in `GAME` and the `POINT` ledger
 - **Memory Match:** card-flipping game using shop logos; matching pairs earn points. Record in `GAME` and the `POINT` ledger
@@ -257,6 +270,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 - **Shop Owner statistics** (from the Vendor flowchart): shop visit counts and how many vouchers customers redeemed per day
 
 **Definition of Done:**
+
 - [ ] Spin the Wheel can be used once per day and the limit can't be bypassed by reinstalling or changing the phone clock
 - [ ] Memory Match awards points and records the game
 - [ ] A challenge completes and awards its points exactly once
@@ -271,6 +285,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 **Goal:** Edge cases behave sensibly and the app matches the designs.
 
 **What the AI should build/help with:**
+
 - Remove all debug helpers from earlier phases
 - Test and fix: expired shop codes, already-used vouchers, wrong-shop vouchers, empty/invalid manual code entry, camera permission denied, and **no internet connection** (clear message, no crash, no half-written data)
 - Compare every screen against its Figma design and fix mismatches
@@ -278,6 +293,7 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 - Bug fixes and smoothing (loading states, empty states like "No vouchers yet")
 
 **Definition of Done:**
+
 - [ ] Every edge case above has been tried on the emulator, and camera scanning plus notifications have been tried on at least one real phone, and handled
 - [ ] No debug screens or hardcoded test codes remain
 - [ ] Screens match Figma
@@ -289,22 +305,22 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 
 The three source documents disagree in places or leave things open. The AI must **use the default below, tell the developer it did so, and make it a config value where it's a number.** The developer can change any of these — update this table when they do.
 
-| # | Topic | What the sources say | Default the AI uses until told otherwise |
-|---|---|---|---|
-| 1 | Points per shop visit | Flowchart: 10. Simple Guide: "e.g. 20" | **10** (config value) |
-| 2 | Spin the Wheel / Memory Match points | Not specified | AI proposes a range; developer confirms in Phase 6 |
-| 3 | Voucher code type | Flowchart: TOTP QR for voucher. Simple Guide: unique voucher QR + must be typeable by hand. ERD: single stored `voucherCode` | **Static unique `voucherCode`** (a rotating code can't be typed in from memory). Used-once + shop-match checks provide the protection |
-| 4 | How vouchers are created | Flowchart: vendor "Create Voucher". Simple Guide: vendor sets rules once, app auto-creates customer vouchers | **Simple Guide wins:** vendor creates reward rules; app creates customer vouchers |
-| 5 | Where auto-voucher creation runs | Not specified. Client-only creation is easy to cheat; server-side logic (e.g., Cloud Functions) is not in the approved tool list | AI must **propose options and ask** in Phase 1 before building. Do not add a new Firebase product without approval |
-| 6 | Notification triggers | FCM is listed, but sending targeted pushes safely usually needs server-side code | AI proposes an approach (e.g., local notifications vs FCM) and confirms in Phase 6 |
-| 7 | Several vouchers, not enough points for all | **Confirmed:** points are spent on redemption. Simple Guide also says all qualifying vouchers stay visible — these two rules collide (e.g., 350 points shows the 100/200/350 vouchers, but redeeming the 350 leaves 0) | **Vouchers stay visible** but a voucher can only be redeemed if the customer's balance at that shop covers its `pointsRequired` at scan time. Vouchers they can no longer afford show as **locked** (not deleted) and unlock again when they earn enough points. **AI must ask the developer to confirm this in Phase 5 before building** |
-| 8 | Voucher expiry length | Not specified (ERD has `voucherExpiryDate`) | Config value; AI asks for the number |
-| 9 | Shop owner approval | Simple Guide: open question | **Sign up freely** (no approval). Manual admin review is future work |
-| 10 | Must a shop have a reward rule before going live? | Open question | **No** — shops can start with none |
-| 11 | Turning off a rule | Simple Guide: rules can be turned off. ERD `VOUCHER` has no `isActive` field | Add an `isActive` field to `VOUCHER` (note this ERD deviation in `docs/`). Already-earned vouchers stay valid |
-| 12 | Level thresholds | Levels exist but no formula given; ERD has no level field | **Derive level from lifetime points earned** (not balance, since points are now spent), thresholds in config; don't store level |
-| 13 | Points counter meaning | ERD `POINT` has earned/redeemed amounts per user per vendor | Per-shop balance = sum earned − sum redeemed for that vendor (now actively used, since redemption costs points) |
-| 14 | Voucher cost recorded where | ERD has `pointsRequired` on the rule but no cost on `VOUCHER_USER` | Cost is read from the linked rule at redemption. **AI should propose** copying the cost onto `VOUCHER_USER` at creation, so editing a rule later can't change what an already-issued voucher costs (an ERD change — follow Rule 10) |
+| #   | Topic                                             | What the sources say                                                                                                                                                                                                   | Default the AI uses until told otherwise                                                                                                                                                                                                                                                                                                  |
+| --- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Points per shop visit                             | Flowchart: 10. Simple Guide: "e.g. 20"                                                                                                                                                                                 | **10** (config value)                                                                                                                                                                                                                                                                                                                     |
+| 2   | Spin the Wheel / Memory Match points              | Not specified                                                                                                                                                                                                          | AI proposes a range; developer confirms in Phase 6                                                                                                                                                                                                                                                                                        |
+| 3   | Voucher code type                                 | Flowchart: TOTP QR for voucher. Simple Guide: unique voucher QR + must be typeable by hand. ERD: single stored `voucherCode`                                                                                           | **Static unique `voucherCode`** (a rotating code can't be typed in from memory). Used-once + shop-match checks provide the protection                                                                                                                                                                                                     |
+| 4   | How vouchers are created                          | Flowchart: vendor "Create Voucher". Simple Guide: vendor sets rules once, app auto-creates customer vouchers                                                                                                           | **Simple Guide wins:** vendor creates reward rules; app creates customer vouchers                                                                                                                                                                                                                                                         |
+| 5   | Where auto-voucher creation runs                  | Not specified. Client-only creation is easy to cheat; server-side logic (e.g., Cloud Functions) is not in the approved tool list                                                                                       | **✅ CONFIRMED: Client-side** (Android app checks thresholds after writing a `POINT` row and creates `VOUCHER_USER` records). Security Rules prevent customers from writing arbitrary vouchers. Cloud Functions stays out of scope.                                                                                                       |
+| 6   | Notification triggers                             | FCM is listed, but sending targeted pushes safely usually needs server-side code                                                                                                                                       | AI proposes an approach (e.g., local notifications vs FCM) and confirms in Phase 6                                                                                                                                                                                                                                                        |
+| 7   | Several vouchers, not enough points for all       | **Confirmed:** points are spent on redemption. Simple Guide also says all qualifying vouchers stay visible — these two rules collide (e.g., 350 points shows the 100/200/350 vouchers, but redeeming the 350 leaves 0) | **Vouchers stay visible** but a voucher can only be redeemed if the customer's balance at that shop covers its `pointsRequired` at scan time. Vouchers they can no longer afford show as **locked** (not deleted) and unlock again when they earn enough points. **AI must ask the developer to confirm this in Phase 5 before building** |
+| 8   | Voucher expiry length                             | Not specified (ERD has `voucherExpiryDate`)                                                                                                                                                                            | Config value; AI asks for the number                                                                                                                                                                                                                                                                                                      |
+| 9   | Shop owner approval                               | Simple Guide: open question                                                                                                                                                                                            | **Sign up freely** (no approval). Manual admin review is future work                                                                                                                                                                                                                                                                      |
+| 10  | Must a shop have a reward rule before going live? | Open question                                                                                                                                                                                                          | **No** — shops can start with none                                                                                                                                                                                                                                                                                                        |
+| 11  | Turning off a rule                                | Simple Guide: rules can be turned off. ERD `VOUCHER` has no `isActive` field                                                                                                                                           | Add an `isActive` field to `VOUCHER` (note this ERD deviation in `docs/`). Already-earned vouchers stay valid                                                                                                                                                                                                                             |
+| 12  | Level thresholds                                  | Levels exist but no formula given; ERD has no level field                                                                                                                                                              | **Derive level from lifetime points earned** (not balance, since points are now spent), thresholds in config; don't store level                                                                                                                                                                                                           |
+| 13  | Points counter meaning                            | ERD `POINT` has earned/redeemed amounts per user per vendor                                                                                                                                                            | Per-shop balance = sum earned − sum redeemed for that vendor (now actively used, since redemption costs points)                                                                                                                                                                                                                           |
+| 14  | Voucher cost recorded where                       | ERD has `pointsRequired` on the rule but no cost on `VOUCHER_USER`                                                                                                                                                     | Cost is read from the linked rule at redemption. **AI should propose** copying the cost onto `VOUCHER_USER` at creation, so editing a rule later can't change what an already-issued voucher costs (an ERD change — follow Rule 10)                                                                                                       |
 
 ---
 

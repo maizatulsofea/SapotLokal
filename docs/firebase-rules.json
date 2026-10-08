@@ -1,0 +1,85 @@
+{
+  "rules": {
+    "users": {
+      ".read": "auth != null",
+      "$userID": {
+        // A user can write their own record. Role cannot be changed once set.
+        ".write": "auth != null && auth.uid === $userID",
+        "role": {
+          // role must be 'customer' or 'vendor', and once written it cannot change.
+          ".validate": "newData.isString() && (newData.val() === 'customer' || newData.val() === 'vendor') && (!data.exists() || data.val() === newData.val())"
+        }
+      }
+    },
+    "vendors": {
+      ".read": "auth != null",
+      "$vendorID": {
+        // A vendor can write their own shop record.
+        // The rule checks the CURRENT database state, so the USER record must be
+        // committed BEFORE this write (see SignUpVendorActivity: sequential writes).
+        // Condition: authenticated, role is 'vendor', and the userID on the record
+        // matches the authenticated user (prevents a vendor from editing another shop).
+        ".write": "auth != null && root.child('users/' + auth.uid + '/role').val() === 'vendor' && (newData.child('userID').val() === auth.uid)",
+        ".indexOn": ["userID"]
+      }
+    },
+    "qrcodes": {
+      ".read": "auth != null",
+      "$qrcodeID": {
+        ".write": "auth != null && root.child('users/' + auth.uid + '/role').val() === 'vendor' && root.child('vendors/' + newData.child('vendorID').val() + '/userID').val() === auth.uid",
+        ".indexOn": ["vendorID", "isActive", "qrcodeValue"]
+      }
+    },
+    "points": {
+      "$pointID": {
+        ".read": "auth != null && data.child('userID').val() === auth.uid",
+        // Points are append-only (ledger). Once written, a row cannot be changed.
+        ".write": "auth != null && newData.child('userID').val() === auth.uid",
+        ".validate": "!data.exists() || newData.val() === data.val()",
+        ".indexOn": ["userID", "vendorID"]
+      }
+    },
+    "vouchers": {
+      ".read": "auth != null",
+      "$voucherID": {
+        // Only the vendor who owns the shop can create/edit reward rules.
+        ".write": "auth != null && root.child('users/' + auth.uid + '/role').val() === 'vendor' && root.child('vendors/' + newData.child('vendorID').val() + '/userID').val() === auth.uid",
+        ".indexOn": ["vendorID", "isActive"]
+      }
+    },
+    "voucherUsers": {
+      "$voucherUserID": {
+        // Customer can read their own; vendor can read vouchers for their shop.
+        ".read": "auth != null && (data.child('userID').val() === auth.uid || root.child('vendors/' + data.child('vendorID').val() + '/userID').val() === auth.uid)",
+        // Customer can CREATE (status must start as 'active'); vendor can UPDATE (mark used).
+        // A customer can never mark their own voucher as used.
+        ".write": "auth != null && ((!data.exists() && newData.child('userID').val() === auth.uid && newData.child('voucherStatus').val() === 'active') || (data.exists() && root.child('vendors/' + data.child('vendorID').val() + '/userID').val() === auth.uid))",
+        ".indexOn": ["userID", "vendorID", "voucherStatus"],
+        "voucherStatus": {
+          // Once marked 'used', it cannot be changed back.
+          ".validate": "!(data.val() === 'used' && newData.val() !== 'used')"
+        }
+      }
+    },
+    "games": {
+      "$gameID": {
+        ".read": "auth != null && data.child('userID').val() === auth.uid",
+        ".write": "auth != null && newData.child('userID').val() === auth.uid",
+        ".indexOn": ["userID", "gameType"]
+      }
+    },
+    "challenges": {
+      ".read": "auth != null",
+      "$challengeID": {
+        ".write": "auth != null"
+      }
+    },
+    "userChallenges": {
+      "$userChallengeID": {
+        ".read": "auth != null && data.child('userID').val() === auth.uid",
+        ".write": "auth != null && newData.child('userID').val() === auth.uid",
+        ".indexOn": ["userID"]
+      }
+    }
+  }
+}

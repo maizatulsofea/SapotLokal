@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── Primary brand colours ────────────────────────────────────────────── -->
+    <!-- These are placeholders — update to match your Figma design in Phase 7 -->
+    <color name="colorPrimary">#FF6B2C</color>       <!-- Warm orange — energetic, local-market feel -->
+    <color name="colorPrimaryVariant">#CC4E14</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <color name="colorSecondary">#FFD166</color>      <!-- Golden yellow — rewards, positivity -->
+    <color name="colorSecondaryVariant">#E0A800</color>
+    <color name="colorOnSecondary">#000000</color>
+
+    <color name="colorBackground">#FAFAFA</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorError">#B00020</color>
+    <color name="colorOnBackground">#212121</color>
+    <color name="colorOnSurface">#212121</color>
+    <color name="colorOnError">#FFFFFF</color>
+
+    <!-- Splash background -->
+    <color name="splashBackground">#FF6B2C</color>
+</resources>

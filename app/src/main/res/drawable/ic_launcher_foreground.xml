@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher icon foreground — white "S" text placeholder for SapotLokal.
+     Replace with the real logo vector in Phase 7. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- White "S" centred in the safe zone (28dp inset on each side) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,28
+            C44,28 37,35 37,43
+            C37,51 43,55 52,57
+            C61,59 65,62 65,67
+            C65,73 59,77 53,77
+            C47,77 41,74 38,70
+            L33,76
+            C37,81 45,84 53,84
+            C63,84 72,77 72,67
+            C72,58 66,54 57,52
+            C48,50 44,47 44,43
+            C44,38 49,35 54,35
+            C59,35 64,37 67,41
+            L72,35
+            C68,31 61,28 54,28Z" />
+</vector>

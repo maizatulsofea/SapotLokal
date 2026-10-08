@@ -12,10 +12,19 @@ captures/
 .cxx/
 
 # Secrets and signing (never commit these)
-google-services.json
+google-services.json       # Real Firebase config — get from Firebase console
+app/google-services.json   # Belt-and-suspenders duplicate of the above
 *.jks
 *.keystore
 *.env
+*.totp-secret
+
+# Android Studio navigation editor backup
+*.xml~
+
+# Lint outputs
+lint/
+**/lint-results*
 
 # OS junk
 .DS_Store

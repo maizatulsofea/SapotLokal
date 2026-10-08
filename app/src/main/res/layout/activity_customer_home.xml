@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    activity_customer_home.xml — Phase 3 Customer Home Screen
+    Shows: greeting, level chip, lifetime points, progress bar to next level,
+    and a bottom navigation bar with Home / Find Shops / Scan / My Vouchers.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <!-- Top AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:title="SapotLokal"
+            app:titleTextColor="@color/colorOnPrimary"
+            app:menu="@menu/menu_customer_home" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Greeting -->
+            <TextView
+                android:id="@+id/tvGreeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/colorOnBackground"
+                android:fontFamily="sans-serif-medium"
+                tools:text="Hello, Ahmad!" />
+
+            <View android:layout_width="0dp" android:layout_height="16dp" />
+
+            <!-- Points Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorPrimary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Level chip -->
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Level 1"
+                        android:textColor="@color/colorPrimary"
+                        app:chipBackgroundColor="@color/colorOnPrimary"
+                        style="@style/Widget.MaterialComponents.Chip.Filter" />
+
+                    <View android:layout_width="0dp" android:layout_height="12dp" />
+
+                    <!-- Total lifetime points label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lifetime Points"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="13sp" />
+
+                    <!-- Big points number -->
+                    <TextView
+                        android:id="@+id/tvLifetimePoints"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="48sp"
+                        android:textColor="@color/colorOnPrimary"
+                        android:fontFamily="sans-serif-medium"
+                        tools:text="340" />
+
+                    <View android:layout_width="0dp" android:layout_height="16dp" />
+
+                    <!-- Progress label row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvProgressLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="12sp"
+                            tools:text="Progress to Level 4" />
+
+                        <TextView
+                            android:id="@+id/tvProgressCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="12sp"
+                            tools:text="340 / 600 pts" />
+
+                    </LinearLayout>
+
+                    <View android:layout_width="0dp" android:layout_height="6dp" />
+
+                    <!-- Progress bar -->
+                    <ProgressBar
+                        android:id="@+id/progressLevel"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:max="100"
+                        android:progressTint="@color/colorOnPrimary"
+                        android:progressBackgroundTint="#44FFFFFF"
+                        android:progress="0" />
+
+                    <!-- Max level label (hidden until max) -->
+                    <TextView
+                        android:id="@+id/tvMaxLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🏆 You've reached the top level!"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <View android:layout_width="0dp" android:layout_height="24dp" />
+
+            <!-- Quick action buttons -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quick Actions"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/colorOnBackground"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFindShops"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="Find Shops"
+                    app:icon="@android:drawable/ic_menu_mapmode" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnScan"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="Scan QR"
+                    app:icon="@android:drawable/ic_menu_camera" />
+
+            </LinearLayout>
+
+            <View android:layout_width="0dp" android:layout_height="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMyVouchers"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="My Vouchers"
+                app:icon="@android:drawable/ic_menu_agenda"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

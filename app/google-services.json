@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "818810946247",
+    "project_id": "sapotlokal-cd37b",
+    "storage_bucket": "sapotlokal-cd37b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818810946247:android:0de50fa8893c6e8939f4e2",
+        "android_client_info": {
+          "package_name": "com.sapotlokal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7Ppy5oS6JI_pK2PwNbeu1A1M9KPPNjUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

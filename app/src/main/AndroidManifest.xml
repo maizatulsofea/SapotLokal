@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ── Permissions ──────────────────────────────────────────────────────── -->
+
+    <!-- Internet: required for all Firebase operations (Auth, Realtime Database, FCM) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Network state: lets the app detect offline mode and show a clear error (Phase 3+) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Camera: required for QR scanning via ML Kit (Phase 3 & 4).
+         Declared here but the runtime permission request is done in the Scan screen. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- POST_NOTIFICATIONS: required on Android 13+ (API 33+) to show FCM push notifications.
+         The runtime permission request is done in the Notification setup (Phase 6). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Camera is used but not strictly required — app still works without it
+         (manual voucher code entry is the fallback per the build guide). -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SapotLokal">
+
+        <!-- ── Activities ────────────────────────────────────────────────────── -->
+
+        <!-- SplashActivity: the entry point. Shows logo + loading animation,
+             then checks auth state and routes to Login or the correct Home screen. -->
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SapotLokal.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Placeholder activities for Phase 1 navigation skeleton -->
+        <activity android:name=".ui.auth.LoginActivity"            android:exported="false" />
+        <activity android:name=".ui.customer.CustomerHomeActivity"  android:exported="false" />
+        <activity android:name=".ui.vendor.VendorHomeActivity"      android:exported="false" />
+
+        <!-- Phase 2 auth activities -->
+        <activity android:name=".ui.auth.RolePickerActivity"       android:exported="false" />
+        <activity android:name=".ui.auth.SignUpCustomerActivity"    android:exported="false" />
+        <activity android:name=".ui.auth.SignUpVendorActivity"      android:exported="false" />
+
+        <!-- Phase 3 customer activities -->
+        <activity android:name=".ui.customer.FindShopsActivity"    android:exported="false" />
+        <activity android:name=".ui.customer.ScanActivity"         android:exported="false" />
+
+        <!-- Phase 4 vendor activities -->
+        <activity android:name=".ui.vendor.ShowQrActivity"         android:exported="false" />
+        <activity android:name=".ui.vendor.RewardRulesActivity"    android:exported="false" />
+        <activity android:name=".ui.vendor.AddEditRuleActivity"    android:exported="false" />
+        <activity android:name=".ui.vendor.ScanToRedeemActivity"   android:exported="false" />
+
+
+        <!-- FCM: receives push notifications (Phase 6).
+             Declared now so the manifest is complete; the service class is a stub. -->
+        <service
+            android:name=".service.SapotFcmService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

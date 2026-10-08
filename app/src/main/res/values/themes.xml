@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Base app theme.
+        Parent = Material Design theme, light variant (no dark mode yet).
+        In Phase 7 we'll align all colours with the Figma export.
+    -->
+    <style name="Theme.SapotLokal" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorOutline">@android:color/darker_gray</item>
+        <!-- Rounded corners on all Material buttons — matches Figma style -->
+        <item name="materialButtonStyle">@style/Widget.SapotLokal.Button</item>
+    </style>
+
+    <!-- Rounded button style — apply globally so every screen is consistent -->
+    <style name="Widget.SapotLokal.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <!-- Splash theme — full-screen orange background, no status bar chrome -->
+    <style name="Theme.SapotLokal.Splash" parent="Theme.SapotLokal">
+        <item name="android:windowBackground">@color/splashBackground</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@color/splashBackground</item>
+    </style>
+</resources>
