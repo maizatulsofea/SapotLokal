@@ -11,8 +11,8 @@ package com.sapotlokal
  * Never hardcode these numbers in an Activity, Fragment, or service.
  *
  * OPEN DECISIONS (from build guide Section 5):
- *   - SPIN_WHEEL_MIN / SPIN_WHEEL_MAX: defaults proposed here; developer must confirm
- *     in Phase 6 before Spin the Wheel is built.
+ *   - SPIN_WHEEL_MIN / SPIN_WHEEL_MAX & MEMORY_MATCH_REWARD: confirmed by the game prototype;
+ *     flagged for developer sign-off in Phase 6.
  *   - VOUCHER_EXPIRY_DAYS: developer must confirm in Phase 5 before auto-voucher is built.
  */
 object AppConfig {
@@ -42,23 +42,23 @@ object AppConfig {
      */
     const val POINTS_PER_SHOP_VISIT: Int = 10
 
-    /**
-     * Minimum points Spin the Wheel can award in a single spin.
-     * Build guide Open Decision #2 — AI proposal: 5. Developer must confirm in Phase 6.
-     */
-    const val SPIN_WHEEL_MIN_POINTS: Int = 5
+    // ── Games ─────────────────────────────────────────────────────────────────
 
-    /**
-     * Maximum points Spin the Wheel can award in a single spin.
-     * Build guide Open Decision #2 — AI proposal: 50. Developer must confirm in Phase 6.
-     */
-    const val SPIN_WHEEL_MAX_POINTS: Int = 50
+    /** Point values on the Spin the Wheel segments, in wheel order. One is picked uniformly at random. */
+    val SPIN_WHEEL_SEGMENTS: List<Int> = listOf(5, 10, 15, 20, 25, 30, 40, 50)
 
-    /**
-     * Points awarded for completing a Memory Match game.
-     * Build guide Open Decision #2 — AI proposal: 20. Developer must confirm in Phase 6.
-     */
+    /** Derived from the segments so they can never disagree with the wheel. */
+    val SPIN_WHEEL_MIN_POINTS: Int get() = SPIN_WHEEL_SEGMENTS.min()
+    val SPIN_WHEEL_MAX_POINTS: Int get() = SPIN_WHEEL_SEGMENTS.max()
+
+    /** Points for one Memory Match win (before the daily cap). */
     const val MEMORY_MATCH_REWARD_POINTS: Int = 20
+
+    /** Max Memory Match points a customer can earn per calendar day (3 wins at 20). */
+    const val MEMORY_MATCH_DAILY_CAP_POINTS: Int = 60
+
+    /** Timezone used to decide when "a new day" starts for both games. */
+    const val GAMES_RESET_TIME_ZONE: String = "Asia/Kuala_Lumpur"
 
     // ── Shop QR Code ──────────────────────────────────────────────────────────
 
