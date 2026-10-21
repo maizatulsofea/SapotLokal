@@ -28,6 +28,7 @@ import com.sapotlokal.AppConfig
 import com.sapotlokal.data.repository.QrCodeRepository
 import com.sapotlokal.data.repository.PointRepository
 import com.sapotlokal.data.repository.VendorRepository
+import com.sapotlokal.util.isNetworkAvailable
 import com.sapotlokal.databinding.ActivityScanBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -256,12 +257,6 @@ class ScanActivity : AppCompatActivity() {
         mainHandler.postDelayed({
             binding.tvError.visibility = View.GONE
         }, 3000)
-    }
-
-    private fun isNetworkAvailable(): Boolean {
-        val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val cap = cm.getNetworkCapabilities(cm.activeNetwork) ?: return false
-        return cap.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     // ── ⚠️ DEBUG HELPER — REMOVE BEFORE PHASE 7 ──────────────────────────────

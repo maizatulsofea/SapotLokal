@@ -64,6 +64,11 @@
         <activity android:name=".ui.vendor.AddEditRuleActivity"    android:exported="false" />
         <activity android:name=".ui.vendor.ScanToRedeemActivity"   android:exported="false" />
 
+        <!-- Games (merged from SapotLokalGames) -->
+        <activity android:name=".ui.games.GamesMenuActivity"   android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.games.SpinWheelActivity"   android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.games.MemoryMatchActivity" android:exported="false" android:screenOrientation="portrait" />
+
 
         <!-- FCM: receives push notifications (Phase 6).
              Declared now so the manifest is complete; the service class is a stub. -->

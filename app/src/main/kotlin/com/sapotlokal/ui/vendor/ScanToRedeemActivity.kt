@@ -26,6 +26,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.sapotlokal.data.model.VoucherUser
 import com.sapotlokal.data.repository.VoucherRepository
 import com.sapotlokal.databinding.ActivityScanRedeemBinding
+import com.sapotlokal.util.isNetworkAvailable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -274,12 +275,6 @@ class ScanToRedeemActivity : AppCompatActivity() {
     private fun showLoading(loading: Boolean) {
         binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
         binding.btnSubmitCode.isEnabled = !loading
-    }
-
-    private fun isNetworkAvailable(): Boolean {
-        val cm  = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val cap = cm.getNetworkCapabilities(cm.activeNetwork) ?: return false
-        return cap.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     override fun onSupportNavigateUp(): Boolean { finish(); return true }
