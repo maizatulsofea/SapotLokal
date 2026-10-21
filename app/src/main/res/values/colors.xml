@@ -19,4 +19,18 @@
 
     <!-- Splash background -->
     <color name="splashBackground">#FF6B2C</color>
+
+    <!-- Games -->
+    <color name="game_wheel_segment_1">#FF8A65</color>
+    <color name="game_wheel_segment_2">#FFD54F</color>
+    <color name="game_wheel_segment_3">#81C784</color>
+    <color name="game_wheel_segment_4">#64B5F6</color>
+    <color name="game_wheel_hub">#FFFFFF</color>
+    <color name="game_wheel_label">#000000</color>
+    <color name="game_card_back">#64B5F6</color>
+    <color name="game_card_back_text">#FFFFFF</color>
+    <color name="game_card_front">#FFFFFF</color>
+    <color name="game_card_front_stroke">#64B5F6</color>
+    <color name="game_card_front_text">#000000</color>
+    <color name="game_card_matched">#C8E6C9</color>
 </resources>

@@ -86,4 +86,28 @@
     <string name="no_shops_yet">No shops registered yet.</string>
     <string name="pts_label">pts</string>
 
+    <!-- Games -->
+    <string name="games_home_button">Games</string>
+    <string name="games_menu_title">Games</string>
+    <string name="games_spin_title">Spin the Wheel</string>
+    <string name="games_memory_title">Memory Match</string>
+    <string name="games_spin_button">Spin</string>
+    <string name="games_spin_checking">Checking…</string>
+    <string name="games_spin_come_back">Come back tomorrow</string>
+    <string name="games_spin_result">You won %1$d points!</string>
+    <string name="games_spin_available">Spin available today</string>
+    <string name="games_spin_used">Spun today</string>
+    <string name="games_memory_moves">Moves: %1$d</string>
+    <string name="games_memory_info">Memory points today: %1$d / %2$d</string>
+    <string name="games_memory_saving">Saving your points…</string>
+    <string name="games_memory_win_full">You won in %1$d moves! +%2$d points!</string>
+    <string name="games_memory_win_partial">You won in %1$d moves! +%2$d points (daily limit reached)</string>
+    <string name="games_memory_win_none">You won in %1$d moves! (daily points limit reached)</string>
+    <string name="games_memory_save_failed">You won! We couldn\'t save your points. Tap here to try again.</string>
+    <string name="games_new_game">New Game</string>
+    <string name="games_back">Back</string>
+    <string name="games_error_load">Couldn\'t load your game status. Please try again.</string>
+    <string name="games_error_save">Couldn\'t save your result. Please try again.</string>
+    <string name="games_error_not_logged_in">Not logged in. Please restart the app.</string>
+
 </resources>
