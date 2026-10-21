@@ -70,3 +70,27 @@ mode with known camera API incompatibilities on Android 14+.
   API issues — it never touches the camera.
 
 The term "ZXing" in the build guide now refers to the core generation library only.
+
+---
+
+## Change 4 — `gameDay` and `gamePlayedAt` added to `GAME`
+
+**Phase added:** Games merge · **Status:** ⏳ Proposed — developer to confirm
+
+**Problem:** `GAME` had no date, so "one spin per day" and "60 Memory Match points per day"
+could not be checked against the live database (build guide Rule 43).
+
+**Change:** `gameDay: String` ("yyyy-MM-dd" in Asia/Kuala_Lumpur) and `gamePlayedAt: Long` (epoch ms).
+Security Rules make `GAME` rows append-only.
+
+---
+
+## Change 5 — Game points are written with an empty `vendorID`
+
+**Phase added:** Games merge · **Status:** ⏳ Proposed — developer to confirm (Decision D1)
+
+**Problem:** `POINT.vendorID` is a shop FK; game points belong to no shop.
+
+**Change:** Game `POINT` rows use `vendorID = ""`. They count toward lifetime points and level,
+but are excluded from per-shop balances, so they cannot be spent on a shop's vouchers.
+

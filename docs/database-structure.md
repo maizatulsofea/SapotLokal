@@ -64,7 +64,7 @@ Ledger — every change is a **new row**. Balances are always computed by summin
 | --------------------- | ------ | ----------------------------------------------------------------------------------- |
 | `pointID`             | String | Firebase push ID                                                                    |
 | `userID`              | String | FK → `/users/{userID}`                                                              |
-| `vendorID`            | String | FK → `/vendors/{vendorID}`                                                          |
+| `vendorID`            | String | FK → `/vendors/{vendorID}`. `""` for game points (`spin_wheel`, `memory_match`)      |
 | `pointEarnedAmount`   | Int    | > 0 for earn events; 0 for redemption rows                                          |
 | `pointRedeemedAmount` | Int    | > 0 for redemption rows; 0 for earn events                                          |
 | `pointSource`         | String | `"shop_visit"` / `"spin_wheel"` / `"memory_match"` / `"challenge"` / `"redemption"` |
@@ -75,6 +75,7 @@ Ledger — every change is a **new row**. Balances are always computed by summin
 balance = SUM(pointEarnedAmount) − SUM(pointRedeemedAmount)
           WHERE userID = X AND vendorID = Y
 ```
+*(Game rows have `vendorID = ""` so they are excluded from per-shop balances and cannot be spent on shop vouchers).*
 
 **Lifetime earned (for level calculation):**
 
@@ -112,13 +113,15 @@ Auto-created when a customer's per-shop balance crosses a reward rule's `pointsR
 
 ### `/games/{gameID}`
 
-| Field                | Type   | Notes                                       |
-| -------------------- | ------ | ------------------------------------------- |
-| `gameID`             | String | Firebase push ID                            |
-| `userID`             | String | FK → `/users/{userID}`                      |
-| `gameType`           | String | `"spin_wheel"` or `"memory_match"`          |
-| `gameAttempt`        | Int    | Cumulative attempt count for this game type |
-| `gamePointsRewarded` | Int    | Points awarded in this game play            |
+| Field                | Type   | Notes                                                                      |
+| -------------------- | ------ | -------------------------------------------------------------------------- |
+| `gameID`             | String | Firebase push ID                                                           |
+| `userID`             | String | FK → `/users/{userID}`                                                     |
+| `gameType`           | String | `"spin_wheel"` or `"memory_match"`                                         |
+| `gameAttempt`        | Int    | Cumulative attempt count for this game type                                |
+| `gamePointsRewarded` | Int    | Points awarded in this game play                                           |
+| `gameDay`            | String | **ERD addition** — `"yyyy-MM-dd"` in `Asia/Kuala_Lumpur` for daily limits  |
+| `gamePlayedAt`       | Long   | **ERD addition** — epoch ms, for audit and ordering                        |
 
 ### `/challenges/{challengeID}`
 

@@ -151,10 +151,17 @@ object VoucherStatus {
 data class Game(
     val gameID: String = "",
     val userID: String = "",            // FK → users/{userID}
-    val gameType: String = "",          // "spin_wheel" or "memory_match"
+    val gameType: String = "",          // GameType.SPIN_WHEEL or GameType.MEMORY_MATCH
     val gameAttempt: Int = 0,
-    val gamePointsRewarded: Int = 0
+    val gamePointsRewarded: Int = 0,
+    val gameDay: String = "",           // NEW: "yyyy-MM-dd" in AppConfig.GAMES_RESET_TIME_ZONE
+    val gamePlayedAt: Long = 0L         // NEW: epoch ms, for audit/ordering
 )
+
+object GameType {
+    const val SPIN_WHEEL   = "spin_wheel"
+    const val MEMORY_MATCH = "memory_match"
+}
 
 // ── CHALLENGE ─────────────────────────────────────────────────────────────────
 /**

@@ -28,6 +28,22 @@ object PointRepository {
 
     // ── Write ──────────────────────────────────────────────────────────────────
 
+    /** Game points belong to no shop. See docs/erd-changes.md Change 5. */
+    const val NO_VENDOR_ID = ""
+
+    /** Builds (but does not write) a ledger row for game points. Returns null if no push key could be made. */
+    fun newGamePointEntry(userID: String, source: String, amount: Int): Point? {
+        val key = db.child("points").push().key ?: return null
+        return Point(
+            pointID             = key,
+            userID              = userID,
+            vendorID            = NO_VENDOR_ID,
+            pointEarnedAmount   = amount,
+            pointRedeemedAmount = 0,
+            pointSource         = source
+        )
+    }
+
     /**
      * Appends a new earned-points ledger row for a shop visit.
      * Called by ScanActivity after a QR code is validated.
@@ -84,9 +100,11 @@ object PointRepository {
                     for (child in snapshot.children) {
                         val p = child.getValue(Point::class.java) ?: continue
                         lifetimeEarned += p.pointEarnedAmount
-                        val current = perShop.getOrDefault(p.vendorID, 0)
-                        perShop[p.vendorID] =
-                            current + p.pointEarnedAmount - p.pointRedeemedAmount
+                        if (p.vendorID.isNotBlank()) {
+                            val current = perShop.getOrDefault(p.vendorID, 0)
+                            perShop[p.vendorID] =
+                                current + p.pointEarnedAmount - p.pointRedeemedAmount
+                        }
                     }
 
                     onResult(perShop, lifetimeEarned)
@@ -116,9 +134,11 @@ object PointRepository {
                 for (child in snapshot.children) {
                     val p = child.getValue(Point::class.java) ?: continue
                     lifetimeEarned += p.pointEarnedAmount
-                    val current = perShop.getOrDefault(p.vendorID, 0)
-                    perShop[p.vendorID] =
-                        current + p.pointEarnedAmount - p.pointRedeemedAmount
+                    if (p.vendorID.isNotBlank()) {
+                        val current = perShop.getOrDefault(p.vendorID, 0)
+                        perShop[p.vendorID] =
+                            current + p.pointEarnedAmount - p.pointRedeemedAmount
+                    }
                 }
 
                 onUpdate(perShop, lifetimeEarned)

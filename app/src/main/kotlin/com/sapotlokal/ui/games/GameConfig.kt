@@ -14,3 +14,4 @@ object GameConfig {
     const val MEMORY_MATCH_REVEAL_DELAY_MS = 250L
     const val MEMORY_FLIP_HALF_MS = 120L
 }
+
