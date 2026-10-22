@@ -71,3 +71,4 @@ class WheelView @JvmOverloads constructor(
         canvas.drawCircle(cx, cy, radius * 0.12f, hubPaint)
     }
 }
+

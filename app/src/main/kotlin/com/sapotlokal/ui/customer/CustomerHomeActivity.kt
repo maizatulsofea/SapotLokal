@@ -11,6 +11,7 @@ import com.sapotlokal.R
 import com.sapotlokal.data.repository.PointRepository
 import com.sapotlokal.databinding.ActivityCustomerHomeBinding
 import com.sapotlokal.ui.auth.LoginActivity
+import com.sapotlokal.ui.games.GamesMenuActivity
 
 /**
  * CustomerHomeActivity — Phase 3 real implementation.
@@ -73,6 +74,9 @@ class CustomerHomeActivity : AppCompatActivity() {
             android.widget.Toast.makeText(
                 this, "My Vouchers — coming in Phase 5", android.widget.Toast.LENGTH_SHORT
             ).show()
+        }
+        binding.btnGames.setOnClickListener {
+            startActivity(Intent(this, GamesMenuActivity::class.java))
         }
     }
 

@@ -158,3 +158,4 @@ class SpinWheelActivity : AppCompatActivity() {
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
     }
 }
+

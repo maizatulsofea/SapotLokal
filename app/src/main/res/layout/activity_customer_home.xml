@@ -201,6 +201,15 @@
                 app:icon="@android:drawable/ic_menu_agenda"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
+            <View android:layout_width="0dp" android:layout_height="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGames"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/games_home_button"
+                app:icon="@android:drawable/ic_media_play" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

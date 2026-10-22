@@ -13,3 +13,4 @@ fun Context.isNetworkAvailable(): Boolean {
     val cap = cm.getNetworkCapabilities(cm.activeNetwork) ?: return false
     return cap.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
 }
+
