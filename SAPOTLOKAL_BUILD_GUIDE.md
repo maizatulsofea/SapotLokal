@@ -271,8 +271,8 @@ Each phase lists: **Goal**, **What the AI should build**, and **Definition of Do
 
 **Definition of Done:**
 
-- [ ] Spin the Wheel can be used once per day and the limit can't be bypassed by reinstalling or changing the phone clock
-- [ ] Memory Match awards points and records the game
+- [x] Spin the Wheel can be used once per day and the limit can't be bypassed by reinstalling or changing the phone clock
+- [x] Memory Match awards points and records the game
 - [ ] A challenge completes and awards its points exactly once
 - [ ] Notifications arrive for the agreed events
 - [ ] Shop owner can edit shop details and see daily visit and redemption numbers
