@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardVoucher"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/sapot_white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/sapot_divider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Top row: Shop name + Badges -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_store"
+                app:tint="@color/sapot_text_secondary" />
+
+            <TextView
+                android:id="@+id/tvShopName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/sapot_text_secondary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="Kopi Lorong" />
+
+            <!-- "Best Choice" badge -->
+            <TextView
+                android:id="@+id/tvBestChoiceBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_pill_yellow"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:text="★ Best Choice"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- Status badge -->
+            <TextView
+                android:id="@+id/tvStatusBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_pill_leaf"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:text="Active"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:text="Active" />
+        </LinearLayout>
+
+        <!-- Divider / dashed line look -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="@color/sapot_divider" />
+
+        <!-- Reward Title and Points Required -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvRewardTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/tvPointsRequired"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Free Teh Tarik" />
+
+            <TextView
+                android:id="@+id/tvPointsRequired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_pill_bakery"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="50 pts" />
+        </RelativeLayout>
+
+        <!-- Bottom row: Expiry info + Voucher code + Action -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvVoucherCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="SAPOT-784219" />
+
+                <TextView
+                    android:id="@+id/tvExpiryDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/sapot_text_secondary"
+                    android:textSize="11sp"
+                    tools:text="Expires 24 Nov 2026" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewQr"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:backgroundTint="@color/sapot_primary_light"
+                android:paddingHorizontal="12dp"
+                android:text="Show QR"
+                android:textAllCaps="false"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="19dp" />
+        </LinearLayout>
+
+        <!-- Locked notice text (visible when customer balance dropped below snapshot) -->
+        <TextView
+            android:id="@+id/tvLockedNotice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_pill_gray"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:text="🔒 Locked: You need more points to redeem this voucher"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

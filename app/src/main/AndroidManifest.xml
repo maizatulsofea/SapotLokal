@@ -30,6 +30,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SapotLokal">
 
+        <!-- Preload downloadable fonts -->
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
         <!-- ── Activities ────────────────────────────────────────────────────── -->
 
         <!-- SplashActivity: the entry point. Shows logo + loading animation,
@@ -46,6 +51,7 @@
 
         <!-- Placeholder activities for Phase 1 navigation skeleton -->
         <activity android:name=".ui.auth.LoginActivity"            android:exported="false" />
+        <activity android:name=".ui.auth.VendorLoginActivity"      android:exported="false" />
         <activity android:name=".ui.customer.CustomerHomeActivity"  android:exported="false" />
         <activity android:name=".ui.vendor.VendorHomeActivity"      android:exported="false" />
 
@@ -58,11 +64,19 @@
         <activity android:name=".ui.customer.FindShopsActivity"    android:exported="false" />
         <activity android:name=".ui.customer.ScanActivity"         android:exported="false" />
 
+        <!-- Phase 5 voucher activities -->
+        <activity android:name=".ui.customer.MyVouchersActivity"   android:exported="false" />
+
         <!-- Phase 4 vendor activities -->
         <activity android:name=".ui.vendor.ShowQrActivity"         android:exported="false" />
         <activity android:name=".ui.vendor.RewardRulesActivity"    android:exported="false" />
         <activity android:name=".ui.vendor.AddEditRuleActivity"    android:exported="false" />
         <activity android:name=".ui.vendor.ScanToRedeemActivity"   android:exported="false" />
+
+        <!-- Phase 6 customer & vendor activities -->
+        <activity android:name=".ui.customer.ChallengesActivity"   android:exported="false" />
+        <activity android:name=".ui.vendor.ShopSettingsActivity"   android:exported="false" />
+        <activity android:name=".ui.vendor.VendorStatsActivity"    android:exported="false" />
 
         <!-- Games (merged from SapotLokalGames) -->
         <activity android:name=".ui.games.GamesMenuActivity"   android:exported="false" android:screenOrientation="portrait" />

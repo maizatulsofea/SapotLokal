@@ -86,6 +86,24 @@
                 android:text="📷 Scan to Redeem Voucher"
                 android:textSize="16sp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStats"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="📊 Store Analytics &amp; Footfall"
+                android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnShopSettings"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="⚙️ Shop Settings &amp; Profile"
+                android:textSize="16sp" />
+
             <!-- Spacer -->
             <Space
                 android:layout_width="match_parent"

@@ -28,6 +28,7 @@ import com.sapotlokal.AppConfig
 import com.sapotlokal.data.repository.QrCodeRepository
 import com.sapotlokal.data.repository.PointRepository
 import com.sapotlokal.data.repository.VendorRepository
+import com.sapotlokal.data.repository.VoucherRepository
 import com.sapotlokal.util.isNetworkAvailable
 import com.sapotlokal.databinding.ActivityScanBinding
 import java.util.concurrent.ExecutorService
@@ -223,10 +224,24 @@ class ScanActivity : AppCompatActivity() {
             userID   = userID,
             vendorID = vendorID,
             onResult = { success ->
-                mainHandler.post {
-                    if (success) {
+                if (success) {
+                    // Task 5.1: Immediately evaluate and auto-award vouchers for this shop visit
+                    VoucherRepository.evaluateAndAwardVouchers(
+                        userID   = userID,
+                        vendorID = vendorID,
+                        onResult = { newVouchers ->
+                            if (newVouchers.isNotEmpty()) {
+                                Log.i("ScanActivity", "Auto-awarded ${newVouchers.size} new vouchers")
+                            }
+                        }
+                    )
+                    // Task 6.1: Sync challenge progress on shop visit
+                    com.sapotlokal.data.repository.ChallengeRepository.syncUserProgress(userID)
+                    mainHandler.post {
                         showSuccessOverlay(vendorName)
-                    } else {
+                    }
+                } else {
+                    mainHandler.post {
                         showError("Points could not be saved. Please try again.")
                         isProcessing = false
                     }

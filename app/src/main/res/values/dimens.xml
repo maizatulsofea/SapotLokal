@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── Spacing (4px baseline scale) ─────────────────────────────────── -->
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="space_12">12dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_20">20dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="space_32">32dp</dimen>
+    <dimen name="space_40">40dp</dimen>
+
+    <!-- ── Insets ────────────────────────────────────────────────────────── -->
+    <dimen name="screen_horizontal_margin">24dp</dimen>
+    <dimen name="card_padding">20dp</dimen>
+
+    <!-- ── Radii ─────────────────────────────────────────────────────────── -->
+    <dimen name="radius_badge">12dp</dimen>
+    <dimen name="radius_control">16dp</dimen>
+    <dimen name="radius_card">24dp</dimen>
+
+    <!-- ── Controls ──────────────────────────────────────────────────────── -->
+    <dimen name="button_height">52dp</dimen>
+    <dimen name="min_touch_target">48dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+</resources>
+

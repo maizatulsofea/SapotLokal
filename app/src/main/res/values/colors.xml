@@ -1,26 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- ── Primary brand colours ────────────────────────────────────────────── -->
-    <!-- These are placeholders — update to match your Figma design in Phase 7 -->
-    <color name="colorPrimary">#FF6B2C</color>       <!-- Warm orange — energetic, local-market feel -->
-    <color name="colorPrimaryVariant">#CC4E14</color>
-    <color name="colorOnPrimary">#FFFFFF</color>
+    <!-- ── SapotLokal Design System Tokens ──────────────────────────────── -->
+    <!-- Surfaces & Canvas -->
+    <color name="sapot_canvas">#F6F1E9</color>             <!-- Warm cream page background -->
+    <color name="sapot_surface">#FFFFFF</color>            <!-- Pure white for cards -->
 
-    <color name="colorSecondary">#FFD166</color>      <!-- Golden yellow — rewards, positivity -->
-    <color name="colorSecondaryVariant">#E0A800</color>
-    <color name="colorOnSecondary">#000000</color>
+    <!-- Primary Brand (Sunny yellow & dark brown ink — NEVER white on yellow) -->
+    <color name="sapot_primary">#FFD93D</color>            <!-- Sunny yellow -->
+    <color name="sapot_on_primary">#4F200D</color>         <!-- Dark brown ink -->
 
-    <color name="colorBackground">#FAFAFA</color>
-    <color name="colorSurface">#FFFFFF</color>
-    <color name="colorError">#B00020</color>
-    <color name="colorOnBackground">#212121</color>
-    <color name="colorOnSurface">#212121</color>
+    <!-- Typography & Neutral Ink -->
+    <color name="sapot_text_primary">#4F200D</color>       <!-- Dark brown primary text -->
+    <color name="sapot_text_secondary">#78665A</color>     <!-- Muted warm gray secondary text -->
+    <color name="sapot_border">#E7DED3</color>             <!-- Subtle beige border/divider -->
+
+    <!-- Interactive / Disabled States -->
+    <color name="sapot_disabled_surface">#E9E2D8</color>
+    <color name="sapot_disabled_text">#8C7B6D</color>
+
+    <!-- Accent Highlights & Ripple -->
+    <color name="sapot_accent_subtle">#FFF0AB</color>      <!-- Soft yellow reward highlight -->
+    <color name="sapot_ripple">#204F200D</color>          <!-- Soft warm brown ripple -->
+
+    <!-- Semantic Feedback -->
+    <color name="sapot_success_text">#256347</color>
+    <color name="sapot_success_bg">#E6F2E9</color>
+    <color name="sapot_error_text">#AD332B</color>
+    <color name="sapot_error_bg">#FCEBE7</color>
+    <color name="sapot_info_text">#355B78</color>
+    <color name="sapot_info_bg">#E8EFF4</color>
+
+    <!-- ── Compatibility / Legacy Color Aliases ─────────────────────────── -->
+    <color name="colorPrimary">@color/sapot_primary</color>
+    <color name="colorPrimaryVariant">#E0A800</color>
+    <color name="colorOnPrimary">@color/sapot_on_primary</color>
+
+    <color name="colorSecondary">@color/sapot_accent_subtle</color>
+    <color name="colorSecondaryVariant">#FFD93D</color>
+    <color name="colorOnSecondary">@color/sapot_text_primary</color>
+
+    <color name="colorBackground">@color/sapot_canvas</color>
+    <color name="colorSurface">@color/sapot_surface</color>
+    <color name="colorError">@color/sapot_error_text</color>
+    <color name="colorOnBackground">@color/sapot_text_primary</color>
+    <color name="colorOnSurface">@color/sapot_text_primary</color>
     <color name="colorOnError">#FFFFFF</color>
 
     <!-- Splash background -->
     <color name="splashBackground">#FF6B2C</color>
 
-    <!-- Games -->
+    <!-- Legacy Sapot Aliases -->
+    <color name="sapot_bg">@color/sapot_canvas</color>
+    <color name="sapot_primary_yellow">@color/sapot_primary</color>
+    <color name="sapot_primary_light">@color/sapot_accent_subtle</color>
+    <color name="sapot_badge_bg">#EEE6DA</color>
+    <color name="sapot_divider">@color/sapot_border</color>
+    <color name="sapot_white">@color/sapot_surface</color>
+
+    <!-- Shop Category Badges -->
+    <color name="sapot_cat_bakery">#F8E3B9</color>
+    <color name="sapot_cat_food">#DCE6CF</color>
+    <color name="sapot_cat_coffee">#E9D8C2</color>
+
+    <!-- Mini-Games -->
     <color name="game_wheel_segment_1">#FF8A65</color>
     <color name="game_wheel_segment_2">#FFD54F</color>
     <color name="game_wheel_segment_3">#81C784</color>

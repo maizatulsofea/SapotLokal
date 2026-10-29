@@ -45,6 +45,23 @@ class VendorHomeActivity : AppCompatActivity() {
         val user = auth.currentUser
         if (user == null) { goToLogin(); return }
 
+        refreshVendorProfile()
+        user.let { com.sapotlokal.service.SapotFcmService.syncTokenForUser(it.uid) }
+
+        binding.btnLogOut.setOnClickListener {
+            auth.signOut()
+            goToLogin()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshVendorProfile()
+    }
+
+    private fun refreshVendorProfile() {
+        val user = auth.currentUser ?: return
+
         // Look up the vendor record for this user
         VendorRepository.fetchVendorByUserId(
             userID   = user.uid,
@@ -73,6 +90,18 @@ class VendorHomeActivity : AppCompatActivity() {
                 binding.btnScanRedeem.setOnClickListener {
                     startActivity(
                         Intent(this, ScanToRedeemActivity::class.java)
+                            .putExtra(EXTRA_VENDOR_ID, vendorID)
+                    )
+                }
+                binding.btnStats.setOnClickListener {
+                    startActivity(
+                        Intent(this, VendorStatsActivity::class.java)
+                            .putExtra(EXTRA_VENDOR_ID, vendorID)
+                    )
+                }
+                binding.btnShopSettings.setOnClickListener {
+                    startActivity(
+                        Intent(this, ShopSettingsActivity::class.java)
                             .putExtra(EXTRA_VENDOR_ID, vendorID)
                     )
                 }

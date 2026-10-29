@@ -80,7 +80,10 @@ object GamesRepository {
             updates["points/${point.pointID}"] = point
         }
         db.updateChildren(updates)
-            .addOnSuccessListener { onResult(true) }
+            .addOnSuccessListener {
+                ChallengeRepository.syncUserProgress(userID)
+                onResult(true)
+            }
             .addOnFailureListener { onResult(false) }
     }
 }

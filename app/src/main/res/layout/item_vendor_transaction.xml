@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@color/colorSurface"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="1dp"
+    app:strokeColor="@color/sapot_divider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="14dp">
+
+        <FrameLayout
+            android:id="@+id/iconContainer"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_pill_yellow">
+
+            <ImageView
+                android:id="@+id/ivTxIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_store"
+                app:tint="@color/sapot_text_primary" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTxTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Customer Visit Scan" />
+
+            <TextView
+                android:id="@+id/tvTxSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/sapot_text_secondary"
+                android:textSize="12sp"
+                tools:text="Customer ID: usr_a1b2c3" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTxPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="+10 pts" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

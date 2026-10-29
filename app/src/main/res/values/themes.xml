@@ -1,34 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--
-        Base app theme.
-        Parent = Material Design theme, light variant (no dark mode yet).
-        In Phase 7 we'll align all colours with the Figma export.
+        Base SapotLokal theme.
+        Parent = Material Components Light NoActionBar.
     -->
     <style name="Theme.SapotLokal" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="colorError">@color/colorError</item>
-        <item name="colorOnError">@color/colorOnError</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="colorSurface">@color/colorSurface</item>
-        <item name="colorOnBackground">@color/colorOnBackground</item>
-        <item name="colorOnSurface">@color/colorOnSurface</item>
-        <item name="colorOutline">@android:color/darker_gray</item>
-        <!-- Rounded corners on all Material buttons — matches Figma style -->
-        <item name="materialButtonStyle">@style/Widget.SapotLokal.Button</item>
+        <!-- Canvas & Surface Backgrounds -->
+        <item name="android:windowBackground">@color/sapot_canvas</item>
+        <item name="android:colorBackground">@color/sapot_canvas</item>
+        <item name="colorSurface">@color/sapot_surface</item>
+        <item name="colorOnSurface">@color/sapot_text_primary</item>
+        <item name="colorOnBackground">@color/sapot_text_primary</item>
+
+        <!-- Brand Primary (Sunny yellow & dark brown ink - NEVER white on yellow) -->
+        <item name="colorPrimary">@color/sapot_primary</item>
+        <item name="colorPrimaryVariant">@color/sapot_primary</item>
+        <item name="colorOnPrimary">@color/sapot_on_primary</item>
+
+        <!-- Secondary & Accents -->
+        <item name="colorSecondary">@color/sapot_accent_subtle</item>
+        <item name="colorSecondaryVariant">@color/sapot_accent_subtle</item>
+        <item name="colorOnSecondary">@color/sapot_text_primary</item>
+
+        <!-- Feedback & Outlines -->
+        <item name="colorError">@color/sapot_error_text</item>
+        <item name="colorOnError">@color/sapot_surface</item>
+        <item name="colorOutline">@color/sapot_border</item>
+
+        <!-- System Bars Styling (Light status and navigation bars with dark icons) -->
+        <item name="android:statusBarColor">@color/sapot_canvas</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/sapot_canvas</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Default App Typography -->
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+
+        <!-- Default Component Styles -->
+        <item name="materialButtonStyle">@style/Widget.SapotLokal.Button.Primary</item>
+        <item name="materialCardViewStyle">@style/Widget.SapotLokal.Card</item>
+        <item name="textInputStyle">@style/Widget.SapotLokal.TextInputLayout</item>
     </style>
 
-    <!-- Rounded button style — apply globally so every screen is consistent -->
-    <style name="Widget.SapotLokal.Button" parent="Widget.MaterialComponents.Button">
-        <item name="cornerRadius">24dp</item>
-    </style>
-
-    <!-- Splash theme — full-screen orange background, no status bar chrome -->
+    <!-- Splash theme — full-screen background, no status bar chrome -->
     <style name="Theme.SapotLokal.Splash" parent="Theme.SapotLokal">
         <item name="android:windowBackground">@color/splashBackground</item>
         <item name="android:windowFullscreen">true</item>

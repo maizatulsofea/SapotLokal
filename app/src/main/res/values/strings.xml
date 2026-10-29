@@ -110,4 +110,10 @@
     <string name="games_error_save">Couldn\'t save your result. Please try again.</string>
     <string name="games_error_not_logged_in">Not logged in. Please restart the app.</string>
 
+    <!-- FCM Notifications -->
+    <string name="notif_channel_rewards_name">Rewards &amp; Vouchers</string>
+    <string name="notif_channel_rewards_desc">Alerts when you earn a new voucher or reach a reward milestone</string>
+    <string name="notif_channel_levels_name">Level Up!</string>
+    <string name="notif_channel_levels_desc">Congratulations when you reach a new loyalty level</string>
+
 </resources>

@@ -1,217 +1,426 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    activity_customer_home.xml — Phase 3 Customer Home Screen
-    Shows: greeting, level chip, lifetime points, progress bar to next level,
-    and a bottom navigation bar with Home / Find Shops / Scan / My Vouchers.
--->
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/sapot_bg">
 
-    <!-- Top AppBar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:title="SapotLokal"
-            app:titleTextColor="@color/colorOnPrimary"
-            app:menu="@menu/menu_customer_home" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Scrollable content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginBottom="76dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
 
-            <!-- Greeting -->
+            <!-- Top Location & Notification Bar -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_map_pin"
+                        app:tint="@color/sapot_text_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="Bangsar, Kuala Lumpur"
+                        android:textColor="@color/sapot_text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_chevron_down"
+                        app:tint="@color/sapot_text_primary" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btnNotification"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_bell"
+                    app:tint="@color/sapot_text_primary" />
+            </RelativeLayout>
+
+            <!-- Greeting Header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:letterSpacing="0.06"
+                android:text="A LITTLE LOCAL GOES A LONG WAY"
+                android:textColor="@color/sapot_text_secondary"
+                android:textSize="12sp" />
+
             <TextView
                 android:id="@+id/tvGreeting"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="@color/colorOnBackground"
-                android:fontFamily="sans-serif-medium"
-                tools:text="Hello, Ahmad!" />
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Morning, Aina ☀"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="28sp" />
 
-            <View android:layout_width="0dp" android:layout_height="16dp" />
-
-            <!-- Points Card -->
+            <!-- Shop Points Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/colorPrimary">
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/sapot_primary_yellow"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="20dp">
 
-                    <!-- Level chip -->
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipLevel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Level 1"
-                        android:textColor="@color/colorPrimary"
-                        app:chipBackgroundColor="@color/colorOnPrimary"
-                        style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                    <View android:layout_width="0dp" android:layout_height="12dp" />
-
-                    <!-- Total lifetime points label -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lifetime Points"
-                        android:textColor="#CCFFFFFF"
-                        android:textSize="13sp" />
-
-                    <!-- Big points number -->
-                    <TextView
-                        android:id="@+id/tvLifetimePoints"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="48sp"
-                        android:textColor="@color/colorOnPrimary"
-                        android:fontFamily="sans-serif-medium"
-                        tools:text="340" />
-
-                    <View android:layout_width="0dp" android:layout_height="16dp" />
-
-                    <!-- Progress label row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_shop_icon_coffee">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_coffee"
+                                app:tint="@color/sapot_text_primary" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kopi Lorong"
+                                android:textColor="@color/sapot_text_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/chipLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Bangsar · Neighbourhood café"
+                                android:textColor="@color/sapot_text_primary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:src="@drawable/ic_arrow_up_right"
+                            app:tint="@color/sapot_text_primary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:baselineAligned="true"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tvProgressLabel"
-                            android:layout_width="0dp"
+                            android:id="@+id/tvLifetimePoints"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="#CCFFFFFF"
-                            android:textSize="12sp"
-                            tools:text="Progress to Level 4" />
+                            android:fontFamily="sans-serif-black"
+                            android:text="240"
+                            android:textColor="@color/sapot_text_primary"
+                            android:textSize="42sp" />
 
                         <TextView
                             android:id="@+id/tvProgressCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#CCFFFFFF"
-                            android:textSize="12sp"
-                            tools:text="340 / 600 pts" />
-
+                            android:layout_marginStart="8dp"
+                            android:text="Kopi Lorong points"
+                            android:textColor="@color/sapot_text_primary"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
-                    <View android:layout_width="0dp" android:layout_height="6dp" />
-
-                    <!-- Progress bar -->
+                    <!-- Points Progress Bar -->
                     <ProgressBar
                         android:id="@+id/progressLevel"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:max="100"
-                        android:progressTint="@color/colorOnPrimary"
-                        android:progressBackgroundTint="#44FFFFFF"
-                        android:progress="0" />
+                        android:layout_height="7dp"
+                        android:layout_marginTop="8dp"
+                        android:max="300"
+                        android:progress="240"
+                        android:progressDrawable="@drawable/progress_points" />
 
-                    <!-- Max level label (hidden until max) -->
+                    <TextView
+                        android:id="@+id/tvProgressLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="60 points to your free kopi · 300 pts"
+                        android:textColor="@color/sapot_text_primary"
+                        android:textSize="12sp" />
+
                     <TextView
                         android:id="@+id/tvMaxLevel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:text="🏆 You've reached the top level!"
-                        android:textColor="#CCFFFFFF"
-                        android:textSize="13sp"
+                        android:textColor="@color/sapot_text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
                         android:visibility="gone" />
-
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
 
-            <View android:layout_width="0dp" android:layout_height="24dp" />
-
-            <!-- Quick action buttons -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quick Actions"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@color/colorOnBackground"
-                android:layout_marginBottom="12dp" />
-
+            <!-- Reminder Callout -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnFindShops"
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_info"
+                    app:tint="@color/sapot_text_secondary" />
+
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="Find Shops"
-                    app:icon="@android:drawable/ic_menu_mapmode" />
+                    android:text="Your points stay with the shop where you earn them."
+                    android:textColor="@color/sapot_text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Quick Actions: Scan QR & Play Games -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnScan"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="6dp"
+                    android:backgroundTint="@color/sapot_primary_yellow"
                     android:text="Scan QR"
-                    app:icon="@android:drawable/ic_menu_camera" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:icon="@android:drawable/ic_menu_camera"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/sapot_text_primary" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGames"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/sapot_white"
+                    android:text="Mini Games"
+                    android:textAllCaps="false"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:icon="@android:drawable/ic_media_play"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/sapot_text_primary" />
             </LinearLayout>
 
-            <View android:layout_width="0dp" android:layout_height="16dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnMyVouchers"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="My Vouchers"
-                app:icon="@android:drawable/ic_menu_agenda"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
-            <View android:layout_width="0dp" android:layout_height="16dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChallenges"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:backgroundTint="@color/sapot_white"
+                    android:text="Challenges"
+                    android:textAllCaps="false"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_gift"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/sapot_text_primary" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGames"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMyVouchers"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:backgroundTint="@color/sapot_white"
+                    android:text="My Vouchers"
+                    android:textAllCaps="false"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_wallet"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/sapot_text_primary" />
+            </LinearLayout>
+
+            <!-- Section: Around your corner -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="@string/games_home_button"
-                app:icon="@android:drawable/ic_media_play" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Around your corner"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnExplore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Explore →"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- Dynamic list of recently visited shops (Phase 3 Task 3.2) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentShops"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_shop_card" />
+
+            <TextView
+                android:id="@+id/tvNoShops"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="Scan a shop QR to start earning points!"
+                android:textColor="@color/sapot_text_secondary"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- Reward Nudge Banner -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardRewardNudge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/sapot_primary_light"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:src="@drawable/ic_gift"
+                        app:tint="@color/sapot_text_primary" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="A little treat is waiting"
+                            android:textColor="@color/sapot_text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Get RM5 off at Kopi Lorong for 200 shop points."
+                            android:textColor="@color/sapot_text_primary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation Bar -->
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/layout_customer_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

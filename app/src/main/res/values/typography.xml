@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── Base SapotLokal TextAppearance ───────────────────────────────── -->
+    <style name="TextAppearance.SapotLokal" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+    </style>
+
+    <!-- PageTitle: 28sp, lineSpacingExtra 6sp, bold/semibold, textColor @color/sapot_text_primary -->
+    <style name="TextAppearance.SapotLokal.PageTitle" parent="TextAppearance.SapotLokal">
+        <item name="android:textSize">28sp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/sapot_text_primary</item>
+    </style>
+
+    <!-- SectionTitle: 21sp, lineSpacingExtra 7sp, bold/semibold, textColor @color/sapot_text_primary -->
+    <style name="TextAppearance.SapotLokal.SectionTitle" parent="TextAppearance.SapotLokal">
+        <item name="android:textSize">21sp</item>
+        <item name="android:lineSpacingExtra">7sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/sapot_text_primary</item>
+    </style>
+
+    <!-- Body: 15sp, lineSpacingExtra 6sp, regular, textColor @color/sapot_text_primary -->
+    <style name="TextAppearance.SapotLokal.Body" parent="TextAppearance.SapotLokal">
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/sapot_text_primary</item>
+    </style>
+
+    <!-- Label: 13sp, lineSpacingExtra 5sp, medium, textColor @color/sapot_text_primary -->
+    <style name="TextAppearance.SapotLokal.Label" parent="TextAppearance.SapotLokal">
+        <item name="android:textSize">13sp</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/sapot_text_primary</item>
+    </style>
+
+    <!-- Caption: 11sp, lineSpacingExtra 4sp, regular, textColor @color/sapot_text_secondary -->
+    <style name="TextAppearance.SapotLokal.Caption" parent="TextAppearance.SapotLokal">
+        <item name="android:textSize">11sp</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/sapot_text_secondary</item>
+    </style>
+</resources>

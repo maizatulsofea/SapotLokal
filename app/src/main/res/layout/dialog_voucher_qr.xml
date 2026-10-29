@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="24dp"
+    app:cardBackgroundColor="@color/sapot_white"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Shop Name & Category -->
+        <TextView
+            android:id="@+id/tvDialogShopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="Kopi Lorong" />
+
+        <!-- Reward Title -->
+        <TextView
+            android:id="@+id/tvDialogRewardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Free Teh Tarik" />
+
+        <!-- QR Code Image Container -->
+        <FrameLayout
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_primary_button"
+            android:padding="12dp">
+
+            <ImageView
+                android:id="@+id/ivVoucherQr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Voucher QR Code"
+                android:scaleType="fitCenter" />
+
+            <ProgressBar
+                android:id="@+id/pbQrLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- Large Human-Readable Code -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="VOUCHER CODE"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvDialogVoucherCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="monospace"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="SAPOT-784219" />
+
+        <!-- Expiry Information -->
+        <TextView
+            android:id="@+id/tvDialogExpiry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="12sp"
+            tools:text="Valid until 24 Nov 2026" />
+
+        <!-- Explanatory note -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:text="Present this QR code to the cashier to scan, or have them type the voucher code."
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="12sp" />
+
+        <!-- Close Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDialogClose"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="18dp"
+            android:backgroundTint="@color/sapot_primary_yellow"
+            android:text="Done"
+            android:textAllCaps="false"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="24dp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

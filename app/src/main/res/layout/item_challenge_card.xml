@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/sapot_white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/sapot_divider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Top row: Title + Points Badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvChallengeTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Local Explorer" />
+
+            <TextView
+                android:id="@+id/tvRewardBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_pill_yellow"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="+30 pts" />
+        </LinearLayout>
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tvChallengeDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="13sp"
+            tools:text="Visit 3 different local shops and scan their QR code" />
+
+        <!-- Progress bar & counter -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:id="@+id/pbChallenge"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
+                android:max="100"
+                android:progressDrawable="@drawable/progress_points"
+                tools:progress="66" />
+
+            <TextView
+                android:id="@+id/tvProgressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="2 / 3" />
+        </LinearLayout>
+
+        <!-- Status / Claim Button -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClaimReward"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:backgroundTint="@color/sapot_primary_yellow"
+                android:text="Claim Reward 🎉"
+                android:textAllCaps="false"
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvStatusBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:background="@drawable/bg_pill_gray"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:text="In Progress"
+                android:textColor="@color/sapot_text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sapot_bg"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp">
+
+        <!-- Top Header: Logo & Badge -->
+        <LinearLayout
+            android:id="@+id/layoutBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_primary_button">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_store"
+                    app:tint="@color/sapot_text_primary" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:fontFamily="sans-serif-black"
+                android:text="SapotLokal."
+                android:textColor="@color/sapot_text_primary"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/badgeRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/sapot_badge_bg"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="CUSTOMER"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/layoutBrand"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/layoutBrand" />
+
+        <!-- Illustration Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardIllustration"
+            android:layout_width="match_parent"
+            android:layout_height="258dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/sapot_primary_light"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutBrand">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <!-- Bakery Card -->
+                    <LinearLayout
+                        android:layout_width="86dp"
+                        android:layout_height="108dp"
+                        android:background="@drawable/bg_pill_bakery"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_croissant"
+                            app:tint="@color/sapot_text_primary" />
+
+                        <View
+                            android:layout_width="38dp"
+                            android:layout_height="5dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/sapot_text_primary" />
+                    </LinearLayout>
+
+                    <!-- Cafe Card (Center Hero) -->
+                    <LinearLayout
+                        android:layout_width="112dp"
+                        android:layout_height="134dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@drawable/bg_pill_yellow"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_coffee"
+                            app:tint="@color/sapot_text_primary" />
+
+                        <View
+                            android:layout_width="38dp"
+                            android:layout_height="5dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/sapot_text_primary" />
+                    </LinearLayout>
+
+                    <!-- Stall Card -->
+                    <LinearLayout
+                        android:layout_width="86dp"
+                        android:layout_height="108dp"
+                        android:background="@drawable/bg_pill_leaf"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_leaf"
+                            app:tint="@color/sapot_text_primary" />
+
+                        <View
+                            android:layout_width="38dp"
+                            android:layout_height="5dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/sapot_text_primary" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:letterSpacing="0.05"
+                    android:text="YOUR NEIGHBOURHOOD, CLOSER."
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Main Headline -->
+        <TextView
+            android:id="@+id/tvHeadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-black"
+            android:lineSpacingMultiplier="1.1"
+            android:text="Little local visits. Big\nneighbourhood love."
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="36sp"
+            app:layout_constraintTop_toBottomOf="@id/cardIllustration" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingMultiplier="1.4"
+            android:text="Discover independent shops and earn rewards with the places you love. One shop at a time."
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/tvHeadline" />
+
+        <!-- Language Picker -->
+        <TextView
+            android:id="@+id/tvLanguageTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Choose your language / Pilih bahasa"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tvSubtitle" />
+
+        <LinearLayout
+            android:id="@+id/layoutLanguages"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tvLanguageTitle">
+
+            <LinearLayout
+                android:id="@+id/btnLangEn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_language_selected"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="English"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_circle_check"
+                    app:tint="@color/sapot_text_primary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnLangBm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_language_unselected"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bahasa Melayu"
+                    android:textColor="@color/sapot_text_primary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- CTA Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/sapot_primary_yellow"
+            android:text="Continue as customer"
+            android:textAllCaps="false"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconGravity="textStart"
+            app:iconTint="@color/sapot_text_primary"
+            app:layout_constraintTop_toBottomOf="@id/layoutLanguages" />
+
+        <TextView
+            android:id="@+id/tvVendorLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Run a local shop?  Enter vendor space →"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/btnContinue" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="SapotLokal is a visual concept. Logo is a temporary placeholder."
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="10sp"
+            app:layout_constraintTop_toBottomOf="@id/tvVendorLink" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+

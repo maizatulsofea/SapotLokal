@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:background="@color/sapot_white"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp">
+
+    <!-- Tab 1: Home (Selected) -->
+    <LinearLayout
+        android:id="@+id/tabHome"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="54dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_primary_button">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_house"
+                app:tint="@color/sapot_text_primary" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Home"
+            android:textColor="@color/sapot_text_primary"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Tab 2: Discover -->
+    <LinearLayout
+        android:id="@+id/tabDiscover"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:src="@drawable/ic_compass"
+            app:tint="@color/sapot_text_secondary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Discover"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!-- Tab 3: My shops -->
+    <LinearLayout
+        android:id="@+id/tabMyShops"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:src="@drawable/ic_wallet"
+            app:tint="@color/sapot_text_secondary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Vouchers"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!-- Tab 4: Profile -->
+    <LinearLayout
+        android:id="@+id/tabProfile"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:src="@drawable/ic_user_round"
+            app:tint="@color/sapot_text_secondary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Profile"
+            android:textColor="@color/sapot_text_secondary"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+</LinearLayout>
+

@@ -82,4 +82,113 @@ object VendorRepository {
                 }
             })
     }
+
+    /**
+     * Updates an existing vendor profile in /vendors/{vendorID}.
+     * Only fields like vendorName, vendorCategory, vendorAddress, vendorDescription are modified.
+     */
+    fun updateVendor(
+        vendor: Vendor,
+        onResult: (success: Boolean, errorMsg: String?) -> Unit
+    ) {
+        if (vendor.vendorID.isBlank()) {
+            onResult(false, "Invalid vendor ID")
+            return
+        }
+
+        val updates = mapOf(
+            "vendorName" to vendor.vendorName,
+            "vendorCategory" to vendor.vendorCategory,
+            "vendorAddress" to vendor.vendorAddress,
+            "vendorDescription" to vendor.vendorDescription
+        )
+
+        db.child("vendors").child(vendor.vendorID)
+            .updateChildren(updates)
+            .addOnSuccessListener { onResult(true, null) }
+            .addOnFailureListener { e -> onResult(false, e.message) }
+    }
+
+    /**
+     * Aggregates live statistics for a shop owner:
+     * - Customer footfall (distinct user IDs who have visited / earned points at this shop)
+     * - Total points distributed (sum of pointEarnedAmount for this vendor)
+     * - Total vouchers redeemed (count of vouchers in /voucherUsers with status "used")
+     * - Total points redeemed (sum of pointRedeemedAmount for this vendor)
+     */
+    fun fetchVendorStats(
+        vendorID: String,
+        onResult: (com.sapotlokal.data.model.VendorStats) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        if (vendorID.isBlank()) {
+            onError("Invalid vendor ID")
+            return
+        }
+
+        db.child("points")
+            .orderByChild("vendorID")
+            .equalTo(vendorID)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(pointsSnapshot: DataSnapshot) {
+                    val userIds = mutableSetOf<String>()
+                    var totalEarned = 0
+                    var totalRedeemed = 0
+                    val pointList = mutableListOf<com.sapotlokal.data.model.Point>()
+
+                    for (child in pointsSnapshot.children) {
+                        val p = child.getValue(com.sapotlokal.data.model.Point::class.java) ?: continue
+                        pointList.add(p)
+                        if (p.userID.isNotBlank()) {
+                            userIds.add(p.userID)
+                        }
+                        totalEarned += p.pointEarnedAmount
+                        totalRedeemed += p.pointRedeemedAmount
+                    }
+
+                    // Also query /voucherUsers for this vendor to count used vouchers
+                    db.child("voucherUsers")
+                        .orderByChild("vendorID")
+                        .equalTo(vendorID)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(voucherSnapshot: DataSnapshot) {
+                                var usedVouchersCount = 0
+                                for (child in voucherSnapshot.children) {
+                                    val status = child.child("voucherStatus").getValue(String::class.java)
+                                    if (status.equals(com.sapotlokal.data.model.VoucherStatus.USED, ignoreCase = true)) {
+                                        usedVouchersCount++
+                                    }
+                                }
+
+                                val stats = com.sapotlokal.data.model.VendorStats(
+                                    vendorID = vendorID,
+                                    totalCustomers = userIds.size,
+                                    totalPointsDistributed = totalEarned,
+                                    totalPointsRedeemed = totalRedeemed,
+                                    totalVouchersRedeemed = usedVouchersCount,
+                                    recentPoints = pointList.reversed().take(20)
+                                )
+                                onResult(stats)
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                // Return stats computed so far even if voucher read failed
+                                val stats = com.sapotlokal.data.model.VendorStats(
+                                    vendorID = vendorID,
+                                    totalCustomers = userIds.size,
+                                    totalPointsDistributed = totalEarned,
+                                    totalPointsRedeemed = totalRedeemed,
+                                    totalVouchersRedeemed = 0,
+                                    recentPoints = pointList.reversed().take(20)
+                                )
+                                onResult(stats)
+                            }
+                        })
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onError(error.message)
+                }
+            })
+    }
 }

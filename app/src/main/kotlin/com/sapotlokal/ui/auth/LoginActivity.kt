@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -11,29 +12,17 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.FirebaseDatabase
 import com.sapotlokal.databinding.ActivityLoginBinding
 import com.sapotlokal.ui.customer.CustomerHomeActivity
-import com.sapotlokal.ui.vendor.VendorHomeActivity
 
 /**
- * LoginActivity — email + password login only; no role choice.
+ * LoginActivity — Default entry point for Customer Login.
  *
- * WHY NO ROLE CHOICE HERE:
- * Role is chosen ONCE at sign-up and stored in the database. The build guide says
- * "login never asks again". After authenticating, we read the role from
- * /users/{uid}/role in the Realtime Database and route to the correct home screen.
+ * NAVIGATION:
+ *   - "Are you a shop owner? Login as a vendor" -> VendorLoginActivity
+ *   - "New here? Register customer account"    -> SignUpCustomerActivity
  *
- * ROUTING LOGIC:
- *   role = "customer" → CustomerHomeActivity
- *   role = "vendor"   → VendorHomeActivity
- *   role = unknown    → show error (database may be missing the USER record)
- *
- * WHY WE READ ROLE FROM THE DATABASE (Rule 43):
- * Every check runs against the live database — storing role on device would let
- * a modified app claim a fake role.
- *
- * ERROR HANDLING:
- * - FirebaseAuthInvalidUserException    → no account for this email
- * - FirebaseAuthInvalidCredentialsException → wrong password
- * - Any other exception                 → generic error
+ * ROLE GUARD:
+ *   - role = "customer" -> CustomerHomeActivity
+ *   - role = "vendor"   -> Disallow login here; instruct to use Vendor Login.
  */
 class LoginActivity : AppCompatActivity() {
 
@@ -46,11 +35,17 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Customer login button
         binding.btnLogin.setOnClickListener { attemptLogin() }
 
-        // "Don't have an account? Sign Up" → RolePickerActivity
-        binding.tvGoToSignUp.setOnClickListener {
-            startActivity(Intent(this, RolePickerActivity::class.java))
+        // 1. Redirect to Vendor Login
+        binding.tvGoToVendorLogin.setOnClickListener {
+            startActivity(Intent(this, VendorLoginActivity::class.java))
+        }
+
+        // 2. Direct link to Customer Registration (skipping RolePicker)
+        binding.tvRegisterCustomer.setOnClickListener {
+            startActivity(Intent(this, SignUpCustomerActivity::class.java))
         }
     }
 
@@ -105,18 +100,27 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * Reads role from the live database (never from local state) and opens the
-     * appropriate home screen.
+     * Reads role from the live database.
+     * Only "customer" is allowed to log in through this screen.
      */
     private fun fetchRoleAndNavigate(uid: String) {
         db.child("users/$uid/role").get()
             .addOnSuccessListener { snapshot ->
                 setLoading(false)
-                when (val role = snapshot.getValue(String::class.java)) {
+                val role = snapshot.getValue(String::class.java)?.lowercase()
+                when (role) {
                     "customer" -> navigateTo(CustomerHomeActivity::class.java)
-                    "vendor"   -> navigateTo(VendorHomeActivity::class.java)
-                    else       -> {
-                        // USER record missing or role field corrupt — log out and show error
+                    "vendor"   -> {
+                        // Reject vendor login on customer portal
+                        auth.signOut()
+                        Toast.makeText(
+                            this,
+                            "This account is registered as a Vendor. Please login via Vendor Login.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    else -> {
+                        // User record missing or role field corrupt
                         auth.signOut()
                         binding.tilEmail.error = getString(com.sapotlokal.R.string.error_generic)
                     }
@@ -131,7 +135,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun <T : AppCompatActivity> navigateTo(cls: Class<T>) {
         val intent = Intent(this, cls)
-        // Clear back stack — user shouldn't be able to press Back to reach Login while logged in
+        // Clear back stack — user cannot press Back to return to Login once logged in
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }

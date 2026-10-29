@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ── 1. BUTTON STYLES ─────────────────────────────────────────────── -->
+
+    <!-- Primary Yellow Button -->
+    <style name="Widget.SapotLokal.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/btn_primary_bg</item>
+        <item name="android:textColor">@color/btn_primary_text</item>
+        <item name="cornerRadius">@dimen/radius_control</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="rippleColor">@color/sapot_ripple</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- Base alias for default material buttons -->
+    <style name="Widget.SapotLokal.Button" parent="Widget.SapotLokal.Button.Primary" />
+
+    <!-- Secondary Outlined Button -->
+    <style name="Widget.SapotLokal.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="strokeColor">@color/sapot_border</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="android:textColor">@color/btn_outlined_text</item>
+        <item name="cornerRadius">@dimen/radius_control</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="rippleColor">@color/sapot_ripple</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <!-- ── 2. CARD STYLES ───────────────────────────────────────────────── -->
+
+    <!-- Standard Modern Flat Card -->
+    <style name="Widget.SapotLokal.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/sapot_surface</item>
+        <item name="cardCornerRadius">@dimen/radius_card</item>
+        <item name="strokeColor">@color/sapot_border</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="contentPadding">@dimen/card_padding</item>
+    </style>
+
+    <!-- ── 3. TEXT INPUT STYLES ─────────────────────────────────────────── -->
+
+    <!-- Outlined TextInputLayout -->
+    <style name="Widget.SapotLokal.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_control</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_control</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_control</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_control</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="boxStrokeErrorColor">@color/sapot_error_text</item>
+        <item name="hintTextColor">@color/text_input_hint_color</item>
+        <item name="android:textColorHint">@color/sapot_text_secondary</item>
+        <item name="helperTextTextColor">@color/sapot_text_secondary</item>
+        <item name="errorTextColor">@color/sapot_error_text</item>
+    </style>
+
+    <!-- Outlined TextInputEditText inside TextInputLayout -->
+    <style name="Widget.SapotLokal.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/sapot_text_primary</item>
+        <item name="android:textColorHint">@color/sapot_text_secondary</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- ── 4. BADGE / CHIP STYLES ───────────────────────────────────────── -->
+
+    <style name="Widget.SapotLokal.Badge" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/space_12</item>
+        <item name="android:paddingEnd">@dimen/space_12</item>
+        <item name="android:paddingTop">@dimen/space_4</item>
+        <item name="android:paddingBottom">@dimen/space_4</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+    </style>
+
+    <style name="Widget.SapotLokal.Badge.Success" parent="Widget.SapotLokal.Badge">
+        <item name="android:background">@drawable/bg_badge_success</item>
+        <item name="android:textColor">@color/sapot_success_text</item>
+    </style>
+
+    <style name="Widget.SapotLokal.Badge.Error" parent="Widget.SapotLokal.Badge">
+        <item name="android:background">@drawable/bg_badge_error</item>
+        <item name="android:textColor">@color/sapot_error_text</item>
+    </style>
+
+    <style name="Widget.SapotLokal.Badge.Info" parent="Widget.SapotLokal.Badge">
+        <item name="android:background">@drawable/bg_badge_info</item>
+        <item name="android:textColor">@color/sapot_info_text</item>
+    </style>
+
+    <style name="Widget.SapotLokal.Badge.Accent" parent="Widget.SapotLokal.Badge">
+        <item name="android:background">@drawable/bg_badge_accent</item>
+        <item name="android:textColor">@color/sapot_text_primary</item>
+    </style>
+
+</resources>
+

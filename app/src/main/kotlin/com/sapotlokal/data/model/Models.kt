@@ -40,7 +40,8 @@ data class Vendor(
     val vendorName: String = "",
     val vendorCategory: String = "",
     val vendorAddress: String = "",
-    val ssmNumber: String = ""      // Required; stored but never auto-verified
+    val ssmNumber: String = "",     // Required; stored but never auto-verified
+    val vendorDescription: String = "" // Optional merchant description (Phase 6)
 )
 
 // ── QRCODE ────────────────────────────────────────────────────────────────────
@@ -134,7 +135,9 @@ data class VoucherUser(
     val voucherCode: String = "",       // Unique, human-typeable code
     val voucherStatus: String = "active", // "active" | "used" | "expired"
     val voucherExpiryDate: Long = 0L,   // Unix epoch ms
-    val pointsRequiredSnapshot: Int = 0 // ERD addition — see erd-changes.md
+    val pointsRequiredSnapshot: Int = 0, // ERD addition — see erd-changes.md
+    val voucherTitle: String = "",       // Snapshot of rule voucherName
+    val createdAt: Long = 0L             // Unix epoch ms
 )
 
 object VoucherStatus {
@@ -188,5 +191,38 @@ data class UserChallenge(
     val userID: String = "",            // FK → users/{userID}
     val challengeID: String = "",       // FK → challenges/{challengeID}
     val currentValue: Int = 0,
-    val userChallengeStatus: String = "in_progress" // "in_progress" | "completed"
+    val userChallengeStatus: String = UserChallengeStatus.IN_PROGRESS
 )
+
+object UserChallengeStatus {
+    const val IN_PROGRESS = "in_progress"
+    const val COMPLETED   = "completed"
+    const val CLAIMED     = "claimed"
+}
+
+data class ChallengeWithProgress(
+    val challenge: Challenge,
+    val userChallenge: UserChallenge?
+) {
+    val progress: Int
+        get() = userChallenge?.currentValue ?: 0
+
+    val isCompleted: Boolean
+        get() = progress >= challenge.challengeTargetValue ||
+                userChallenge?.userChallengeStatus == UserChallengeStatus.COMPLETED ||
+                userChallenge?.userChallengeStatus == UserChallengeStatus.CLAIMED
+
+    val isClaimed: Boolean
+        get() = userChallenge?.userChallengeStatus == UserChallengeStatus.CLAIMED
+}
+
+// ── VENDOR STATS (Phase 6) ───────────────────────────────────────────────────
+data class VendorStats(
+    val vendorID: String = "",
+    val totalCustomers: Int = 0,
+    val totalPointsDistributed: Int = 0,
+    val totalPointsRedeemed: Int = 0,
+    val totalVouchersRedeemed: Int = 0,
+    val recentPoints: List<Point> = emptyList()
+)
+

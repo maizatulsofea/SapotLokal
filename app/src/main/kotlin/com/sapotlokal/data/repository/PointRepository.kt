@@ -44,6 +44,19 @@ object PointRepository {
         )
     }
 
+    /** Builds (but does not write) a ledger row for challenge points. */
+    fun newChallengePointEntry(userID: String, amount: Int): Point? {
+        val key = db.child("points").push().key ?: return null
+        return Point(
+            pointID             = key,
+            userID              = userID,
+            vendorID            = NO_VENDOR_ID,
+            pointEarnedAmount   = amount,
+            pointRedeemedAmount = 0,
+            pointSource         = PointSource.CHALLENGE
+        )
+    }
+
     /**
      * Appends a new earned-points ledger row for a shop visit.
      * Called by ScanActivity after a QR code is validated.
