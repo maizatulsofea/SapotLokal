@@ -1,21 +1,24 @@
 package com.sapotlokal.ui.vendor
 
 import android.content.Intent
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.sapotlokal.R
 import com.sapotlokal.databinding.LayoutVendorBottomNavBinding
 
 /**
- * VendorNav — wires the vendor bottom bar (Overview · Vouchers · Scanner · Shop profile).
+ * VendorNav — the shop-owner bottom bar: Home · Rewards · Show QR · Redeem · Shop.
  *
- * Overview is the root of the vendor back stack. The other three tabs replace each other, so
- * the stack never grows no matter how often the owner switches tabs, and Back always returns to
- * Overview.
+ * Home is the root of the owner back stack. Rewards, Redeem and Shop replace each other, so the
+ * stack never grows and Back always returns to Home. Show QR (the raised centre button) opens the
+ * full-screen QR as a subpage on top of whichever tab is showing.
  */
 object VendorNav {
 
-    enum class Tab { OVERVIEW, VOUCHERS, SCANNER, PROFILE }
+    enum class Tab { HOME, REWARDS, REDEEM, SHOP }
 
     fun bind(
         activity: AppCompatActivity,
@@ -27,8 +30,8 @@ object VendorNav {
 
         fun go(target: Tab, cls: Class<*>) {
             if (target == selected) return
-            if (target == Tab.OVERVIEW) {
-                // Overview is already underneath — just reveal it.
+            if (target == Tab.HOME) {
+                // Home is always underneath: finishing returns to it.
                 activity.finish()
                 activity.overridePendingTransition(0, 0)
                 return
@@ -40,37 +43,45 @@ object VendorNav {
                     .putExtra(VendorHomeActivity.EXTRA_VENDOR_ID, id)
                     .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             )
-            if (selected != Tab.OVERVIEW) activity.finish()
+            if (selected != Tab.HOME) activity.finish()
             activity.overridePendingTransition(0, 0)
         }
 
-        nav.tabOverview.setOnClickListener { go(Tab.OVERVIEW, VendorHomeActivity::class.java) }
-        nav.tabVouchers.setOnClickListener { go(Tab.VOUCHERS, RewardRulesActivity::class.java) }
-        nav.tabScanner.setOnClickListener { go(Tab.SCANNER, ScanToRedeemActivity::class.java) }
-        nav.tabProfile.setOnClickListener { go(Tab.PROFILE, ShopProfileActivity::class.java) }
+        fun showQr() {
+            val id = vendorId()
+            if (id.isBlank()) return
+            activity.startActivity(
+                Intent(activity, ShowQrActivity::class.java).putExtra(VendorHomeActivity.EXTRA_VENDOR_ID, id)
+            )
+        }
+
+        nav.tabHome.setOnClickListener { go(Tab.HOME, VendorHomeActivity::class.java) }
+        nav.tabRewards.setOnClickListener { go(Tab.REWARDS, RewardRulesActivity::class.java) }
+        nav.tabShowQr.setOnClickListener { showQr() }
+        nav.qrFab.setOnClickListener { showQr() }
+        nav.tabRedeem.setOnClickListener { go(Tab.REDEEM, ScanToRedeemActivity::class.java) }
+        nav.tabShop.setOnClickListener { go(Tab.SHOP, ShopProfileActivity::class.java) }
     }
 
     private fun highlight(activity: AppCompatActivity, nav: LayoutVendorBottomNavBinding, selected: Tab) {
-        val active = ContextCompat.getColor(activity, R.color.sapot_text_primary)
-        val idle = ContextCompat.getColor(activity, R.color.sapot_text_secondary)
+        val active = ContextCompat.getColor(activity, R.color.hu_ink)
+        val idle = ContextCompat.getColor(activity, R.color.hu_soft)
 
-        data class Item(
-            val tab: Tab,
-            val pill: android.view.View,
-            val icon: android.widget.ImageView,
-            val label: android.widget.TextView
-        )
+        class Item(val tab: Tab, val bar: View, val icon: ImageView, val label: TextView)
         listOf(
-            Item(Tab.OVERVIEW, nav.pillOverview, nav.iconOverview, nav.labelOverview),
-            Item(Tab.VOUCHERS, nav.pillVouchers, nav.iconVouchers, nav.labelVouchers),
-            Item(Tab.SCANNER, nav.pillScanner, nav.iconScanner, nav.labelScanner),
-            Item(Tab.PROFILE, nav.pillProfile, nav.iconProfile, nav.labelProfile)
-        ).forEach { item ->
-            val on = item.tab == selected
-            item.pill.setBackgroundResource(if (on) R.drawable.bg_nav_pill_active else 0)
-            item.icon.setColorFilter(if (on) active else idle)
-            item.label.setTextColor(if (on) active else idle)
-            item.label.setTypeface(item.label.typeface, if (on) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL)
+            Item(Tab.HOME, nav.barHome, nav.iconHome, nav.labelHome),
+            Item(Tab.REWARDS, nav.barRewards, nav.iconRewards, nav.labelRewards),
+            Item(Tab.REDEEM, nav.barRedeem, nav.iconRedeem, nav.labelRedeem),
+            Item(Tab.SHOP, nav.barShop, nav.iconShop, nav.labelShop)
+        ).forEach {
+            val on = it.tab == selected
+            it.bar.visibility = if (on) View.VISIBLE else View.INVISIBLE
+            it.icon.setColorFilter(if (on) active else idle)
+            it.label.setTextColor(if (on) active else idle)
+            it.label.isSelected = on
+            (it.label.parent as View).contentDescription =
+                if (on) activity.getString(R.string.nav_tab_selected_cd, it.label.text) else it.label.text
         }
+        nav.labelShowQr.setTextColor(idle)
     }
 }

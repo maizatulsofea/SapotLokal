@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Badge sheet: art, name, how to earn it, then Claim (unlocked), "Earned on …" (claimed) or its XP (locked). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="28dp"
+    android:paddingBottom="24dp">
+
+    <ImageView
+        android:id="@+id/ivArt"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:contentDescription="@null"
+        tools:src="@drawable/ic_badge_night_owl" />
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/HU.Text.Screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        tools:text="Hantu Malam" />
+
+    <TextView
+        android:id="@+id/tvHowTo"
+        style="@style/HU.Text.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:textColor="@color/hu_ink"
+        tools:text="Visit a shop after 8 PM" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        style="@style/HU.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        tools:text="50 XP" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnClaim"
+        style="@style/Widget.HU.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:visibility="gone"
+        tools:text="Claim 50 XP"
+        tools:visibility="visible" />
+</LinearLayout>

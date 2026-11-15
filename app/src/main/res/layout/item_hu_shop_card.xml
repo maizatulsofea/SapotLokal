@@ -1,108 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Stacked shop card (Hadiah Utama): logo, name, points, kopi-cup stamps, one status line. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Shop card: the shop's photo (or its colour and initials), name, points, one meta line,
+     progress to the next reward and one status line. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.HU.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_hu_shop_card"
     android:clickable="true"
-    android:elevation="3dp"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"
-    android:orientation="vertical"
-    android:paddingHorizontal="18dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="18dp"
-    tools:backgroundTint="#E0436A">
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvLogo"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:background="@drawable/bg_hu_logo"
-            android:fontFamily="@font/figtree_extrabold"
-            android:gravity="center"
-            android:importantForAccessibility="no"
-            android:textSize="13sp"
-            app:fontFamily="@font/figtree_extrabold"
-            tools:text="KK" />
+        <FrameLayout
+            android:id="@+id/photoFrame"
+            android:layout_width="match_parent"
+            android:layout_height="132dp"
+            android:importantForAccessibility="noHideDescendants"
+            tools:background="#E0436A">
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:fontFamily="@font/figtree_extrabold"
-            android:importantForAccessibility="no"
-            android:maxLines="2"
-            android:textColor="@color/hu_bg"
-            android:textSize="18sp"
-            app:fontFamily="@font/figtree_extrabold"
-            tools:text="Kopi Kita Cafe" />
+            <TextView
+                android:id="@+id/tvLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/figtree_extrabold"
+                android:textSize="40sp"
+                app:fontFamily="@font/figtree_extrabold"
+                tools:text="KK"
+                tools:textColor="#FFFFFF" />
 
-        <TextView
-            android:id="@+id/tvPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/figtree_extrabold"
-            android:importantForAccessibility="no"
-            android:textColor="@color/hu_bg"
-            android:textSize="22sp"
-            app:fontFamily="@font/figtree_extrabold"
-            tools:text="20 pts" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/ivPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/stamps"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:importantForAccessibility="no"
-            android:orientation="horizontal" />
+            android:importantForAccessibility="noHideDescendants"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="14dp">
 
-        <TextView
-            android:id="@+id/tvReady"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_hu_pill"
-            android:backgroundTint="@color/hu_accent"
-            android:fontFamily="@font/figtree_extrabold"
-            android:importantForAccessibility="no"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="3dp"
-            android:text="@string/hu_ready"
-            android:textColor="@color/hu_ink"
-            android:textSize="13sp"
-            android:visibility="gone"
-            app:fontFamily="@font/figtree_extrabold"
-            tools:visibility="visible" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/HU.Text.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Kopi Kita Cafe" />
+
+                <TextView
+                    android:id="@+id/tvPoints"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/figtree_extrabold"
+                    android:textColor="@color/hu_ink"
+                    android:textSize="17sp"
+                    app:fontFamily="@font/figtree_extrabold"
+                    tools:text="114 points" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvMeta"
+                style="@style/HU.Text.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Cafe · Open" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress"
+                style="@style/Widget.HU.Progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:max="100"
+                app:trackThickness="6dp"
+                tools:progress="60" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/figtree_bold"
+                android:textColor="@color/hu_ink"
+                android:textSize="14sp"
+                app:fontFamily="@font/figtree_bold"
+                tools:text="26 more points for Cake slice" />
+        </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/figtree_bold"
-        android:importantForAccessibility="no"
-        android:textSize="15sp"
-        app:fontFamily="@font/figtree_bold"
-        tools:text="Free Kopi is ready" />
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

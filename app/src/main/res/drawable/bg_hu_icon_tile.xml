@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Icon tile / soft pill on white (Hadiah Utama): pale orange wash. -->
+<!-- Icon tile / soft pill on white: pale orange wash. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="@color/hu_accent_tint" />
     <corners android:radius="14dp" />

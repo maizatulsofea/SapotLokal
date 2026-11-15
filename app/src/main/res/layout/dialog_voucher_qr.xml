@@ -55,7 +55,7 @@
                 android:id="@+id/ivVoucherQr"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="Voucher QR Code"
+                android:contentDescription="@string/cd_voucher_qr"
                 android:scaleType="fitCenter" />
 
             <ProgressBar
@@ -72,12 +72,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/figtree_medium"
-            android:letterSpacing="0.1"
+            android:fontFamily="@font/figtree_bold"
             android:text="@string/voucher_qr_voucher_code"
             android:textColor="@color/hu_soft"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvDialogVoucherCode"
@@ -89,7 +87,7 @@
             android:textColor="@color/hu_ink"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="KOPIKITA200" />
+            tools:text="SAPOT-AB12CD" />
 
         <!-- Expiry Information -->
         <TextView

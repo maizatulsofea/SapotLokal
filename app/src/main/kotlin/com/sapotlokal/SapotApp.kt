@@ -20,6 +20,7 @@ class SapotApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        com.sapotlokal.util.ServerClock.start()
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityStarted(activity: Activity) {
                 val content = activity.findViewById<ViewGroup>(android.R.id.content) ?: return

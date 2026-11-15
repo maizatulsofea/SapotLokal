@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- How it works: points, XP and the rank bonus in three short rows. Also the first-run welcome. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
+
+    <TextView
+        style="@style/HU.Text.Screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:accessibilityHeading="true"
+        android:text="@string/hu_how_points_work" />
+
+    <LinearLayout style="@style/HU.HowRow">
+        <FrameLayout style="@style/HU.HowIconTile">
+            <ImageView style="@style/HU.HowIcon" android:src="@drawable/ic_cup_full" app:tint="@color/hu_accent_text" />
+        </FrameLayout>
+        <LinearLayout style="@style/HU.ListRowText">
+            <TextView style="@style/HU.TileTitle" android:layout_marginTop="0dp" android:text="@string/how_points_title" />
+            <TextView style="@style/HU.TileSub" android:text="@string/how_points_body" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout style="@style/HU.HowRow">
+        <FrameLayout style="@style/HU.HowIconTile">
+            <ImageView style="@style/HU.HowIcon" android:src="@drawable/ic_star" app:tint="@color/hu_accent_text" />
+        </FrameLayout>
+        <LinearLayout style="@style/HU.ListRowText">
+            <TextView style="@style/HU.TileTitle" android:layout_marginTop="0dp" android:text="@string/how_xp_title" />
+            <TextView style="@style/HU.TileSub" android:text="@string/how_xp_body" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout style="@style/HU.HowRow">
+        <FrameLayout style="@style/HU.HowIconTile">
+            <ImageView style="@style/HU.HowIcon" android:src="@drawable/ic_flash" app:tint="@color/hu_accent_text" />
+        </FrameLayout>
+        <LinearLayout style="@style/HU.ListRowText">
+            <TextView style="@style/HU.TileTitle" android:layout_marginTop="0dp" android:text="@string/how_rank_title" />
+            <TextView style="@style/HU.TileSub" android:text="@string/how_rank_body" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGotIt"
+        style="@style/Widget.HU.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/hu_got_it" />
+</LinearLayout>

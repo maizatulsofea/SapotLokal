@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Reward card (Hadiah Utama): shop logo + name, cost, reward name, detail, photo, one action. -->
+<!-- Reward card: shop logo + name, reward name, one detail line, one action (the button carries the cost). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -42,15 +42,6 @@
             app:fontFamily="@font/figtree_extrabold"
             tools:text="Kopi Kita Cafe" />
 
-        <TextView
-            android:id="@+id/tvCost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/figtree_semibold"
-            android:textColor="@color/hu_ink"
-            android:textSize="22sp"
-            app:fontFamily="@font/figtree_semibold"
-            tools:text="10 pts" />
     </LinearLayout>
 
     <TextView
@@ -68,41 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:textColor="@color/hu_ink"
-        tools:text="Uses 10 of your 20 points at Kopi Kita" />
-
-    <FrameLayout
-        android:id="@+id/photoFrame"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:visibility="gone"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/bg_hu_photo"
-        android:clipToOutline="true"
-        android:importantForAccessibility="no">
-
-        <FrameLayout
-            android:id="@+id/photoFallback"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tvPhotoLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/figtree_extrabold"
-                android:textSize="40sp"
-                app:fontFamily="@font/figtree_extrabold"
-                tools:text="KK" />
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/ivPhoto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop" />
-    </FrameLayout>
+        tools:text="You have 114 points here" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAction"

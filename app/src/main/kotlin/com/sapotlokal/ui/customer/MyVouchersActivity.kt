@@ -26,6 +26,7 @@ import com.sapotlokal.data.repository.VendorRepository
 import com.sapotlokal.data.repository.VoucherRepository
 import com.sapotlokal.databinding.ActivityMyVouchersBinding
 import com.sapotlokal.databinding.DialogVoucherQrBinding
+import com.sapotlokal.util.ServerClock
 import com.sapotlokal.util.VoucherClaimHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +36,7 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Rewards tab (Hadiah Utama). One job: "what can I claim or use?"
+ * Rewards tab. One job: "what can I claim or use?"
  * Three sections with one vocabulary:
  *  - Ready: rewards the customer has enough points for at that shop → Claim (spends points now).
  *  - My vouchers: claimed vouchers → Show QR at the counter; used and expired ones listed after.
@@ -71,7 +72,6 @@ class MyVouchersActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.k_please_log_in), Toast.LENGTH_SHORT).show()
             finish(); return
         }
-        binding.btnHowPoints.setOnClickListener { HowPoints.show(this) }
         binding.btnEmptyAction.setOnClickListener { startActivity(Intent(this, FindShopsActivity::class.java)) }
 
         VendorRepository.fetchAllVendors(
@@ -110,7 +110,7 @@ class MyVouchersActivity : AppCompatActivity() {
     private fun render() {
         if (loaded != 7) return
         binding.pbLoading.visibility = View.GONE
-        val now = System.currentTimeMillis()
+        val now = ServerClock.now()
         val live = vouchers.filter { isLive(it, now) }
         val heldRules = live.map { it.voucherID }.toSet()
 
@@ -134,7 +134,7 @@ class MyVouchersActivity : AppCompatActivity() {
             listOf(
                 Section.READY to getString(R.string.hu_tab_ready, ready.size),
                 Section.VOUCHERS to getString(R.string.hu_tab_vouchers, live.size),
-                Section.TOWARDS to getString(R.string.hu_tab_towards)
+                Section.TOWARDS to getString(R.string.hu_tab_towards, towards.size)
             )
         )
 
@@ -146,8 +146,8 @@ class MyVouchersActivity : AppCompatActivity() {
                 val bal = perShop[rule.vendorID] ?: 0
                 val card = RewardCard.inflate(list)
                 RewardCard.bind(
-                    card, rule.vendorID, shop, rule.pointsRequired, rule.voucherName,
-                    getString(R.string.hu_uses_points_at, rule.pointsRequired, bal, shop),
+                    card, rule.vendorID, shop, rule.voucherName,
+                    getString(R.string.hu_you_have_points, bal),
                     getString(R.string.hu_claim, rule.pointsRequired)
                 ) { VoucherClaimHelper.confirmAndClaim(this, uid, rule, shop) }
                 addWithGap(card.root, 14)
@@ -166,8 +166,9 @@ class MyVouchersActivity : AppCompatActivity() {
                     }
                     RewardRow.bind(
                         row, v.vendorID, shop, v.voucherTitle.ifBlank { getString(R.string.k_reward_voucher) }, shop,
-                        state, !locked, if (locked) null else getString(R.string.hu_show_qr_short)
-                    ) { showVoucherQrDialog(v, shop) }
+                        state, !locked, if (locked) null else getString(R.string.hu_show_qr_short),
+                        onAction = { showVoucherQrDialog(v, shop) }
+                    )
                     list.addView(row.root)
                 }
                 if (history.isNotEmpty()) {
@@ -207,7 +208,7 @@ class MyVouchersActivity : AppCompatActivity() {
             when (section) {
                 Section.READY -> R.string.hu_empty_ready
                 Section.VOUCHERS -> R.string.hu_empty_vouchers
-                else -> R.string.hu_empty_towards
+                else -> if (ready.isNotEmpty()) R.string.hu_empty_towards_all_ready else R.string.hu_empty_towards
             }
         )
         binding.emptyBlock.visibility = if (empty) View.VISIBLE else View.GONE

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rank-up sheet: shown once per new rank (RankCard.maybeShowRankUp). One button. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="28dp"
+    android:paddingBottom="24dp">
+
+    <TextView
+        android:id="@+id/tvRankBadge"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_rank_badge"
+        android:fontFamily="@font/figtree_extrabold"
+        android:gravity="center"
+        android:importantForAccessibility="no"
+        android:textColor="@color/hu_bg"
+        android:textSize="30sp"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/HU.Text.Screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        tools:text="You're now Pelanggan Setia" />
+
+    <TextView
+        android:id="@+id/tvBody"
+        style="@style/HU.Text.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:textColor="@color/hu_ink"
+        tools:text="1.25x points at every shop" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNice"
+        style="@style/Widget.HU.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/rank_up_button" />
+</LinearLayout>

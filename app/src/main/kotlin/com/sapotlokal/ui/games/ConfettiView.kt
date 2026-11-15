@@ -26,8 +26,9 @@ class ConfettiView @JvmOverloads constructor(
     )
 
     private val colors = intArrayOf(
-        0xFF543A3A.toInt(), 0xFFF2C14E.toInt(), 0xFF7FB2F0.toInt(),
-        0xFFE9908F.toInt(), 0xFF7BB88F.toInt(), 0xFFB7A6E8.toInt(), 0xFFF3D9A4.toInt()
+        // Kopi Orange, ink and the shop palette (BRAND_DESIGN.md §3)
+        0xFFF5A524.toInt(), 0xFF1A1C21.toInt(), 0xFFE0436A.toInt(), 0xFF4B4FC4.toInt(),
+        0xFF1A9E63.toInt(), 0xFF2F6FDE.toInt(), 0xFF7B4FD6.toInt(), 0xFFE86A4A.toInt()
     )
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var pieces: List<Piece> = emptyList()

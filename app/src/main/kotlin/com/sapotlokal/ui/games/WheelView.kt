@@ -112,7 +112,16 @@ class WheelView @JvmOverloads constructor(
             textPaint.color = if (onDark) light else cocoa
             canvas.save()
             canvas.rotate(i * sweep, cx, cy)
-            canvas.drawText(values[i].toString(), cx, cy - wheel * 0.68f + textPaint.textSize / 3, textPaint)
+            val label = values[i].toString()
+            val baseline = cy - wheel * 0.68f + textPaint.textSize / 3
+            canvas.drawText(label, cx, baseline, textPaint)
+            // Labels turn with the wheel, so an upside-down 6 reads as 9. A bar under 6 and 9
+            // (as on dice and pool balls) shows which way up they are.
+            if (label == "6" || label == "9") {
+                val half = textPaint.measureText(label) / 2
+                val y = baseline + dp(3f)
+                canvas.drawRect(cx - half, y, cx + half, y + dp(2f), textPaint)
+            }
             canvas.restore()
         }
 

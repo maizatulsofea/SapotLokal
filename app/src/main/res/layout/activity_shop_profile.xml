@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Vendor "Shop profile" tab: photo, details and account actions. -->
+<!-- Shop owner Shop tab: photo (tap to change), points per visit (saves on tap), shop details
+     (Save), account actions, language. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sapot_canvas"
+    android:background="@color/hu_bg"
     android:orientation="vertical"
     tools:context=".ui.vendor.ShopProfileActivity">
 
@@ -23,17 +24,15 @@
             android:padding="20dp">
 
             <TextView
-                android:layout_width="match_parent"
+                style="@style/HU.Text.Screen"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/manrope"
-                android:text="@string/vendor_bottom_nav_shop_profile"
-                android:textColor="@color/sapot_text_primary"
-                android:textSize="26sp"
-                android:textStyle="bold" />
+                android:accessibilityHeading="true"
+                android:text="@string/owner_nav_shop" />
 
-            <!-- Photo + name -->
+            <!-- Photo: the box itself is the button -->
             <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.SapotLokal.Card.Flat"
+                style="@style/Widget.HU.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
@@ -57,7 +56,7 @@
                             android:id="@+id/ivShopPhoto"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:contentDescription="Shop photo"
+                            android:contentDescription="@string/cd_shop_photo"
                             android:scaleType="centerCrop" />
 
                         <LinearLayout
@@ -71,148 +70,246 @@
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
                                 android:src="@drawable/ic_store"
-                                app:tint="@color/sapot_text_secondary" />
+                                app:tint="@color/hu_soft" />
 
                             <TextView
+                                android:id="@+id/tvPhotoLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:fontFamily="@font/dm_sans"
+                                android:fontFamily="@font/figtree_medium"
                                 android:text="@string/shop_profile_add_a_shop_photo"
-                                android:textColor="@color/sapot_text_secondary"
+                                android:textColor="@color/hu_soft"
                                 android:textSize="13sp" />
                         </LinearLayout>
                     </FrameLayout>
 
-                    <TextView
-                        android:id="@+id/btnChangePhoto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/dm_sans"
-                        android:padding="8dp"
-                        android:text="@string/shop_profile_change_photo"
-                        android:textColor="@color/sapot_primary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvProfileName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/manrope"
-                        android:textColor="@color/sapot_text_primary"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvProfileCategory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/dm_sans"
-                        android:textColor="@color/sapot_text_secondary"
-                        android:textSize="14sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnUpdateProfile"
-                        style="@style/Widget.SapotLokal.Button.Primary"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/shop_profile_update_profile" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Details -->
+            <!-- Points per visit: its own card, saved the moment a value is tapped -->
             <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.SapotLokal.Card.Flat"
+                style="@style/Widget.HU.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="14dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <TextView
-                        style="@style/TextAppearance.SapotLokal.Caption"
+                        style="@style/HU.Text.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/shop_profile_category" />
+                        android:accessibilityHeading="true"
+                        android:text="@string/owner_points_per_visit" />
 
                     <TextView
-                        android:id="@+id/tvDetailCategory"
+                        android:id="@+id/tvPointsRange"
+                        style="@style/HU.Text.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:fontFamily="@font/dm_sans"
-                        android:textColor="@color/sapot_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        tools:text="Customers get 20–60 points a visit, depending on their rank." />
 
+                    <!-- Chips are added in code from AppConfig.ALLOWED_POINTS_PER_VISIT -->
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipsPointsPerVisit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:chipSpacingHorizontal="8dp"
+                        app:selectionRequired="true"
+                        app:singleSelection="true" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Shop details: edited right here (name, category, address, about, hours) -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.HU.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Shop Name -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilShopName"
+                        style="@style/Widget.HU.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        android:hint="@string/shop_settings_shop_name">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etShopName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/figtree_medium"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:textColor="@color/hu_ink" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Category -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilShopCategory"
+                        style="@style/Widget.HU.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        app:endIconMode="dropdown_menu"
+                        android:hint="@string/label_shop_category">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/etShopCategory"
+                            style="@style/Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/figtree_medium"
+                            android:inputType="none"
+                            android:textColor="@color/hu_ink" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Shop Address -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilShopAddress"
+                        style="@style/Widget.HU.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        android:hint="@string/shop_settings_shop_address">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etShopAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/figtree_medium"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine"
+                            android:lines="3"
+                            android:textColor="@color/hu_ink" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Shop Description -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilShopDesc"
+                        style="@style/Widget.HU.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        android:hint="@string/shop_settings_shop_description_tagline">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etShopDesc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/figtree_medium"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine"
+                            android:lines="2"
+                            android:textColor="@color/hu_ink" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Operating Hours -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilOperatingHours"
+                        style="@style/Widget.HU.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:startIconDrawable="@drawable/ic_clock"
+                        app:startIconTint="@color/hu_soft"
+                        app:helperText="@string/owner_hours_hint"
+                        android:hint="@string/shop_settings_operating_hours">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etOperatingHours"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/figtree_medium"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:textColor="@color/hu_ink" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- SSM registration number: shown, never edited -->
                     <TextView
-                        style="@style/TextAppearance.SapotLokal.Caption"
+                        style="@style/HU.Text.FieldLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/shop_profile_address" />
+                        android:layout_marginTop="18dp"
+                        android:text="@string/shop_settings_ssm_registration_number" />
 
                     <TextView
-                        android:id="@+id/tvDetailAddress"
+                        android:id="@+id/tvSsmNumber"
+                        style="@style/HU.Text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:fontFamily="@font/dm_sans"
-                        android:textColor="@color/sapot_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textIsSelectable="true"
+                        tools:text="SEED-0001" />
 
                     <TextView
-                        style="@style/TextAppearance.SapotLokal.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/shop_profile_opening_hours" />
-
-                    <TextView
-                        android:id="@+id/tvDetailHours"
+                        style="@style/HU.Text.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/dm_sans"
-                        android:textColor="@color/sapot_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:text="@string/owner_ssm_locked" />
 
-                    <TextView
-                        style="@style/TextAppearance.SapotLokal.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/shop_profile_ssm_registration_number" />
-
-                    <TextView
-                        android:id="@+id/tvDetailSsm"
+                    <!-- Save Button & Progress -->
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/dm_sans"
-                        android:textColor="@color/sapot_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="28dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSave"
+                            style="@style/Widget.HU.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:text="@string/shop_settings_save_changes"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="@dimen/hu_radius_control" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/hu_bg"
+                            android:visibility="gone" />
+                    </FrameLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Account -->
             <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.SapotLokal.Card.Flat"
+                style="@style/Widget.HU.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -230,17 +327,17 @@
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:fontFamily="@font/dm_sans"
+                        android:fontFamily="@font/figtree_medium"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="20dp"
                         android:text="@string/shop_profile_change_password"
-                        android:textColor="@color/sapot_text_primary"
+                        android:textColor="@color/hu_ink"
                         android:textSize="15sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/sapot_border" />
+                        android:background="@color/hu_line" />
 
                     <TextView
                         android:id="@+id/rowLogout"
@@ -249,17 +346,17 @@
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:fontFamily="@font/dm_sans"
+                        android:fontFamily="@font/figtree_medium"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="20dp"
                         android:text="@string/shop_profile_log_out"
-                        android:textColor="@color/sapot_text_primary"
+                        android:textColor="@color/hu_ink"
                         android:textSize="15sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/sapot_border" />
+                        android:background="@color/hu_line" />
 
                     <TextView
                         android:id="@+id/rowDeleteAccount"
@@ -268,18 +365,18 @@
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:fontFamily="@font/dm_sans"
+                        android:fontFamily="@font/figtree_medium"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="20dp"
                         android:text="@string/shop_profile_delete_account"
-                        android:textColor="@color/sapot_error_text"
+                        android:textColor="@color/hu_danger"
                         android:textSize="15sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Language -->
             <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.SapotLokal.Card.Flat"
+                style="@style/Widget.HU.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp">
@@ -295,11 +392,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/manrope"
+                        android:fontFamily="@font/figtree_extrabold"
                         android:text="@string/customer_profile_language"
-                        android:textColor="@color/sapot_text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/hu_ink"
+                        android:textSize="15sp" />
 
                     <include
                         android:id="@+id/languageToggle"

@@ -15,7 +15,7 @@ import com.sapotlokal.data.repository.QrCodeRepository
 import com.sapotlokal.databinding.ActivityShowQrBinding
 
 /**
- * ShowQrActivity — Phase 4: Rotating Shop QR Code screen.
+ * ShowQrActivity — the shop's rotating QR code and its 6-character code.
  *
  * HOW THE 60-SECOND ROTATION WORKS:
  *   1. On open, [publishAndStartCountdown] calls QrCodeRepository.publishNewCode().
@@ -32,9 +32,7 @@ import com.sapotlokal.databinding.ActivityShowQrBinding
  *   the customer-side validation (QrCodeRepository.validateScannedCode) query by
  *   qrcodeValue without needing to know the record's key in advance.
  *
- * ⚠️ DEBUG: tvDebugValue shows the raw QR string for manual paste into ScanActivity's
- *   debug panel. REMOVE BEFORE PHASE 7 (just set visibility=gone is not enough —
- *   delete the whole debug block).
+ * tvCode shows the same code as big text, so a customer whose camera can't scan can type it.
  */
 class ShowQrActivity : AppCompatActivity() {
 
@@ -50,16 +48,14 @@ class ShowQrActivity : AppCompatActivity() {
         binding = ActivityShowQrBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.btnBack.setOnClickListener { finish() }
 
         vendorID = intent.getStringExtra(VendorHomeActivity.EXTRA_VENDOR_ID) ?: ""
         if (vendorID.isEmpty()) { finish(); return }
 
-        binding.btnRefreshNow.setOnClickListener {
-            countDownTimer?.cancel()
-            publishAndStartCountdown()
-        }
+        // The frame wears the shop's own colour, the same one customers see on its card.
+        binding.qrFrame.backgroundTintList =
+            android.content.res.ColorStateList.valueOf(com.sapotlokal.ui.customer.ShopStyle.colors(this, vendorID).bg)
 
         publishAndStartCountdown()
     }
@@ -77,9 +73,7 @@ class ShowQrActivity : AppCompatActivity() {
                 currentQrId = newCode.qrcodeID
                 runOnUiThread {
                     renderQrBitmap(newCode.qrcodeValue)
-                    // ⚠️ DEBUG — shows raw value so testers can paste it in ScanActivity
-                    binding.tvDebugValue.text = "⚠️ DEBUG value: ${newCode.qrcodeValue}"
-                    binding.tvDebugValue.visibility = View.VISIBLE
+                    binding.tvCode.text = newCode.qrcodeValue
                     startCountdown()
                 }
             },
@@ -150,5 +144,4 @@ class ShowQrActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean { finish(); return true }
 }

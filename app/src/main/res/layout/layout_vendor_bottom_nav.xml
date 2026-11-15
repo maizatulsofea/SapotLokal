@@ -1,157 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Vendor bottom navigation: Overview, Vouchers, Scanner, Shop profile (matches the brand design). -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    Shop-owner bottom bar: Home · Rewards · Show QR · Redeem · Shop.
+    Twin of the customer bar: Show QR is the raised white circle in the middle, the active tab is
+    ink with an orange bar, idle tabs are soft grey.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="68dp"
-    android:background="@color/sapot_canvas"
-    android:baselineAligned="false"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingHorizontal="12dp">
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <LinearLayout
-        android:id="@+id/tabOverview"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:id="@+id/navBar"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_hu_nav"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
 
-        <FrameLayout
-            android:id="@+id/pillOverview"
-            android:layout_width="49dp"
-            android:layout_height="30dp">
+        <LinearLayout android:id="@+id/tabHome" style="@style/HU.NavTab">
+            <View android:id="@+id/barHome" style="@style/HU.NavBar" />
+            <ImageView android:id="@+id/iconHome" style="@style/HU.NavIcon" android:src="@drawable/ic_house" />
+            <TextView android:id="@+id/labelHome" style="@style/HU.NavLabel" android:text="@string/owner_nav_home" />
+        </LinearLayout>
 
-            <ImageView
-                android:id="@+id/iconOverview"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_house"
-                app:tint="@color/sapot_text_secondary" />
-        </FrameLayout>
+        <LinearLayout android:id="@+id/tabRewards" style="@style/HU.NavTab">
+            <View android:id="@+id/barRewards" style="@style/HU.NavBar" />
+            <ImageView android:id="@+id/iconRewards" style="@style/HU.NavIcon" android:src="@drawable/ic_gift" />
+            <TextView android:id="@+id/labelRewards" style="@style/HU.NavLabel" android:text="@string/owner_nav_rewards" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/labelOverview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/dm_sans"
-            android:text="@string/vendor_home_overview"
-            android:textColor="@color/sapot_text_secondary"
-            android:textSize="10sp" />
+        <LinearLayout android:id="@+id/tabShowQr" style="@style/HU.NavTab">
+            <View android:id="@+id/barShowQr" style="@style/HU.NavBar" android:visibility="invisible" />
+            <Space android:layout_width="24dp" android:layout_height="24dp" />
+            <TextView android:id="@+id/labelShowQr" style="@style/HU.NavLabel" android:text="@string/owner_nav_show_qr" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/tabRedeem" style="@style/HU.NavTab">
+            <View android:id="@+id/barRedeem" style="@style/HU.NavBar" />
+            <ImageView android:id="@+id/iconRedeem" style="@style/HU.NavIcon" android:src="@drawable/ic_scan" />
+            <TextView android:id="@+id/labelRedeem" style="@style/HU.NavLabel" android:text="@string/owner_nav_redeem" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/tabShop" style="@style/HU.NavTab">
+            <View android:id="@+id/barShop" style="@style/HU.NavBar" />
+            <ImageView android:id="@+id/iconShop" style="@style/HU.NavIcon" android:src="@drawable/ic_store" />
+            <TextView android:id="@+id/labelShop" style="@style/HU.NavLabel" android:text="@string/owner_nav_shop" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/tabVouchers"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackgroundBorderless"
+    <!-- Raised Show QR button over the bar -->
+    <FrameLayout
+        android:id="@+id/qrFab"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/bg_hu_scan_fab"
         android:clickable="true"
+        android:contentDescription="@string/owner_nav_show_qr"
+        android:elevation="8dp"
         android:focusable="true"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:foreground="?attr/selectableItemBackgroundBorderless">
 
-        <FrameLayout
-            android:id="@+id/pillVouchers"
-            android:layout_width="49dp"
-            android:layout_height="30dp">
-
-            <ImageView
-                android:id="@+id/iconVouchers"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_gift"
-                app:tint="@color/sapot_text_secondary" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/labelVouchers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/dm_sans"
-            android:text="@string/vendor_bottom_nav_vouchers"
-            android:textColor="@color/sapot_text_secondary"
-            android:textSize="10sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/tabScanner"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/pillScanner"
-            android:layout_width="49dp"
-            android:layout_height="30dp">
-
-            <ImageView
-                android:id="@+id/iconScanner"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_scan"
-                app:tint="@color/sapot_text_secondary" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/labelScanner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/dm_sans"
-            android:text="@string/vendor_bottom_nav_scanner"
-            android:textColor="@color/sapot_text_secondary"
-            android:textSize="10sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/tabProfile"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/pillProfile"
-            android:layout_width="49dp"
-            android:layout_height="30dp">
-
-            <ImageView
-                android:id="@+id/iconProfile"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_store"
-                app:tint="@color/sapot_text_secondary" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/labelProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:fontFamily="@font/dm_sans"
-            android:text="@string/vendor_bottom_nav_shop_profile"
-            android:textColor="@color/sapot_text_secondary"
-            android:textSize="10sp" />
-    </LinearLayout>
-
-</LinearLayout>
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_qr"
+            app:tint="@color/hu_ink" />
+    </FrameLayout>
+</FrameLayout>

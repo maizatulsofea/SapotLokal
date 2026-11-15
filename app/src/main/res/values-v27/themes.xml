@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- API 27+: dark navigation bar icons on the white ground. -->
+<resources>
+    <style name="Theme.SapotLokal" parent="Base.Theme.SapotLokal">
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

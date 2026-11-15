@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rank 5 badge: ink with a 3dp Kopi Orange ring. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/hu_rank_5" />
+    <stroke android:width="3dp" android:color="@color/hu_accent" />
+</shape>

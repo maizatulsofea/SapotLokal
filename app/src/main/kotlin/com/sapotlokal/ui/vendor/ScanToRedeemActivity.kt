@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
- * ScanToRedeemActivity — Phase 4: Shop owner redeems a customer's voucher.
+ * ScanToRedeemActivity — the shop owner redeems a customer's voucher.
  *
  * TWO WAYS TO SUBMIT A VOUCHER CODE:
  *   1. Camera scan (ML Kit) — preferred; same scanning pipeline as ScanActivity.
@@ -93,7 +93,7 @@ class ScanToRedeemActivity : AppCompatActivity() {
 
         vendorID = intent.getStringExtra(VendorHomeActivity.EXTRA_VENDOR_ID) ?: ""
         if (vendorID.isEmpty()) { finish(); return }
-        VendorNav.bind(this, binding.vendorNav, VendorNav.Tab.SCANNER) { vendorID }
+        VendorNav.bind(this, binding.vendorNav, VendorNav.Tab.REDEEM) { vendorID }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -231,6 +231,11 @@ class ScanToRedeemActivity : AppCompatActivity() {
     // ── Success overlay ───────────────────────────────────────────────────────
 
     private fun setupSuccessOverlay() {
+        binding.btnCancelRedeem.setOnClickListener {
+            pendingVoucherUser = null
+            binding.successOverlay.visibility = View.GONE
+            isProcessing = false
+        }
         binding.btnDoneRedeem.setOnClickListener {
             val vu = pendingVoucherUser ?: run {
                 binding.successOverlay.visibility = View.GONE
@@ -260,8 +265,15 @@ class ScanToRedeemActivity : AppCompatActivity() {
 
     private fun showSuccessOverlay(voucherUser: VoucherUser, rewardName: String) {
         pendingVoucherUser = voucherUser
-        binding.tvSuccessReward.text = getString(com.sapotlokal.R.string.kv_give, rewardName)
+        binding.tvSuccessReward.text = rewardName
         binding.tvSuccessCode.text   = getString(com.sapotlokal.R.string.kv_code, voucherUser.voucherCode)
+        binding.tvSuccessCustomer.text = ""
+        com.google.firebase.database.FirebaseDatabase.getInstance(com.sapotlokal.AppConfig.DATABASE_URL).reference
+            .child("users").child(voucherUser.userID).child("userName").get()
+            .addOnSuccessListener { snap ->
+                val name = snap.getValue(String::class.java).orEmpty()
+                if (name.isNotBlank() && !isFinishing) binding.tvSuccessCustomer.text = getString(com.sapotlokal.R.string.owner_for_customer, name)
+            }
         binding.successOverlay.visibility = View.VISIBLE
     }
 

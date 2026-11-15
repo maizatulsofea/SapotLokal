@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Mission row (BRAND_DESIGN.md §6): icon tile, name, "2 of 3" and a slim bar, then either the XP
+    it pays, a compact "Claim 40 XP" button, or a green "Done".
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/bg_hu_card"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="80dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="12dp">
+
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_hu_icon_tile"
+        android:importantForAccessibility="no">
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            app:tint="@color/hu_accent_text" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/HU.Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            tools:text="Make 3 visits" />
+
+        <TextView
+            android:id="@+id/tvProgress"
+            style="@style/HU.Text.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="2 of 3" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/bar"
+            style="@style/Widget.HU.Progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:importantForAccessibility="no"
+            app:trackThickness="6dp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvXp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/figtree_bold"
+            android:textColor="@color/hu_ink"
+            android:textSize="15sp"
+            tools:text="40 XP" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClaim"
+            style="@style/Widget.HU.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="44dp"
+            android:paddingHorizontal="14dp"
+            android:textSize="15sp"
+            android:visibility="gone"
+            tools:text="Claim 40 XP" />
+
+        <TextView
+            android:id="@+id/tvDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/figtree_bold"
+            android:gravity="center_vertical"
+            android:text="@string/mission_done"
+            android:textColor="@color/hu_ok"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_circle_check"
+            app:drawableTint="@color/hu_ok" />
+    </FrameLayout>
+</LinearLayout>

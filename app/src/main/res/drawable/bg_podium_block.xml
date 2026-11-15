@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Podium block: quiet fill, rounded top. First place is tinted pale orange in code. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="#EDF1F5" />
+    <solid android:color="@color/hu_fill" />
     <corners android:topLeftRadius="14dp" android:topRightRadius="14dp" />
 </shape>

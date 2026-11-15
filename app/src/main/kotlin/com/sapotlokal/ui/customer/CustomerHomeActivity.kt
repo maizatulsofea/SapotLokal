@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.sapotlokal.AppConfig
-import com.sapotlokal.AppConfig.CustomerTier
 import com.sapotlokal.R
 import com.sapotlokal.data.model.Vendor
 import com.sapotlokal.data.model.Voucher
@@ -29,21 +28,22 @@ import com.sapotlokal.databinding.ActivityCustomerHomeBinding
 import com.sapotlokal.databinding.ViewHuFirstScanBinding
 import com.sapotlokal.service.SapotFcmService
 import com.sapotlokal.ui.auth.LoginActivity
+import com.sapotlokal.util.ServerClock
 import com.sapotlokal.util.VoucherClaimHelper
-import java.util.Calendar
 
 /**
- * Customer Home (Hadiah Utama). One job: "is anything ready for me?"
+ * Customer Home. One job: "what can I do now?"
  *
- * 1. Header: time-of-day greeting and name; tapping it opens Me (profile).
- * 2. Level score with a bar ticked at each level (level score never buys rewards).
- * 3. One big reward card: a reward to claim now (claiming spends that shop's points at claim
+ * 1. Header: time-of-day greeting and name (opens Me) and a rank chip (opens Play).
+ * 2. Any unclaimed top-3 prize.
+ * 3. One reward card: a reward to claim now (claiming spends that shop's points at claim
  *    time via [VoucherClaimHelper]), else a claimed voucher to show, else the closest reward.
  *    A brand-new customer sees a "Scan your first shop" card instead.
- * 4. Up to three of the customer's shops as stacked colour cards with cup stamps.
+ * 4. Recently visited: every shop the customer has been to, newest visit first, as a row of
+ *    photo cards (ShopCard). "See all" opens Shops on the Visited filter.
  * 5. Today in Play: free spin and the nearest mission, opening the Play tab.
  *
- * Also keeps lifetime points in /users repaired, syncs the FCM token, asks for notification
+ * Also shows the rank-up sheet once per new rank, syncs the FCM token, asks for notification
  * permission, and raises "shop is open" alerts for shops the customer follows.
  */
 class CustomerHomeActivity : AppCompatActivity() {
@@ -54,24 +54,22 @@ class CustomerHomeActivity : AppCompatActivity() {
     private var pointsListener: ValueEventListener? = null
     private var userListener: ValueEventListener? = null
     private var vendorsListener: ValueEventListener? = null
-    private var missionsListener: ValueEventListener? = null
+    private var missions: com.sapotlokal.data.repository.MissionRepository.Listening? = null
     private var vouchersListener: ValueEventListener? = null
     private var rulesListener: ValueEventListener? = null
 
     private var currentUserName = ""
-    private var currentUserTier = CustomerTier.FRESHIE
     private var currentAvatarId = ""
 
     private var pointsLoaded = false
     private var lastPerShop: Map<String, Int> = emptyMap()
+    /** Shops visited at least once → time of the latest visit. Kept even when the points are spent. */
+    private var lastVisitAt: Map<String, Long> = emptyMap()
     private var vendorsById: Map<String, Vendor> = emptyMap()
     private var myVouchers: List<VoucherUser> = emptyList()
     private var allRules: List<Voucher> = emptyList()
     private var missionLine: String? = null
     private var spinReady: Boolean? = null
-
-    /** lifetimePoints as last read from /users/{uid}; Int.MAX_VALUE until the first read so we never "repair" blindly. */
-    private var storedLifetimePoints = Int.MAX_VALUE
 
     /** Vendors this customer has earned points at — only their "now OPEN" alerts are shown. */
     @Volatile private var followedVendorIds: Set<String> = emptySet()
@@ -93,14 +91,13 @@ class CustomerHomeActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("sapot_user_prefs", MODE_PRIVATE)
         currentUserName = prefs.getString("cached_user_name", "").orEmpty()
         currentAvatarId = prefs.getString("cached_user_avatar", "").orEmpty()
-        val cachedTier = prefs.getString("cached_user_tier", CustomerTier.FRESHIE.code)
-        currentUserTier = CustomerTier.entries.firstOrNull { it.code == cachedTier } ?: CustomerTier.FRESHIE
         updateGreeting()
 
         binding.btnMe.setOnClickListener { openMe() }
-        binding.levelBlock.setOnClickListener { startActivity(Intent(this, ChallengesActivity::class.java)) }
-        binding.btnHowPoints.setOnClickListener { HowPoints.show(this) }
-        binding.btnAllShops.setOnClickListener { startActivity(Intent(this, FindShopsActivity::class.java)) }
+        binding.tvRankChip.setOnClickListener { startActivity(Intent(this, ChallengesActivity::class.java)) }
+        binding.btnAllShops.setOnClickListener {
+            startActivity(Intent(this, FindShopsActivity::class.java).putExtra(FindShopsActivity.EXTRA_VISITED, true))
+        }
         binding.tvMoreReady.setOnClickListener { openRewards() }
         binding.playStrip.setOnClickListener { startActivity(Intent(this, ChallengesActivity::class.java)) }
         binding.btnRetry.setOnClickListener {
@@ -113,15 +110,15 @@ class CustomerHomeActivity : AppCompatActivity() {
         startListeningToPoints(user.uid)
         checkNotificationPermission(user.uid)
         startListeningToShopNotifications()
-        com.sapotlokal.data.repository.MissionRepository.syncUserMissions(user.uid)
 
         CustomerNav.bind(this, binding.customerNav, CustomerNav.Tab.HOME)
+        HowPoints.showOnce(this, user.uid)
     }
 
     // ── Header & level ────────────────────────────────────────────────────────
 
     private fun updateGreeting() {
-        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val hour = java.time.Instant.ofEpochMilli(ServerClock.now()).atZone(com.sapotlokal.util.MissionDateUtils.KL_ZONE).hour
         binding.tvGreetingTime.setText(
             when (hour) {
                 in 5..11 -> R.string.home_greet_morning
@@ -138,17 +135,10 @@ class CustomerHomeActivity : AppCompatActivity() {
         else binding.ivAvatar.setImageResource(R.drawable.ic_user_round)
     }
 
-    private fun bindLevel(lifetime: Int) {
-        val tier = CustomerTier.fromLifetimePoints(lifetime)
-        binding.tvLevelScore.text = java.text.NumberFormat.getIntegerInstance().format(lifetime)
-        LevelDisplay.bind(binding.levelBar, binding.tvLevelLine, lifetime)
-        binding.levelBlock.contentDescription = getString(R.string.hu_level_cd, lifetime, tier.ordinal + 1, tier.title)
-    }
-
     // ── Rewards logic (shared rules with Rewards and the Shop page) ───────────
 
     private fun liveVouchers(): List<VoucherUser> {
-        val now = System.currentTimeMillis()
+        val now = ServerClock.now()
         return myVouchers.filter {
             it.voucherStatus == VoucherStatus.ACTIVE && (it.voucherExpiryDate == 0L || it.voucherExpiryDate > now)
         }
@@ -181,8 +171,7 @@ class CustomerHomeActivity : AppCompatActivity() {
         val vouchers = liveVouchers()
         val readyCount = claimable.size + vouchers.size
 
-        val hasAnyPoints = lastPerShop.any { it.key.isNotBlank() && it.value > 0 }
-        if (!hasAnyPoints && vouchers.isEmpty()) {
+        if (lastVisitAt.isEmpty() && vouchers.isEmpty()) {
             val first = ViewHuFirstScanBinding.inflate(LayoutInflater.from(this), slot, true)
             first.btnFirstScan.setOnClickListener { startActivity(Intent(this, ScanActivity::class.java)) }
             binding.tvMoreReady.visibility = View.GONE
@@ -197,8 +186,8 @@ class CustomerHomeActivity : AppCompatActivity() {
                 val balance = lastPerShop[rule.vendorID] ?: 0
                 val shop = shopName(rule.vendorID)
                 RewardCard.bind(
-                    card, rule.vendorID, shop, rule.pointsRequired, rule.voucherName,
-                    getString(R.string.hu_uses_points_at, rule.pointsRequired, balance, shop),
+                    card, rule.vendorID, shop, rule.voucherName,
+                    getString(R.string.hu_you_have_points, balance),
                     getString(R.string.hu_claim, rule.pointsRequired)
                 ) {
                     val uid = auth.currentUser?.uid ?: return@bind
@@ -206,7 +195,7 @@ class CustomerHomeActivity : AppCompatActivity() {
                 }
             }
             voucher != null -> RewardCard.bind(
-                card, voucher.vendorID, shopName(voucher.vendorID), voucher.pointsRequiredSnapshot,
+                card, voucher.vendorID, shopName(voucher.vendorID),
                 voucher.voucherTitle.ifBlank { getString(R.string.k_reward) },
                 getString(R.string.hu_voucher_detail), getString(R.string.hu_show_qr)
             ) { openRewards() }
@@ -221,10 +210,11 @@ class CustomerHomeActivity : AppCompatActivity() {
                 }
                 val remaining = (next.pointsRequired - (lastPerShop[next.vendorID] ?: 0)).coerceAtLeast(1)
                 RewardCard.bind(
-                    card, next.vendorID, shopName(next.vendorID), next.pointsRequired, next.voucherName,
-                    getString(R.string.hu_next_detail, remaining), getString(R.string.hu_see_shop)
-                ) { openShop(next.vendorID) }
-                // "See shop" is a quiet outlined action; Claim stays the only orange button.
+                    card, next.vendorID, shopName(next.vendorID), next.voucherName,
+                    getString(R.string.hu_next_detail, remaining), getString(R.string.hu_scan_a_shop)
+                ) { startActivity(Intent(this, ScanActivity::class.java)) }
+                card.root.setOnClickListener { openShop(next.vendorID) }
+                // Scanning is a quiet outlined action here; Claim stays the only orange button.
                 card.btnAction.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.hu_bg))
                 card.btnAction.setStrokeColorResource(R.color.hu_line)
                 card.btnAction.strokeWidth = dp(2)
@@ -244,20 +234,31 @@ class CustomerHomeActivity : AppCompatActivity() {
     private fun bindShops() {
         val container = binding.shopCards
         container.removeAllViews()
-        val claimShops = claimableRules().map { it.vendorID }.toSet() + liveVouchers().map { it.vendorID }
-        val held = lastPerShop.filter { it.key.isNotBlank() && it.value > 0 }
-            .toList()
-            .sortedWith(compareByDescending<Pair<String, Int>> { it.first in claimShops }.thenByDescending { it.second })
+        // Newest visit first; the reward card above already covers anything ready to claim.
+        val recent = lastVisitAt.filterKeys { it.isNotBlank() && vendorsById.containsKey(it) }
+            .entries.sortedByDescending { it.value }
+            .map { it.key }
             .take(HOME_SHOP_CARDS)
-        binding.shopsHeader.visibility = if (held.isEmpty()) View.GONE else View.VISIBLE
-        held.forEachIndexed { i, (vendorId, balance) ->
+        binding.shopsHeader.visibility = if (recent.isEmpty()) View.GONE else View.VISIBLE
+        binding.shopRow.visibility = binding.shopsHeader.visibility
+        val vouchers = liveVouchers()
+        recent.forEachIndexed { i, vendorId ->
             val card = ShopCard.inflate(container)
-            val readyRule = claimableRules().firstOrNull { it.vendorID == vendorId }
-            ShopCard.bind(card, vendorsById[vendorId], vendorId, balance, vendorId in claimShops, nextRewardAt(vendorId), readyReward = readyRule)
+            ShopCard.bind(
+                card, vendorsById[vendorId], vendorId, lastPerShop[vendorId] ?: 0,
+                readyReward = claimableRules().firstOrNull { it.vendorID == vendorId },
+                holdsVoucher = vouchers.any { it.vendorID == vendorId },
+                nextReward = nextRewardAt(vendorId),
+                visited = true
+            )
             card.root.setOnClickListener { openShop(vendorId) }
-            container.addView(card.root, LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { topMargin = dp(if (i == 0) 10 else 10) })
+            // One shop fills the row; with more, each card leaves a peek of the next so the row reads as scrollable.
+            val params = if (recent.size == 1) {
+                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            } else {
+                LinearLayout.LayoutParams(dp(HOME_CARD_WIDTH_DP), LinearLayout.LayoutParams.WRAP_CONTENT)
+            }
+            container.addView(card.root, params.apply { if (i > 0) marginStart = dp(12) })
         }
     }
 
@@ -274,31 +275,16 @@ class CustomerHomeActivity : AppCompatActivity() {
     private fun startListeningToPoints(uid: String) {
         pointsListener = PointRepository.listenToPointsForUser(
             userID = uid,
-            onUpdate = { perShop, lifetime, _ ->
+            onVisits = { lastVisitAt = it },
+            onUpdate = { perShop, _, _ ->
                 followedVendorIds = perShop.keys.filter { it.isNotBlank() }.toSet()
                 lastPerShop = perShop
                 pointsLoaded = true
                 binding.errorBlock.visibility = View.GONE
-                onLifetime(lifetime)
                 refreshAll()
             },
             onError = { if (!pointsLoaded) binding.errorBlock.visibility = View.VISIBLE }
         )
-    }
-
-    private fun onLifetime(lifetime: Int) {
-        val tier = CustomerTier.fromLifetimePoints(lifetime)
-        currentUserTier = tier
-        bindLevel(lifetime)
-        cacheUser()
-        // REPAIR ONLY: fix a stored lifetimePoints that is BEHIND the ledger (older accounts).
-        auth.currentUser?.uid?.let { uid ->
-            if (lifetime > storedLifetimePoints) {
-                storedLifetimePoints = lifetime
-                FirebaseDatabase.getInstance(AppConfig.DATABASE_URL).reference.child("users").child(uid)
-                    .updateChildren(hashMapOf<String, Any>("lifetimePoints" to lifetime, "currentTier" to tier.code))
-            }
-        }
     }
 
     private fun startListeningToUser(uid: String) {
@@ -308,7 +294,14 @@ class CustomerHomeActivity : AppCompatActivity() {
                 val name = snapshot.child("userName").getValue(String::class.java)?.trim().orEmpty()
                 currentAvatarId = snapshot.child("avatar").getValue(String::class.java).orEmpty()
                 if (name.isNotBlank()) currentUserName = name
-                storedLifetimePoints = snapshot.child("lifetimePoints").getValue(Long::class.java)?.toInt() ?: 0
+                val standing = com.sapotlokal.data.repository.XpRepository.standingOf(snapshot)
+                binding.tvRankChip.text = getString(
+                    R.string.hu_rank_chip, standing.rank.level, java.text.NumberFormat.getIntegerInstance().format(standing.xp)
+                )
+                binding.tvRankChip.contentDescription = getString(
+                    R.string.rank_card_cd, standing.rank.title, standing.rank.level, java.text.NumberFormat.getIntegerInstance().format(standing.xp)
+                )
+                RankCard.maybeShowRankUp(this@CustomerHomeActivity, uid, standing)
                 updateGreeting()
                 cacheUser()
             }
@@ -320,7 +313,6 @@ class CustomerHomeActivity : AppCompatActivity() {
     private fun cacheUser() {
         getSharedPreferences("sapot_user_prefs", MODE_PRIVATE).edit()
             .putString("cached_user_name", currentUserName)
-            .putString("cached_user_tier", currentUserTier.code)
             .putString("cached_user_avatar", currentAvatarId)
             .apply()
     }
@@ -336,7 +328,7 @@ class CustomerHomeActivity : AppCompatActivity() {
     private fun startRewardListeners(uid: String) {
         if (vouchersListener == null) {
             vouchersListener = com.sapotlokal.data.repository.VoucherRepository.listenToVouchersForUser(
-                userID = uid, onUpdate = { myVouchers = it; refreshAll() }, onError = { }
+                userID = uid, onUpdate = { myVouchers = it; unlockTreatBadge(uid); refreshAll() }, onError = { }
             )
         }
         if (rulesListener == null) {
@@ -346,24 +338,26 @@ class CustomerHomeActivity : AppCompatActivity() {
         }
     }
 
+    /** Belanja Diri: the shop marks the voucher used, so the customer's own app unlocks the badge when it sees one. */
+    private fun unlockTreatBadge(uid: String) {
+        if (myVouchers.any { it.voucherStatus == VoucherStatus.USED }) {
+            com.sapotlokal.data.repository.BadgeRepository.unlockNow(uid, com.sapotlokal.data.model.BadgeDef.BELANJA_DIRI)
+        }
+    }
+
     private fun startMissionPreview(uid: String) {
-        if (missionsListener != null) return
-        missionsListener = com.sapotlokal.data.repository.MissionRepository.listenToWeeklyMissions(
-            userId = uid,
-            onUpdate = { list ->
-                val pick = list.filter { !it.isClaimed && !it.isCompleted }
-                    .maxByOrNull { it.progress.toFloat() / it.mission.targetCount.coerceAtLeast(1) }
-                missionLine = pick?.let {
-                    getString(
-                        R.string.hu_mission_progress,
-                        com.sapotlokal.util.ContentText.missionTitle(this, it.mission),
-                        it.progress.coerceAtMost(it.mission.targetCount), it.mission.targetCount
-                    )
-                }
-                bindPlay()
-            },
-            onError = { }
-        )
+        if (missions != null) return
+        missions = com.sapotlokal.data.repository.MissionRepository.listen(uid) { list ->
+            val ready = list.count { it.claimable }
+            // Something to claim beats progress; otherwise the weekly mission closest to done.
+            val pick = list.filter { it.def.weekly && !it.done }.maxByOrNull { it.progress.toFloat() / it.def.target }
+            missionLine = when {
+                ready > 0 -> resources.getQuantityString(R.plurals.hu_missions_to_claim, ready, ready)
+                pick != null -> getString(R.string.hu_mission_progress, getString(pick.def.nameRes, pick.def.target), pick.progressShown, pick.def.target)
+                else -> null
+            }
+            bindPlay()
+        }
     }
 
     // ── Navigation ────────────────────────────────────────────────────────────
@@ -386,10 +380,10 @@ class CustomerHomeActivity : AppCompatActivity() {
         startListeningToVendors()
         val uid = auth.currentUser?.uid ?: return
         startMissionPreview(uid)
+        PrizeCard.bind(this, binding.prizeSlot, uid)
         startRewardListeners(uid)
         if (pointsListener == null) startListeningToPoints(uid)
         if (userListener == null) startListeningToUser(uid)
-        com.sapotlokal.data.repository.MissionRepository.syncUserMissions(uid)
     }
 
     override fun onResume() {
@@ -409,8 +403,8 @@ class CustomerHomeActivity : AppCompatActivity() {
         vendorsListener?.let { com.sapotlokal.data.repository.VendorRepository.removeAllVendorsListener(it) }
         vendorsListener = null
         val uid = auth.currentUser?.uid
-        missionsListener?.let { if (uid != null) com.sapotlokal.data.repository.MissionRepository.removeListener(uid, it) }
-        missionsListener = null
+        missions?.stop()
+        missions = null
         vouchersListener?.let { if (uid != null) com.sapotlokal.data.repository.VoucherRepository.removeVouchersListener(uid, it) }
         vouchersListener = null
         rulesListener?.let { com.sapotlokal.data.repository.VoucherRepository.removeAllRulesListener(it) }
@@ -488,6 +482,7 @@ class CustomerHomeActivity : AppCompatActivity() {
     private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
 
     private companion object {
-        const val HOME_SHOP_CARDS = 3
+        const val HOME_SHOP_CARDS = 6
+        const val HOME_CARD_WIDTH_DP = 264
     }
 }

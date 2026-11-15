@@ -12,21 +12,19 @@
         android:id="@+id/langEn"
         android:layout_width="44dp"
         android:layout_height="match_parent"
-        android:contentDescription="English"
-        android:fontFamily="@font/manrope"
+        android:contentDescription="@string/lang_en_name"
+        android:fontFamily="@font/figtree_extrabold"
         android:gravity="center"
-        android:text="EN"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:text="@string/lang_en_short"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/langMs"
         android:layout_width="44dp"
         android:layout_height="match_parent"
-        android:contentDescription="Bahasa Melayu"
-        android:fontFamily="@font/manrope"
+        android:contentDescription="@string/lang_ms_name"
+        android:fontFamily="@font/figtree_extrabold"
         android:gravity="center"
-        android:text="BM"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:text="@string/lang_ms_short"
+        android:textSize="12sp" />
 </LinearLayout>

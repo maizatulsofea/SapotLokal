@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Badge tile (BRAND_DESIGN.md §6): art and name. Locked = greyscale at 45% with a small lock;
+    unlocked and unclaimed = full colour with an orange dot. Bound by BadgeGridAdapter.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_horizontal"
+    android:minHeight="112dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="2dp"
+    android:paddingVertical="8dp">
+
+    <FrameLayout
+        android:layout_width="64dp"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/ivArt"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            tools:src="@drawable/ic_badge_night_owl" />
+
+        <ImageView
+            android:id="@+id/ivLock"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="bottom|end"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_lock"
+            android:visibility="gone"
+            app:tint="@color/hu_soft" />
+
+        <View
+            android:id="@+id/dotNew"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="top|end"
+            android:background="@drawable/bg_dot_new"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/HU.Text.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textColor="@color/hu_ink"
+        tools:text="Hantu Malam" />
+</LinearLayout>

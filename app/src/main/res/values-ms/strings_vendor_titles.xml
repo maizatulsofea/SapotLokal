@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="vt_create_voucher">Cipta Baucar Kedai</string>
-    <string name="vt_shop_settings">Tetapan Kedai</string>
-    <string name="vt_walk_in_qr">Kod QR Daftar Masuk</string>
-    <string name="kv_pts_required">%1$d mata diperlukan</string>
-</resources>

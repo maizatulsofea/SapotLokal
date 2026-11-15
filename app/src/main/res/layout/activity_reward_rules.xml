@@ -1,115 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Shop owner Rewards tab: the shop's rewards, each with an on/off switch; tap one to edit. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sapot_canvas"
+    android:background="@color/hu_bg"
     android:orientation="vertical">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:background="@color/sapot_canvas"
-    tools:context=".ui.vendor.RewardRulesActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/sapot_canvas"
-        app:elevation="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <TextView
+            style="@style/HU.Text.Screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:accessibilityHeading="true"
+            android:text="@string/owner_nav_rewards" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddRule"
+            style="@style/Widget.HU.Button"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/customer_bottom_nav_vouchers"
-            app:titleTextAppearance="@style/TextAppearance.SapotLokal.PageTitle"
-            app:titleTextColor="@color/sapot_text_primary" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/owner_add_reward" />
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <!-- Empty State Container -->
         <LinearLayout
             android:id="@+id/layoutEmpty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginTop="48dp"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="32dp"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:visibility="gone">
 
-            <FrameLayout
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:background="@drawable/bg_nav_pill_active">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_gift"
-                    app:tint="@color/sapot_text_primary" />
-            </FrameLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_gift"
+                app:tint="@color/hu_soft" />
 
             <TextView
+                style="@style/HU.Text.Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/manrope"
-                android:text="@string/reward_rules_no_vouchers_yet"
-                android:textColor="@color/sapot_text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/dm_sans"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="@string/reward_rules_tap_to_add_your"
-                android:textColor="@color/sapot_text_secondary"
-                android:textSize="13sp" />
-
+                android:text="@string/owner_no_rewards" />
         </LinearLayout>
 
-        <!-- Rules list -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRewardRules"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
             android:clipToPadding="false"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="88dp"
-            tools:listitem="@layout/item_reward_rule" />
-
-    </FrameLayout>
-
-    <!-- Floating Action Button (Figma floating-add style) -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddRule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        android:contentDescription="Create Voucher"
-        app:backgroundTint="@color/sapot_primary"
-        app:tint="@color/sapot_on_primary"
-        app:elevation="4dp"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:paddingBottom="16dp" />
+    </LinearLayout>
 
     <include
         android:id="@+id/vendorNav"

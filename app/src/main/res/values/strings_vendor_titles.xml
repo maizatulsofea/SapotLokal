@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="vt_create_voucher">Create Shop Voucher</string>
-    <string name="vt_shop_settings">Shop Settings</string>
-    <string name="vt_walk_in_qr">Walk-in QR Code</string>
-    <string name="kv_pts_required">%1$d pts required</string>
-</resources>

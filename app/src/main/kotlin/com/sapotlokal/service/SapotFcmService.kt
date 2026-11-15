@@ -107,7 +107,7 @@ class SapotFcmService : FirebaseMessagingService() {
             }
 
             val notification = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_stat_notify)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(body))
@@ -123,7 +123,7 @@ class SapotFcmService : FirebaseMessagingService() {
         }
 
         /**
-         * Phase 6: Posts a shop status notification informing customers that a shop is OPEN.
+         * Posts a shop status notification (open or closed).
          * Tapping launches ShopDetailActivity for the specified vendorId.
          */
         fun showShopStatusNotification(
@@ -146,8 +146,8 @@ class SapotFcmService : FirebaseMessagingService() {
 
             val title = if (isOpen) context.getString(com.sapotlokal.R.string.notif_shop_open_title, vendorName)
             else context.getString(com.sapotlokal.R.string.notif_shop_closed_title, vendorName)
-            val body = if (isOpen) context.getString(com.sapotlokal.R.string.notif_shop_open_body, vendorName)
-            else context.getString(com.sapotlokal.R.string.notif_shop_closed_body, vendorName)
+            val body = if (isOpen) context.getString(com.sapotlokal.R.string.notif_shop_open_body)
+            else context.getString(com.sapotlokal.R.string.notif_shop_closed_body)
 
             val intent = if (vendorId.isNotBlank()) {
                 android.content.Intent(context, com.sapotlokal.ui.customer.ShopDetailActivity::class.java).apply {
@@ -168,7 +168,7 @@ class SapotFcmService : FirebaseMessagingService() {
             )
 
             val notification = NotificationCompat.Builder(context, CHANNEL_SHOPS)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_stat_notify)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(body))
@@ -273,7 +273,7 @@ class SapotFcmService : FirebaseMessagingService() {
 
         createNotificationChannels()
 
-        // Phase 6: Handle shop_status notification type
+        // "Shop is open/closed" notifications
         val type = remoteMessage.data["type"]
         if (type == "shop_status") {
             val vendorId = remoteMessage.data["vendorId"] ?: remoteMessage.data["vendorID"] ?: ""
@@ -353,7 +353,7 @@ class SapotFcmService : FirebaseMessagingService() {
         )
 
         val notification = NotificationCompat.Builder(this, CHANNEL_SHOPS)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_stat_notify)
             .setContentTitle(title)
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
@@ -390,7 +390,7 @@ class SapotFcmService : FirebaseMessagingService() {
         }
 
         val notification = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_stat_notify)
             .setContentTitle(title)
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))

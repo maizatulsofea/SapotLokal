@@ -51,9 +51,9 @@ class GamesMenuActivity : AppCompatActivity() {
                     if (status.canSpinToday) R.string.games_spin_available else R.string.games_spin_used
                 )
                 binding.tvMemorySubtitle.text = getString(
-                    R.string.games_memory_info,
-                    status.memoryPointsToday,
-                    AppConfig.MEMORY_MATCH_DAILY_CAP_POINTS
+                    R.string.games_memory_xp_wins,
+                    status.memoryXpWinsToday.coerceAtMost(AppConfig.MEMORY_XP_WINS_PER_DAY),
+                    AppConfig.MEMORY_XP_WINS_PER_DAY
                 )
             } else {
                 binding.tvSpinSubtitle.text = ""

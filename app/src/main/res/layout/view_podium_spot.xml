@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One podium spot: avatar with a place medal, name, visits, and a block whose height shows the place. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:layout_weight="1"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/bg_avatar_circle"
+            android:contentDescription="@null"
+            android:padding="4dp" />
+
+        <TextView
+            android:id="@+id/tvMedal"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/bg_rank_badge"
+            android:fontFamily="@font/figtree_extrabold"
+            android:gravity="center"
+            android:textColor="@color/hu_bg"
+            android:textSize="12sp"
+            tools:text="1" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/HU.Text.Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textColor="@color/hu_ink"
+        android:textSize="14sp"
+        tools:text="Siti Zainab" />
+
+    <TextView
+        android:id="@+id/tvVisits"
+        style="@style/HU.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="4 visits" />
+
+    <View
+        android:id="@+id/block"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="6dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_podium_block" />
+</LinearLayout>

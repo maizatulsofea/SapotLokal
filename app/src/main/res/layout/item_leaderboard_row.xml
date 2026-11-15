@@ -1,106 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One ranked row (4th onwards): rank number, avatar, name and level, points. -->
+<!-- Leaderboard row: place, avatar, name, visits. Also used, tinted, for your own pinned row. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginTop="8dp"
+    android:background="@drawable/bg_hu_card"
+    android:gravity="center_vertical"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvPlace"
+        style="@style/HU.Text.Title"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="18dp"
-        android:paddingVertical="14dp">
+        android:textSize="17sp"
+        tools:text="4" />
 
-        <TextView
-            android:id="@+id/tvRank"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/figtree_medium"
-            android:textColor="#A69A9C"
-            android:textSize="13sp"
-            tools:text="4" />
+    <ImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_avatar_circle"
+        android:contentDescription="@null"
+        android:padding="3dp" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            app:cardBackgroundColor="#ECEEF0"
-            app:cardCornerRadius="19dp"
-            app:cardElevation="0dp"
-            app:cardPreventCornerOverlap="false"
-            app:contentPadding="0dp">
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/HU.Text.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="16sp"
+        tools:text="Kumar Selvam" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/ivAvatar"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="Avatar"
-                    android:src="@drawable/ic_user_round"
-                    app:tint="@color/hu_soft" />
-
-                <TextView
-                    android:id="@+id/tvInitials"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/figtree_bold"
-                    android:textColor="#A19193"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-            </FrameLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvNameWithTier"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/figtree_bold"
-                android:maxLines="1"
-                android:textColor="@color/hu_ink"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="Siti Nur" />
-
-            <TextView
-                android:id="@+id/tvTierTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/figtree_medium"
-                android:textColor="@color/hu_soft"
-                android:textSize="11sp"
-                tools:text="Freshie" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvPoints"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/figtree_bold"
-            android:textColor="@color/hu_ink"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:text="1,240 pts" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/hu_line" />
+    <TextView
+        android:id="@+id/tvVisits"
+        style="@style/HU.Text.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="2 visits" />
 </LinearLayout>

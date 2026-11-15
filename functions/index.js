@@ -18,7 +18,7 @@ admin.initializeApp();
 exports.notifyShopOpened = onValueCreated(
   {
     ref: "/shopNotifications/{notificationId}",
-    instance: "sapotlokal-cd37b-default-rtdb",
+    instance: "sapotlokal-app-default-rtdb",
     region: "asia-southeast1",
   },
   async (event) => {
@@ -29,8 +29,8 @@ exports.notifyShopOpened = onValueCreated(
     await admin.messaging().send({
       topic: `shop_${n.vendorID}`,
       notification: {
-        title: n.title || `${vendorName} is now ${n.isOpen ? "OPEN 🟢" : "CLOSED 🔴"}`,
-        body: n.body || "Check the app for details.",
+        title: n.title || (n.isOpen ? `${vendorName} is open` : `${vendorName} has closed`),
+        body: n.body || (n.isOpen ? "Drop by today to earn points." : "We'll tell you when it opens again."),
       },
       data: { type: "shop_status", vendorId: String(n.vendorID), vendorName: String(vendorName) },
       android: { priority: "high", notification: { channelId: "channel_shops" } },

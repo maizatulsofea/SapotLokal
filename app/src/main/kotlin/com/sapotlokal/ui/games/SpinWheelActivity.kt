@@ -13,6 +13,7 @@ import com.sapotlokal.util.isNetworkAvailable
 import kotlin.random.Random
 
 class SpinWheelActivity : AppCompatActivity() {
+    private var badgeWatch: com.google.firebase.database.ValueEventListener? = null
 
     private lateinit var binding: ActivitySpinWheelBinding
     private var isSpinning = false
@@ -30,11 +31,12 @@ class SpinWheelActivity : AppCompatActivity() {
             return
         }
         userID = currentUID
+        badgeWatch = com.sapotlokal.ui.customer.Badges.watchUnlocks(this, userID, binding.root)
 
         binding.toolbar.setNavigationOnClickListener { finish() }
         binding.backButton.setOnClickListener { finish() }
 
-        binding.wheel.values = AppConfig.SPIN_WHEEL_SEGMENTS
+        binding.wheel.values = AppConfig.SPIN_XP_SEGMENTS
         binding.spinNowButton.setOnClickListener { onSpinTapped() }
 
         refreshStatus()
@@ -48,6 +50,7 @@ class SpinWheelActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        if (::userID.isInitialized) com.sapotlokal.ui.customer.Badges.stopWatching(userID, badgeWatch)
         binding.wheel.animate().cancel()
         super.onDestroy()
     }
@@ -105,28 +108,18 @@ class SpinWheelActivity : AppCompatActivity() {
                 return@fetchStatus
             }
 
-            val segments = AppConfig.SPIN_WHEEL_SEGMENTS
+            val segments = AppConfig.SPIN_XP_SEGMENTS
             val winnerIndex = Random.nextInt(segments.size)
             val pointsWon = segments[winnerIndex]
 
             // COMMIT FIRST. Animate only if the write succeeded (prevents free re-spins, C8).
-            GamesRepository.recordSpin(userID, pointsWon, status.spinAttemptsTotal + 1) { ok, earned ->
+            GamesRepository.recordSpin(userID, pointsWon, status.spinAttemptsTotal + 1, pointsWon == segments.max()) { ok, earned ->
                 if (!ok) {
                     if (isFinishing || isDestroyed) return@recordSpin
                     setBusy(false)
                     showMessage(R.string.games_error_save)
                     return@recordSpin
                 }
-
-                // Fire the mission/badge hook as soon as the win is committed — NOT at the end
-                // of the animation — so leaving the screen mid-spin can't lose progress.
-                // Passing the Activity is safe: BadgeRepository checks isFinishing/isDestroyed.
-                com.sapotlokal.data.repository.MissionRepository.recordSpinEvent(
-                    activity = this@SpinWheelActivity,
-                    userId = userID,
-                    pointsWon = earned,
-                    segmentPoints = pointsWon
-                )
 
                 if (isFinishing || isDestroyed) return@recordSpin
                 animateWheelTo(winnerIndex, earned)
@@ -141,7 +134,7 @@ class SpinWheelActivity : AppCompatActivity() {
         binding.spinNowButton.isEnabled = false
         binding.resultText.text = ""
 
-        val segments = AppConfig.SPIN_WHEEL_SEGMENTS
+        val segments = AppConfig.SPIN_XP_SEGMENTS
         val sweep = 360f / segments.size
         val jitter = (Random.nextFloat() - 0.5f) * sweep * 0.7f // land off-centre
         val desired = -(winnerIndex * sweep) + jitter

@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Compact reward row: photo, reward name, cost and status, one action. -->
+<!-- Compact reward row: optional photo, reward name, detail and status, then one action under them. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:background="@drawable/bg_hu_card"
-    android:gravity="center_vertical"
-    android:minHeight="80dp"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="12dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
     <FrameLayout
+        android:id="@+id/thumb"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:background="@drawable/bg_hu_photo"
@@ -38,7 +43,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/hu_row_gap"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -66,17 +71,17 @@
             android:textSize="14sp"
             tools:text="20 more points needed" />
     </LinearLayout>
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAction"
         style="@style/Widget.HU.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
         android:minHeight="48dp"
-        android:paddingHorizontal="16dp"
         android:textSize="15sp"
         android:visibility="gone"
-        tools:text="Claim"
+        tools:text="Claim for 10 points"
         tools:visibility="visible" />
 </LinearLayout>

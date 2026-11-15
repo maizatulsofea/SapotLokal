@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Rewards tab (Hadiah Utama) — one job: "what can I claim or use?"
+    Rewards tab — one job: "what can I claim or use?"
     Title → three sections as chips: Ready (claim) · My vouchers (show QR) · Working towards.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,15 +38,6 @@
                     android:layout_weight="1"
                     android:accessibilityHeading="true"
                     android:text="@string/hu_rewards_title" />
-
-                <TextView
-                    android:id="@+id/btnHowPoints"
-                    style="@style/HU.Text.Link"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:text="@string/hu_how_points_work" />
             </LinearLayout>
 
             <!-- Three equal sections: labels wrap rather than clip at large text sizes. -->
@@ -99,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="@string/hu_all_shops" />
+                    android:text="@string/hu_find_shops" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

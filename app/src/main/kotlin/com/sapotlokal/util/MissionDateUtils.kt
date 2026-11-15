@@ -21,7 +21,7 @@ object MissionDateUtils {
     /**
      * Returns the ISO-8601 week key in KL timezone, e.g. "2026-W44".
      */
-    fun getWeekYearKey(timestampMillis: Long = System.currentTimeMillis()): String {
+    fun getWeekYearKey(timestampMillis: Long = ServerClock.now()): String {
         val zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), KL_ZONE)
         val year = zdt.get(IsoFields.WEEK_BASED_YEAR)
         val week = zdt.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
@@ -31,7 +31,7 @@ object MissionDateUtils {
     /**
      * Returns the epoch milliseconds of Monday 00:00:00.000 of the current ISO week in KL timezone.
      */
-    fun getWeekStartMillis(timestampMillis: Long = System.currentTimeMillis()): Long {
+    fun getWeekStartMillis(timestampMillis: Long = ServerClock.now()): Long {
         val zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), KL_ZONE)
         val monday = zdt.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
             .withHour(0)
@@ -61,7 +61,7 @@ object MissionDateUtils {
     /**
      * Returns the epoch milliseconds of Sunday 23:59:59 of the current ISO week in KL timezone.
      */
-    fun getWeekExpiresAtMillis(timestampMillis: Long = System.currentTimeMillis()): Long {
+    fun getWeekExpiresAtMillis(timestampMillis: Long = ServerClock.now()): Long {
         val zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), KL_ZONE)
         val sunday = zdt.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
             .withHour(23)
@@ -76,7 +76,7 @@ object MissionDateUtils {
     fun formatTimeRemaining(
         context: android.content.Context,
         expiresAt: Long,
-        nowMillis: Long = System.currentTimeMillis()
+        nowMillis: Long = ServerClock.now()
     ): String {
         val diff = expiresAt - nowMillis
         return when {
@@ -94,7 +94,7 @@ object MissionDateUtils {
      * Formats the remaining time until expiration into a human-readable string.
      * e.g. "3 days left", "1 day left", "5 hours left", "Ending soon".
      */
-    fun formatTimeRemaining(expiresAt: Long, nowMillis: Long = System.currentTimeMillis()): String {
+    fun formatTimeRemaining(expiresAt: Long, nowMillis: Long = ServerClock.now()): String {
         val diff = expiresAt - nowMillis
         return when {
             diff <= 0L -> "Expired"
@@ -110,7 +110,7 @@ object MissionDateUtils {
     /**
      * Returns "yyyy-MM-dd" date string in KL timezone.
      */
-    fun getDayString(timestampMillis: Long = System.currentTimeMillis()): String {
+    fun getDayString(timestampMillis: Long = ServerClock.now()): String {
         val zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), KL_ZONE)
         return String.format(
             Locale.US,
@@ -124,7 +124,7 @@ object MissionDateUtils {
     /**
      * Returns true if the timestamp falls after 8:00 PM (20:00) in KL timezone.
      */
-    fun isNightScan(timestampMillis: Long = System.currentTimeMillis()): Boolean {
+    fun isNightScan(timestampMillis: Long = ServerClock.now()): Boolean {
         val zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), KL_ZONE)
         return zdt.hour >= 20
     }
@@ -132,7 +132,7 @@ object MissionDateUtils {
     /**
      * Returns true if the timestamp falls on Saturday or Sunday in KL timezone.
      */
-    fun isSaturdayOrSunday(timestampMillis: Long = System.currentTimeMillis()): Boolean {
+    fun isSaturdayOrSunday(timestampMillis: Long = ServerClock.now()): Boolean {
         val zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), KL_ZONE)
         val dow = zdt.dayOfWeek
         return dow == DayOfWeek.SATURDAY || dow == DayOfWeek.SUNDAY
@@ -141,7 +141,7 @@ object MissionDateUtils {
     /**
      * Returns the DayOfWeek in KL timezone.
      */
-    fun getDayOfWeek(timestampMillis: Long = System.currentTimeMillis()): DayOfWeek {
+    fun getDayOfWeek(timestampMillis: Long = ServerClock.now()): DayOfWeek {
         val zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), KL_ZONE)
         return zdt.dayOfWeek
     }

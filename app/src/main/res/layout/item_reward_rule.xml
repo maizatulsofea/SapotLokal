@@ -1,99 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!-- A shop reward: name, cost, detail, how often it was claimed, and a labelled switch
+     (shown to customers or hidden). Tap the row to edit. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp"
-    android:layout_marginVertical="6dp"
-    app:cardElevation="0dp"
-    app:cardCornerRadius="18dp"
-    app:strokeColor="@color/sapot_border"
-    app:strokeWidth="1dp"
-    app:cardBackgroundColor="@color/sapot_surface">
+    android:layout_marginTop="10dp"
+    android:background="@drawable/bg_hu_card"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="80dp"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="18dp">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- Rule name -->
         <TextView
             android:id="@+id/tvRuleName"
-            android:layout_width="0dp"
+            style="@style/HU.Text.Title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope"
-            android:textColor="@color/sapot_text_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/switchActive"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="A coffee, on us." />
+            android:textSize="17sp"
+            tools:text="Free kopi" />
 
-        <!-- Rule description -->
-        <TextView
-            android:id="@+id/tvRuleDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/dm_sans"
-            android:textColor="@color/sapot_text_secondary"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/switchActive"
-            app:layout_constraintTop_toBottomOf="@id/tvRuleName"
-            tools:text="Redeem a free hot kopi with any purchase." />
-
-        <!-- Points required -->
         <TextView
             android:id="@+id/tvPointsRequired"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_nav_pill_active"
-            android:fontFamily="@font/dm_sans"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
-            android:textColor="@color/sapot_text_primary"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRuleDescription"
-            tools:text="200 pts required" />
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/figtree_bold"
+            android:textColor="@color/hu_ink"
+            android:textSize="15sp"
+            tools:text="10 points" />
 
-        <!-- Active switch -->
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/switchActive"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvRuleDescription"
+            style="@style/HU.Text.Small"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:showText="false"
-            app:thumbTint="@color/sapot_primary"
-            app:trackTint="@color/sapot_neutral"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btnEdit" />
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="One regular kopi of your choice" />
 
-        <!-- Edit icon button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEdit"
-            style="@style/Widget.SapotLokal.Button.Outlined"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
+        <TextView
+            android:id="@+id/tvClaimed"
+            style="@style/HU.Text.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="Claimed 12 times" />
+
+        <TextView
+            android:id="@+id/tvVisibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:contentDescription="Edit rule"
-            android:text="@string/reward_rule_edit"
-            android:textSize="11sp"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/ic_edit"
-            app:iconGravity="textStart"
-            app:iconSize="14dp"
-            app:iconTint="@color/sapot_text_primary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/switchActive"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:fontFamily="@font/figtree_bold"
+            android:textSize="13sp"
+            tools:text="Shown to customers"
+            tools:textColor="@color/hu_ok" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="64dp" />
+</LinearLayout>

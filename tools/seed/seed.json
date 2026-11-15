@@ -1,173 +1,774 @@
 {
-  "_about": "Test data for SapotLokal: 10 shops, 15 rewards, 10 customers. Every id starts with 'seed_' so cleanup.js can remove it. Times are relative (daysAgo) and become real timestamps when seed.js runs. Passwords come from the SEED_PASSWORD environment variable, never from this file.",
+  "_about": "Test data for SapotLokal: 10 shops, 15 rewards, 10 customers. Every id starts with 'seed_' so cleanup.js can remove it. Times are relative (daysAgo) and become real timestamps when seed.js runs. Passwords come from the SEED_PASSWORD environment variable, never from this file. Each shop has pointsPerVisit; each customer has a starting xp (spread across all 5 ranks). Only shop_visit rows are written as points; other sources are ignored (games, missions and bonuses give XP now).",
   "emailDomain": "seed.test",
   "vendors": [
-    { "key": "v01", "name": "Kopi Kita Cafe", "category": "Cafe", "address": "12 Jalan Kopi, Tapah", "ssm": "SEED-0001", "description": "Local kopitiam coffee and toast.", "isOpen": true, "hours": "7:00 AM - 5:00 PM", "ownerName": "Kopi Kita Owner" },
-    { "key": "v02", "name": "Roti Segar Bakery", "category": "Bakery", "address": "3 Lorong Roti, Tapah", "ssm": "SEED-0002", "description": "Fresh bread baked every morning.", "isOpen": true, "hours": "6:30 AM - 4:00 PM", "ownerName": "Roti Segar Owner" },
-    { "key": "v03", "name": "Warung Mak Cik", "category": "Restaurant", "address": "8 Jalan Warung, Tapah", "ssm": "SEED-0003", "description": "Home-style rice and lauk.", "isOpen": true, "hours": "11:00 AM - 9:00 PM", "ownerName": "Warung Mak Cik Owner" },
-    { "key": "v04", "name": "Segar Mart", "category": "Grocery", "address": "21 Jalan Pasar, Tapah", "ssm": "SEED-0004", "description": "Daily groceries and fresh produce.", "isOpen": false, "hours": "8:00 AM - 10:00 PM", "ownerName": "Segar Mart Owner" },
-    { "key": "v05", "name": "Bunga Florist", "category": "Florist", "address": "5 Jalan Bunga, Tapah", "ssm": "SEED-0005", "description": "Fresh flowers and gift bouquets.", "isOpen": true, "hours": "9:00 AM - 6:00 PM", "ownerName": "Bunga Florist Owner" },
-    { "key": "v06", "name": "Buku Lokal", "category": "Bookstore", "address": "17 Jalan Ilmu, Tapah", "ssm": "SEED-0006", "description": "Books, stationery and school supplies.", "isOpen": true, "hours": "10:00 AM - 7:00 PM", "ownerName": "Buku Lokal Owner" },
-    { "key": "v07", "name": "Gaya Salon", "category": "Salon", "address": "9 Jalan Cantik, Tapah", "ssm": "SEED-0007", "description": "Haircuts and styling.", "isOpen": false, "hours": "10:00 AM - 8:00 PM", "ownerName": "Gaya Salon Owner" },
-    { "key": "v08", "name": "Manis Dessert", "category": "Dessert", "address": "4 Jalan Manis, Tapah", "ssm": "SEED-0008", "description": "Ice cream, cendol and cakes.", "isOpen": true, "hours": "12:00 PM - 10:00 PM", "ownerName": "Manis Dessert Owner" },
-    { "key": "v09", "name": "Jahit Pantas Tailor", "category": "Tailor", "address": "30 Jalan Jahit, Tapah", "ssm": "SEED-0009", "description": "Quick alterations and custom sewing.", "isOpen": true, "hours": "9:00 AM - 5:30 PM", "ownerName": "Jahit Pantas Owner" },
-    { "key": "v10", "name": "Ping Hardware", "category": "Hardware", "address": "15 Jalan Besi, Tapah", "ssm": "SEED-0010", "description": "Tools, paint and hardware.", "isOpen": true, "hours": "8:30 AM - 6:00 PM", "ownerName": "Ping Hardware Owner" }
+    {
+      "key": "v01",
+      "name": "Kopi Kita Cafe",
+      "category": "Cafe",
+      "address": "12 Jalan Kopi, Tapah",
+      "ssm": "SEED-0001",
+      "description": "Local kopitiam coffee and toast.",
+      "isOpen": true,
+      "hours": "7:00 AM - 5:00 PM",
+      "ownerName": "Kopi Kita Owner",
+      "pointsPerVisit": 10
+    },
+    {
+      "key": "v02",
+      "name": "Roti Segar Bakery",
+      "category": "Bakery",
+      "address": "3 Lorong Roti, Tapah",
+      "ssm": "SEED-0002",
+      "description": "Fresh bread baked every morning.",
+      "isOpen": true,
+      "hours": "6:30 AM - 4:00 PM",
+      "ownerName": "Roti Segar Owner",
+      "pointsPerVisit": 15
+    },
+    {
+      "key": "v03",
+      "name": "Warung Mak Cik",
+      "category": "Restaurant",
+      "address": "8 Jalan Warung, Tapah",
+      "ssm": "SEED-0003",
+      "description": "Home-style rice and lauk.",
+      "isOpen": true,
+      "hours": "11:00 AM - 9:00 PM",
+      "ownerName": "Warung Mak Cik Owner",
+      "pointsPerVisit": 5
+    },
+    {
+      "key": "v04",
+      "name": "Segar Mart",
+      "category": "Grocery",
+      "address": "21 Jalan Pasar, Tapah",
+      "ssm": "SEED-0004",
+      "description": "Daily groceries and fresh produce.",
+      "isOpen": false,
+      "hours": "8:00 AM - 10:00 PM",
+      "ownerName": "Segar Mart Owner",
+      "pointsPerVisit": 20
+    },
+    {
+      "key": "v05",
+      "name": "Bunga Florist",
+      "category": "Florist",
+      "address": "5 Jalan Bunga, Tapah",
+      "ssm": "SEED-0005",
+      "description": "Fresh flowers and gift bouquets.",
+      "isOpen": true,
+      "hours": "9:00 AM - 6:00 PM",
+      "ownerName": "Bunga Florist Owner",
+      "pointsPerVisit": 10
+    },
+    {
+      "key": "v06",
+      "name": "Buku Lokal",
+      "category": "Bookstore",
+      "address": "17 Jalan Ilmu, Tapah",
+      "ssm": "SEED-0006",
+      "description": "Books, stationery and school supplies.",
+      "isOpen": true,
+      "hours": "10:00 AM - 7:00 PM",
+      "ownerName": "Buku Lokal Owner",
+      "pointsPerVisit": 10
+    },
+    {
+      "key": "v07",
+      "name": "Gaya Salon",
+      "category": "Salon",
+      "address": "9 Jalan Cantik, Tapah",
+      "ssm": "SEED-0007",
+      "description": "Haircuts and styling.",
+      "isOpen": false,
+      "hours": "10:00 AM - 8:00 PM",
+      "ownerName": "Gaya Salon Owner",
+      "pointsPerVisit": 25
+    },
+    {
+      "key": "v08",
+      "name": "Manis Dessert",
+      "category": "Dessert",
+      "address": "4 Jalan Manis, Tapah",
+      "ssm": "SEED-0008",
+      "description": "Ice cream, cendol and cakes.",
+      "isOpen": true,
+      "hours": "12:00 PM - 10:00 PM",
+      "ownerName": "Manis Dessert Owner",
+      "pointsPerVisit": 15
+    },
+    {
+      "key": "v09",
+      "name": "Jahit Pantas Tailor",
+      "category": "Tailor",
+      "address": "30 Jalan Jahit, Tapah",
+      "ssm": "SEED-0009",
+      "description": "Quick alterations and custom sewing.",
+      "isOpen": true,
+      "hours": "9:00 AM - 5:30 PM",
+      "ownerName": "Jahit Pantas Owner",
+      "pointsPerVisit": 30
+    },
+    {
+      "key": "v10",
+      "name": "Ping Hardware",
+      "category": "Hardware",
+      "address": "15 Jalan Besi, Tapah",
+      "ssm": "SEED-0010",
+      "description": "Tools, paint and hardware.",
+      "isOpen": true,
+      "hours": "8:30 AM - 6:00 PM",
+      "ownerName": "Ping Hardware Owner",
+      "pointsPerVisit": 50
+    }
   ],
   "rewards": [
-    { "key": "r01", "vendor": "v01", "name": "Free Kopi", "description": "One regular kopi of your choice", "points": 10, "active": true },
-    { "key": "r02", "vendor": "v01", "name": "Cake slice", "description": "One slice of the cake of the day", "points": 40, "active": true },
-    { "key": "r03", "vendor": "v02", "name": "Free bun", "description": "Any plain bun", "points": 20, "active": true },
-    { "key": "r04", "vendor": "v02", "name": "Birthday cake", "description": "A small celebration cake", "points": 150, "active": true },
-    { "key": "r05", "vendor": "v03", "name": "Free teh ais", "description": "One iced tea with any meal", "points": 15, "active": true },
-    { "key": "r06", "vendor": "v03", "name": "RM5 off", "description": "RM5 off any order above RM20", "points": 60, "active": true },
-    { "key": "r07", "vendor": "v04", "name": "RM2 off", "description": "RM2 off any basket above RM15", "points": 30, "active": true },
-    { "key": "r08", "vendor": "v05", "name": "Single stem", "description": "One fresh stem of the day", "points": 25, "active": true },
-    { "key": "r09", "vendor": "v05", "name": "Small bouquet", "description": "A hand-tied small bouquet", "points": 120, "active": true },
-    { "key": "r10", "vendor": "v06", "name": "Free bookmark", "description": "A handmade bookmark", "points": 10, "active": true },
-    { "key": "r11", "vendor": "v06", "name": "10% off a book", "description": "10% off one book", "points": 80, "active": true },
-    { "key": "r12", "vendor": "v07", "name": "Hair wash", "description": "A wash and blow-dry", "points": 50, "active": false },
-    { "key": "r13", "vendor": "v08", "name": "Free scoop", "description": "One scoop of ice cream", "points": 20, "active": true },
-    { "key": "r14", "vendor": "v09", "name": "Free alteration", "description": "One simple alteration", "points": 70, "active": true },
-    { "key": "r15", "vendor": "v10", "name": "Key copy", "description": "One free key copy", "points": 35, "active": true }
+    {
+      "key": "r01",
+      "vendor": "v01",
+      "name": "Free Kopi",
+      "description": "One regular kopi of your choice",
+      "points": 10,
+      "active": true
+    },
+    {
+      "key": "r02",
+      "vendor": "v01",
+      "name": "Cake slice",
+      "description": "One slice of the cake of the day",
+      "points": 40,
+      "active": true
+    },
+    {
+      "key": "r03",
+      "vendor": "v02",
+      "name": "Free bun",
+      "description": "Any plain bun",
+      "points": 20,
+      "active": true
+    },
+    {
+      "key": "r04",
+      "vendor": "v02",
+      "name": "Birthday cake",
+      "description": "A small celebration cake",
+      "points": 150,
+      "active": true
+    },
+    {
+      "key": "r05",
+      "vendor": "v03",
+      "name": "Free teh ais",
+      "description": "One iced tea with any meal",
+      "points": 15,
+      "active": true
+    },
+    {
+      "key": "r06",
+      "vendor": "v03",
+      "name": "RM5 off",
+      "description": "RM5 off any order above RM20",
+      "points": 60,
+      "active": true
+    },
+    {
+      "key": "r07",
+      "vendor": "v04",
+      "name": "RM2 off",
+      "description": "RM2 off any basket above RM15",
+      "points": 30,
+      "active": true
+    },
+    {
+      "key": "r08",
+      "vendor": "v05",
+      "name": "Single stem",
+      "description": "One fresh stem of the day",
+      "points": 25,
+      "active": true
+    },
+    {
+      "key": "r09",
+      "vendor": "v05",
+      "name": "Small bouquet",
+      "description": "A hand-tied small bouquet",
+      "points": 120,
+      "active": true
+    },
+    {
+      "key": "r10",
+      "vendor": "v06",
+      "name": "Free bookmark",
+      "description": "A handmade bookmark",
+      "points": 10,
+      "active": true
+    },
+    {
+      "key": "r11",
+      "vendor": "v06",
+      "name": "10% off a book",
+      "description": "10% off one book",
+      "points": 80,
+      "active": true
+    },
+    {
+      "key": "r12",
+      "vendor": "v07",
+      "name": "Hair wash",
+      "description": "A wash and blow-dry",
+      "points": 50,
+      "active": false
+    },
+    {
+      "key": "r13",
+      "vendor": "v08",
+      "name": "Free scoop",
+      "description": "One scoop of ice cream",
+      "points": 20,
+      "active": true
+    },
+    {
+      "key": "r14",
+      "vendor": "v09",
+      "name": "Free alteration",
+      "description": "One simple alteration",
+      "points": 70,
+      "active": true
+    },
+    {
+      "key": "r15",
+      "vendor": "v10",
+      "name": "Key copy",
+      "description": "One free key copy",
+      "points": 35,
+      "active": true
+    }
   ],
   "customers": [
     {
-      "key": "c01", "name": "Aisyah Rahman", "avatar": "",
+      "key": "c01",
+      "name": "Aisyah Rahman",
+      "avatar": "",
       "_scenario": "Brand-new customer: no points yet.",
-      "points": [], "claims": []
+      "points": [],
+      "claims": [],
+      "xp": 0
     },
     {
-      "key": "c02", "name": "Daniel Lim", "avatar": "panda",
+      "key": "c02",
+      "name": "Daniel Lim",
+      "avatar": "panda",
       "_scenario": "10 points at Kopi Kita, 30 at Roti Segar (the two-shop example).",
       "points": [
-        { "vendor": "v01", "source": "shop_visit", "earned": 10, "daysAgo": 3 },
-        { "vendor": "v02", "source": "shop_visit", "earned": 10, "daysAgo": 9 },
-        { "vendor": "v02", "source": "first_visit_bonus", "earned": 20, "daysAgo": 9 }
+        {
+          "vendor": "v01",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 3
+        },
+        {
+          "vendor": "v02",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 9
+        },
+        {
+          "vendor": "v02",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 9
+        }
       ],
-      "claims": []
+      "claims": [],
+      "xp": 150
     },
     {
-      "key": "c03", "name": "Farah Hassan", "avatar": "cat",
+      "key": "c03",
+      "name": "Farah Hassan",
+      "avatar": "cat",
       "_scenario": "50 points at Kopi Kita: can claim either reward, not both.",
       "points": [
-        { "vendor": "v01", "source": "shop_visit", "earned": 10, "daysAgo": 20 },
-        { "vendor": "v01", "source": "first_visit_bonus", "earned": 20, "daysAgo": 20 },
-        { "vendor": "v01", "source": "shop_visit", "earned": 10, "daysAgo": 13 },
-        { "vendor": "v01", "source": "shop_visit", "earned": 10, "daysAgo": 6 }
+        {
+          "vendor": "v01",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 20
+        },
+        {
+          "vendor": "v01",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 20
+        },
+        {
+          "vendor": "v01",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 13
+        },
+        {
+          "vendor": "v01",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 6
+        }
       ],
-      "claims": []
+      "claims": [],
+      "xp": 520
     },
     {
-      "key": "c04", "name": "Kumar Selvam", "avatar": "dog",
+      "key": "c04",
+      "name": "Kumar Selvam",
+      "avatar": "dog",
       "_scenario": "Holds an active claimed voucher at Kopi Kita; 35 points at Ping Hardware (claimable).",
       "points": [
-        { "vendor": "v01", "source": "shop_visit", "earned": 10, "daysAgo": 15 },
-        { "vendor": "v01", "source": "first_visit_bonus", "earned": 20, "daysAgo": 15 },
-        { "vendor": "v01", "source": "shop_visit", "earned": 10, "daysAgo": 5 },
-        { "vendor": "v10", "source": "shop_visit", "earned": 10, "daysAgo": 8 },
-        { "vendor": "v10", "source": "first_visit_bonus", "earned": 20, "daysAgo": 8 },
-        { "vendor": "v10", "source": "shop_visit", "earned": 5, "daysAgo": 2 }
-      ],
-      "claims": [ { "reward": "r01", "status": "active", "daysAgo": 2 } ]
-    },
-    {
-      "key": "c05", "name": "Mei Ling Tan", "avatar": "brown_bear",
-      "_scenario": "One redeemed voucher and one expired voucher (history).",
-      "points": [
-        { "vendor": "v02", "source": "shop_visit", "earned": 10, "daysAgo": 50 },
-        { "vendor": "v02", "source": "first_visit_bonus", "earned": 20, "daysAgo": 50 },
-        { "vendor": "v02", "source": "shop_visit", "earned": 10, "daysAgo": 30 },
-        { "vendor": "v03", "source": "shop_visit", "earned": 10, "daysAgo": 45 },
-        { "vendor": "v03", "source": "first_visit_bonus", "earned": 20, "daysAgo": 45 },
-        { "vendor": "v03", "source": "shop_visit", "earned": 10, "daysAgo": 40 }
+        {
+          "vendor": "v01",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 15
+        },
+        {
+          "vendor": "v01",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 15
+        },
+        {
+          "vendor": "v01",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 5
+        },
+        {
+          "vendor": "v10",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 8
+        },
+        {
+          "vendor": "v10",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 8
+        },
+        {
+          "vendor": "v10",
+          "source": "shop_visit",
+          "earned": 5,
+          "daysAgo": 2
+        }
       ],
       "claims": [
-        { "reward": "r03", "status": "used", "daysAgo": 20 },
-        { "reward": "r05", "status": "expired", "daysAgo": 40 }
-      ]
+        {
+          "reward": "r01",
+          "status": "active",
+          "daysAgo": 2
+        }
+      ],
+      "xp": 980
     },
     {
-      "key": "c06", "name": "Hakim Yusof", "avatar": "capybara",
+      "key": "c05",
+      "name": "Mei Ling Tan",
+      "avatar": "brown_bear",
+      "_scenario": "One redeemed voucher and one expired voucher (history).",
+      "points": [
+        {
+          "vendor": "v02",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 50
+        },
+        {
+          "vendor": "v02",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 50
+        },
+        {
+          "vendor": "v02",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 30
+        },
+        {
+          "vendor": "v03",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 45
+        },
+        {
+          "vendor": "v03",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 45
+        },
+        {
+          "vendor": "v03",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 40
+        }
+      ],
+      "claims": [
+        {
+          "reward": "r03",
+          "status": "used",
+          "daysAgo": 20
+        },
+        {
+          "reward": "r05",
+          "status": "expired",
+          "daysAgo": 40
+        }
+      ],
+      "xp": 1650
+    },
+    {
+      "key": "c06",
+      "name": "Hakim Yusof",
+      "avatar": "capybara",
       "_scenario": "Weekly streak test: visited Manis Dessert on 2 different days this week. A scan on a 3rd day earns the streak bonus. Seed on Wednesday or later.",
       "points": [
-        { "vendor": "v08", "source": "shop_visit", "earned": 10, "daysAgo": 2 },
-        { "vendor": "v08", "source": "first_visit_bonus", "earned": 20, "daysAgo": 2 },
-        { "vendor": "v08", "source": "shop_visit", "earned": 10, "daysAgo": 1 }
+        {
+          "vendor": "v08",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 2
+        },
+        {
+          "vendor": "v08",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 2
+        },
+        {
+          "vendor": "v08",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 1
+        }
       ],
-      "claims": []
+      "claims": [],
+      "xp": 260
     },
     {
-      "key": "c07", "name": "Siti Zainab", "avatar": "cat",
+      "key": "c07",
+      "name": "Siti Zainab",
+      "avatar": "cat",
       "_scenario": "Trend Setter. Several claimable rewards across shops, plus game points that belong to no shop.",
       "points": [
-        { "vendor": "v03", "source": "shop_visit", "earned": 10, "daysAgo": 40 },
-        { "vendor": "v03", "source": "first_visit_bonus", "earned": 20, "daysAgo": 40 },
-        { "vendor": "v03", "source": "shop_visit", "earned": 10, "daysAgo": 30 },
-        { "vendor": "v03", "source": "shop_visit", "earned": 10, "daysAgo": 20 },
-        { "vendor": "v03", "source": "shop_visit", "earned": 10, "daysAgo": 10 },
-        { "vendor": "v03", "source": "shop_visit", "earned": 10, "daysAgo": 4 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 35 },
-        { "vendor": "v05", "source": "first_visit_bonus", "earned": 20, "daysAgo": 35 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 25 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 15 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 7 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 3 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 2 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 1 },
-        { "vendor": "v05", "source": "streak_bonus", "earned": 20, "daysAgo": 1 },
-        { "vendor": "", "source": "spin_wheel", "earned": 100, "daysAgo": 18 },
-        { "vendor": "", "source": "memory_match", "earned": 60, "daysAgo": 12 },
-        { "vendor": "", "source": "challenge", "earned": 150, "daysAgo": 9 },
-        { "vendor": "", "source": "spin_wheel", "earned": 50, "daysAgo": 5 }
+        {
+          "vendor": "v03",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 40
+        },
+        {
+          "vendor": "v03",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 40
+        },
+        {
+          "vendor": "v03",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 30
+        },
+        {
+          "vendor": "v03",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 20
+        },
+        {
+          "vendor": "v03",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 10
+        },
+        {
+          "vendor": "v03",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 4
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 35
+        },
+        {
+          "vendor": "v05",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 35
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 25
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 15
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 7
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 3
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 2
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 1
+        },
+        {
+          "vendor": "v05",
+          "source": "streak_bonus",
+          "earned": 20,
+          "daysAgo": 1
+        },
+        {
+          "vendor": "",
+          "source": "spin_wheel",
+          "earned": 100,
+          "daysAgo": 18
+        },
+        {
+          "vendor": "",
+          "source": "memory_match",
+          "earned": 60,
+          "daysAgo": 12
+        },
+        {
+          "vendor": "",
+          "source": "challenge",
+          "earned": 150,
+          "daysAgo": 9
+        },
+        {
+          "vendor": "",
+          "source": "spin_wheel",
+          "earned": 50,
+          "daysAgo": 5
+        }
       ],
-      "claims": []
+      "claims": [],
+      "xp": 4100
     },
     {
-      "key": "c08", "name": "Raj Kumar", "avatar": "dog",
+      "key": "c08",
+      "name": "Raj Kumar",
+      "avatar": "dog",
       "_scenario": "Otai Lokal (high level) mostly from games and missions; 90 points at Buku Lokal.",
       "points": [
-        { "vendor": "v06", "source": "shop_visit", "earned": 10, "daysAgo": 60 },
-        { "vendor": "v06", "source": "first_visit_bonus", "earned": 20, "daysAgo": 60 },
-        { "vendor": "v06", "source": "shop_visit", "earned": 10, "daysAgo": 45 },
-        { "vendor": "v06", "source": "shop_visit", "earned": 10, "daysAgo": 30 },
-        { "vendor": "v06", "source": "shop_visit", "earned": 10, "daysAgo": 15 },
-        { "vendor": "v06", "source": "shop_visit", "earned": 10, "daysAgo": 5 },
-        { "vendor": "v06", "source": "streak_bonus", "earned": 20, "daysAgo": 5 },
-        { "vendor": "", "source": "challenge", "earned": 400, "daysAgo": 50 },
-        { "vendor": "", "source": "spin_wheel", "earned": 100, "daysAgo": 40 },
-        { "vendor": "", "source": "challenge", "earned": 400, "daysAgo": 28 },
-        { "vendor": "", "source": "memory_match", "earned": 60, "daysAgo": 20 },
-        { "vendor": "", "source": "challenge", "earned": 400, "daysAgo": 10 }
+        {
+          "vendor": "v06",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 60
+        },
+        {
+          "vendor": "v06",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 60
+        },
+        {
+          "vendor": "v06",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 45
+        },
+        {
+          "vendor": "v06",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 30
+        },
+        {
+          "vendor": "v06",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 15
+        },
+        {
+          "vendor": "v06",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 5
+        },
+        {
+          "vendor": "v06",
+          "source": "streak_bonus",
+          "earned": 20,
+          "daysAgo": 5
+        },
+        {
+          "vendor": "",
+          "source": "challenge",
+          "earned": 400,
+          "daysAgo": 50
+        },
+        {
+          "vendor": "",
+          "source": "spin_wheel",
+          "earned": 100,
+          "daysAgo": 40
+        },
+        {
+          "vendor": "",
+          "source": "challenge",
+          "earned": 400,
+          "daysAgo": 28
+        },
+        {
+          "vendor": "",
+          "source": "memory_match",
+          "earned": 60,
+          "daysAgo": 20
+        },
+        {
+          "vendor": "",
+          "source": "challenge",
+          "earned": 400,
+          "daysAgo": 10
+        }
       ],
-      "claims": []
+      "claims": [],
+      "xp": 2300
     },
     {
-      "key": "c09", "name": "Nurul Huda", "avatar": "panda",
+      "key": "c09",
+      "name": "Nurul Huda",
+      "avatar": "panda",
       "_scenario": "Only game points, no shop points (the gap case).",
       "points": [
-        { "vendor": "", "source": "spin_wheel", "earned": 50, "daysAgo": 6 },
-        { "vendor": "", "source": "memory_match", "earned": 60, "daysAgo": 4 },
-        { "vendor": "", "source": "spin_wheel", "earned": 40, "daysAgo": 1 }
+        {
+          "vendor": "",
+          "source": "spin_wheel",
+          "earned": 50,
+          "daysAgo": 6
+        },
+        {
+          "vendor": "",
+          "source": "memory_match",
+          "earned": 60,
+          "daysAgo": 4
+        },
+        {
+          "vendor": "",
+          "source": "spin_wheel",
+          "earned": 40,
+          "daysAgo": 1
+        }
       ],
-      "claims": []
+      "claims": [],
+      "xp": 7300
     },
     {
-      "key": "c10", "name": "Chong Wei", "avatar": "capybara",
+      "key": "c10",
+      "name": "Chong Wei",
+      "avatar": "capybara",
       "_scenario": "Several small balances at different shops plus an active voucher at Buku Lokal.",
       "points": [
-        { "vendor": "v04", "source": "shop_visit", "earned": 10, "daysAgo": 14 },
-        { "vendor": "v04", "source": "first_visit_bonus", "earned": 20, "daysAgo": 14 },
-        { "vendor": "v09", "source": "shop_visit", "earned": 10, "daysAgo": 12 },
-        { "vendor": "v09", "source": "first_visit_bonus", "earned": 20, "daysAgo": 12 },
-        { "vendor": "v09", "source": "shop_visit", "earned": 10, "daysAgo": 6 },
-        { "vendor": "v09", "source": "shop_visit", "earned": 10, "daysAgo": 3 },
-        { "vendor": "v09", "source": "shop_visit", "earned": 10, "daysAgo": 1 },
-        { "vendor": "v05", "source": "shop_visit", "earned": 10, "daysAgo": 10 },
-        { "vendor": "v05", "source": "first_visit_bonus", "earned": 20, "daysAgo": 10 },
-        { "vendor": "v06", "source": "shop_visit", "earned": 10, "daysAgo": 9 },
-        { "vendor": "v06", "source": "first_visit_bonus", "earned": 20, "daysAgo": 9 }
+        {
+          "vendor": "v04",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 14
+        },
+        {
+          "vendor": "v04",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 14
+        },
+        {
+          "vendor": "v09",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 12
+        },
+        {
+          "vendor": "v09",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 12
+        },
+        {
+          "vendor": "v09",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 6
+        },
+        {
+          "vendor": "v09",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 3
+        },
+        {
+          "vendor": "v09",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 1
+        },
+        {
+          "vendor": "v05",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 10
+        },
+        {
+          "vendor": "v05",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 10
+        },
+        {
+          "vendor": "v06",
+          "source": "shop_visit",
+          "earned": 10,
+          "daysAgo": 9
+        },
+        {
+          "vendor": "v06",
+          "source": "first_visit_bonus",
+          "earned": 20,
+          "daysAgo": 9
+        }
       ],
-      "claims": [ { "reward": "r10", "status": "active", "daysAgo": 1 } ]
+      "claims": [
+        {
+          "reward": "r10",
+          "status": "active",
+          "daysAgo": 1
+        }
+      ],
+      "xp": 3600
     }
   ]
 }

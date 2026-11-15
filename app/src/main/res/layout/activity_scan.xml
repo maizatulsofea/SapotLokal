@@ -81,7 +81,7 @@
                                 android:layout_height="44dp"
                                 android:layout_alignParentEnd="true"
                                 android:background="?attr/selectableItemBackgroundBorderless"
-                                android:contentDescription="Flashlight"
+                                android:contentDescription="@string/cd_flashlight"
                                 android:padding="11dp"
                                 android:src="@drawable/ic_flash"
                                 app:tint="@color/hu_ink" />
@@ -132,9 +132,9 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Help + manual code -->
+                <!-- Type the shop code (for when the camera can't scan) -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/debugPanel"
+                    android:id="@+id/codePanel"
                     style="@style/Widget.HU.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,42 +146,6 @@
                         android:orientation="vertical"
                         android:padding="20dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <FrameLayout
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:background="@drawable/bg_hu_icon_tile">
-
-                                <ImageView
-                                    android:layout_width="26dp"
-                                    android:layout_height="26dp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_scan"
-                                    app:tint="@color/hu_ink" />
-                            </FrameLayout>
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="14dp"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/figtree_medium"
-                                android:text="@string/scan_look_for_the_sapotlokal"
-                                android:textColor="@color/hu_soft"
-                                android:textSize="13sp" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginVertical="16dp"
-                            android:background="@color/hu_line" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -192,22 +156,23 @@
                             android:textStyle="bold" />
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.SapotLokal.TextInputLayout"
+                            style="@style/Widget.HU.TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:hint="@string/scan_shop_code">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etDebugCode"
+                                android:id="@+id/etShopCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:imeOptions="actionDone"
-                                android:inputType="textNoSuggestions" />
+                                android:inputType="textCapCharacters|textNoSuggestions"
+                                android:maxLength="12" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnDebugSubmit"
+                            android:id="@+id/btnSubmitCode"
                             style="@style/Widget.HU.Button"
                             android:layout_width="match_parent"
                             android:layout_height="52dp"
@@ -223,7 +188,7 @@
             android:id="@+id/successOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F2FAFAFA"
+            android:background="@color/hu_bg"
             android:clickable="true"
             android:gravity="center"
             android:orientation="vertical"
@@ -248,19 +213,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/figtree_bold"
-                android:text="@string/scan_10_points"
                 android:textColor="@color/hu_ink"
-                android:textSize="32sp"
-                android:textStyle="bold" />
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:textSize="26sp" />
 
             <TextView
-                android:id="@+id/tvShopName"
+                android:id="@+id/tvXpAwarded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:fontFamily="@font/figtree_medium"
-                android:textColor="@color/hu_soft"
-                android:textSize="16sp" />
+                android:fontFamily="@font/figtree_bold"
+                android:textColor="@color/hu_accent_text"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <!-- Error message -->

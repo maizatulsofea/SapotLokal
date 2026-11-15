@@ -105,8 +105,10 @@ object AccountActions {
         // append-only by design, so it stays (it is what shops' totals are built from).
         val removals = hashMapOf<String, Any?>(
             "users/$uid" to null,
-            "userMissionTracking/$uid" to null,
-            "shopVisits/$uid" to null
+            "xpEvents/$uid" to null,
+            "userStats/$uid" to null,
+            "missionProgress/$uid" to null,
+            "badges/$uid" to null
         )
         db.updateChildren(removals)
             .addOnSuccessListener {

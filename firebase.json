@@ -1,4 +1,16 @@
 {
-  "database": { "rules": "docs/firebase-rules.json" },
-  "functions": [{ "source": "functions", "codebase": "default" }]
+  "database": {
+    "rules": "docs/firebase-rules.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default"
+    }
+  ],
+  "auth": {
+    "providers": {
+      "emailPassword": true
+    }
+  }
 }

@@ -1,180 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- The one login screen for customers and shop owners; the account's role decides where it goes next. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/sapot_canvas">
+    android:background="@color/hu_bg"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
-        android:paddingTop="32dp"
-        android:paddingBottom="36dp">
+        android:paddingTop="56dp"
+        android:paddingBottom="32dp">
 
-        <!-- Logo -->
-        <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_nav_pill_active">
-
-            <ImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_brand_logo"
-                android:contentDescription="SapotLokal logo" />
-        </FrameLayout>
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_brand_logo" />
 
         <TextView
-            android:id="@+id/tvTitle"
+            style="@style/HU.Text.Screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/manrope"
-            android:text="@string/login_title"
-            android:textColor="@color/sapot_text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:accessibilityHeading="true"
+            android:text="@string/login_title" />
 
         <TextView
-            android:id="@+id/tvSubtitle"
+            style="@style/HU.Text.FieldLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:fontFamily="@font/dm_sans"
-            android:text="@string/login_subtitle"
-            android:textColor="@color/sapot_text_secondary"
-            android:textSize="14sp" />
+            android:layout_marginTop="32dp"
+            android:labelFor="@id/etEmail"
+            android:text="@string/label_email" />
 
-        <!-- Email -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
-            style="@style/Widget.SapotLokal.TextInputLayout"
+            style="@style/Widget.HU.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusTopStart="12dp"
-            android:hint="@string/label_email">
+            android:layout_marginTop="6dp"
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/dm_sans"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/sapot_text_primary"
-                android:imeOptions="actionNext" />
+                android:autofillHints="emailAddress"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password (with show/hide toggle) -->
+        <TextView
+            style="@style/HU.Text.FieldLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:labelFor="@id/etPassword"
+            android:text="@string/label_password" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
-            style="@style/Widget.SapotLokal.TextInputLayout"
+            style="@style/Widget.HU.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusTopStart="12dp"
-            android:hint="@string/label_password"
+            android:layout_marginTop="6dp"
             app:endIconMode="password_toggle"
-            app:endIconTint="@color/sapot_text_secondary">
+            app:endIconTint="@color/hu_soft"
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/dm_sans"
-                android:inputType="textPassword"
-                android:textColor="@color/sapot_text_primary"
-                android:imeOptions="actionDone" />
+                android:autofillHints="password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Forgot password link -->
-        <TextView
-            android:id="@+id/tvForgotPassword"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnForgotPassword"
+            style="@style/Widget.HU.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/dm_sans"
-            android:padding="8dp"
-            android:text="@string/forgot_password"
-            android:textColor="@color/sapot_primary"
-            android:textSize="13sp" />
+            android:layout_marginTop="4dp"
+            android:text="@string/forgot_password" />
 
-        <!-- Log In button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
-            style="@style/Widget.SapotLokal.Button.Primary"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="28dp"
-            android:text="@string/login_log_in_as_customer"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:cornerRadius="@dimen/radius_control" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
-        <!-- Loading indicator -->
-        <ProgressBar
-            android:id="@+id/progressBar"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                style="@style/Widget.HU.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/auth_log_in" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:elevation="8dp"
+                android:indeterminateTint="@color/hu_ink"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreateAccount"
+            style="@style/Widget.HU.Button.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:indeterminateTint="@color/sapot_primary"
-            android:visibility="gone" />
+            android:text="@string/auth_new_here" />
 
-        <!-- 1. Link to Vendor Login -->
-        <TextView
-            android:id="@+id/tvGoToVendorLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/dm_sans"
-            android:padding="8dp"
-            android:text="@string/login_are_you_a_shop"
-            android:textColor="@color/sapot_text_primary"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <!-- 2. Link to Customer Registration -->
-        <TextView
-            android:id="@+id/tvRegisterCustomer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/dm_sans"
-            android:padding="8dp"
-            android:text="@string/login_new_here_register_customer"
-            android:textColor="@color/sapot_text_secondary"
-            android:textSize="13sp" />
-
-        <!-- Language: EN | BM -->
         <include
             android:id="@+id/languageToggle"
             layout="@layout/layout_language_toggle"
@@ -182,6 +130,5 @@
             android:layout_height="36dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
-
     </LinearLayout>
 </ScrollView>

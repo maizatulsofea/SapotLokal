@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Shop page (Hadiah Utama) — one job: "what can I get here?"
-    Back + name → the shop's colour card (points, cups) → bar ticked at this shop's rewards
-    → rewards with Claim → about → location, hours, Maps.
+    Shop page — one job: "what can I get here?"
+    Back + name → the shop card (photo, points, "Cafe · Open", progress; no repeated name)
+    → about → points per visit → rewards, each with one action → location, hours, Maps.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -70,28 +70,22 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/tvShopDescription"
+                style="@style/HU.Text.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                tools:text="Local kopitiam coffee and toast."
+                tools:visibility="visible" />
+
+            <TextView
                 android:id="@+id/tvPointsRule"
                 style="@style/HU.Text.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                tools:text="1 visit = 10 points · Points count at Kopi Kita Cafe only" />
-
-            <TextView
-                android:id="@+id/btnHowPoints"
-                style="@style/HU.Text.Link"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:text="@string/hu_how_points_work" />
-
-            <com.sapotlokal.ui.customer.HuTickBar
-                android:id="@+id/rewardBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:importantForAccessibility="no" />
+                tools:text="You get 25 points a visit (20 + rank bonus). Spend them here only." />
 
             <TextView
                 style="@style/HU.Text.Section"
@@ -115,16 +109,6 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/hu_no_rewards_yet"
                 android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tvShopDescription"
-                style="@style/HU.Text.Body"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:visibility="gone"
-                tools:text="Local kopitiam coffee and toast."
-                tools:visibility="visible" />
 
             <TextView
                 style="@style/HU.Text.Section"
@@ -159,19 +143,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     tools:text="Hours: 7:00 AM – 5:00 PM" />
-
-                <TextView
-                    android:id="@+id/tvShopStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_hu_pill"
-                    android:fontFamily="@font/figtree_bold"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="3dp"
-                    android:textSize="14sp"
-                    app:fontFamily="@font/figtree_bold"
-                    tools:text="Open" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnOpenMaps"

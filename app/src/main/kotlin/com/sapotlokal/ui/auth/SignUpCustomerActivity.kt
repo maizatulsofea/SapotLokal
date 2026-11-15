@@ -1,6 +1,5 @@
 package com.sapotlokal.ui.auth
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
@@ -45,15 +44,8 @@ class SignUpCustomerActivity : AppCompatActivity() {
         binding = ActivitySignupCustomerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Up/back arrow behaviour — go back to RolePickerActivity
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        binding.btnBack.setOnClickListener { finish() }
         binding.btnSignUp.setOnClickListener { attemptSignUp() }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
     }
 
     // ── Validation ─────────────────────────────────────────────────────────────
@@ -149,16 +141,14 @@ class SignUpCustomerActivity : AppCompatActivity() {
 
     private fun navigateToHome() {
         setLoading(false)
-        val intent = Intent(this, CustomerHomeActivity::class.java)
-        // Clear the auth stack so the user can't press Back to reach sign-up
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
+        RoleRouter.open(this, CustomerHomeActivity::class.java)
     }
 
     // ── UI helpers ─────────────────────────────────────────────────────────────
 
     private fun setLoading(loading: Boolean) {
-        binding.btnSignUp.isEnabled  = !loading
+        binding.btnSignUp.isEnabled = !loading
+        binding.btnSignUp.text = if (loading) "" else getString(com.sapotlokal.R.string.auth_create_account)
         binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
     }
 }

@@ -1,7 +1,7 @@
 package com.sapotlokal.data.model
 
 import com.google.firebase.database.PropertyName
-import com.sapotlokal.AppConfig.CustomerTier
+import com.sapotlokal.AppConfig
 
 /**
  * Data classes mirroring the SapotLokal ERD entities.
@@ -27,10 +27,9 @@ data class User(
     val userName: String = "",
     val userEmail: String = "",
     val role: String = "",           // "customer" or "vendor"
-    val lifetimePoints: Int = 0,
-    val currentTier: String = CustomerTier.FRESHIE.code,
-    val unlockedBadges: Map<String, Boolean> = emptyMap(),
-    val avatar: String = ""          // optional profile avatar id (see AvatarDef); empty = none
+    val avatar: String = "",         // optional profile avatar id (see AvatarDef); empty = none
+    val xp: Int = 0,                 // customers only; never decreases (REFRACTOR.md §4)
+    val rank: Int = 1                // 1–5, cached from xp for the leaderboard and display
 )
 
 // ── VENDOR ────────────────────────────────────────────────────────────────────
@@ -53,7 +52,8 @@ data class Vendor(
     var isOpen: Boolean = true,
 
     val operatingHours: String = "",
-    val lastStatusChangedAt: Long = 0L
+    val lastStatusChangedAt: Long = 0L,
+    val pointsPerVisit: Int = AppConfig.DEFAULT_POINTS_PER_VISIT  // one of AppConfig.ALLOWED_POINTS_PER_VISIT
 )
 
 // ── QRCODE ────────────────────────────────────────────────────────────────────
@@ -94,30 +94,16 @@ data class Point(
     val pointEarnedAmount: Int = 0,
     val pointRedeemedAmount: Int = 0,
     val pointSource: String = "",       // See PointSource constants
-    val timestamp: Long = 0L
-)
-
-/**
- * Represents a ranked user entry on the community leaderboard.
- */
-data class LeaderboardMember(
-    val userId: String = "",
-    val userName: String = "",
-    val points: Int = 0,
-    val currentTier: String = CustomerTier.FRESHIE.code,
-    val rank: Int = 0,
-    val avatar: String = ""
+    val timestamp: Long = 0L,
+    val basePoints: Int = 0,            // shop_visit: the shop's points per visit at the time
+    val rankBonus: Double = 1.0         // shop_visit: the customer's rank bonus at the time
 )
 
 
+/** Shop points only come from visits and are only spent on rewards (games and missions give XP). */
 object PointSource {
     const val SHOP_VISIT    = "shop_visit"
-    const val SPIN_WHEEL    = "spin_wheel"
-    const val MEMORY_MATCH  = "memory_match"
-    const val CHALLENGE     = "challenge"
-    const val REDEMPTION    = "redemption"  // When a voucher is redeemed
-    const val FIRST_VISIT_BONUS = "first_visit_bonus"
-    const val STREAK_BONUS      = "streak_bonus"
+    const val REDEMPTION    = "redemption"  // When a voucher is claimed or redeemed
 }
 
 // ── VOUCHER (reward rule) ──────────────────────────────────────────────────────
@@ -174,7 +160,9 @@ data class VoucherUser(
     /** true = the points were spent when the customer claimed it (nothing more is deducted at redeem). */
     val pointsDeducted: Boolean = false,
     /** The points-ledger row that recorded the spend at claim time. */
-    val claimPointID: String = ""
+    val claimPointID: String = "",
+    /** When the shop marked it used (epoch ms, server time); 0 for vouchers used before this was kept. */
+    val voucherUsedAt: Long = 0L
 )
 
 object VoucherStatus {
@@ -186,16 +174,16 @@ object VoucherStatus {
 // ── GAME ──────────────────────────────────────────────────────────────────────
 /**
  * Stored at: /games/{gameID}
- * Records one game play by a user (Spin the Wheel or Memory Match).
+ * Records one game play by a user (Spin the Wheel or Memory Match). Games pay XP, never shop points.
  */
 data class Game(
     val gameID: String = "",
     val userID: String = "",            // FK → users/{userID}
     val gameType: String = "",          // GameType.SPIN_WHEEL or GameType.MEMORY_MATCH
     val gameAttempt: Int = 0,
-    val gamePointsRewarded: Int = 0,
-    val gameDay: String = "",           // NEW: "yyyy-MM-dd" in AppConfig.GAMES_RESET_TIME_ZONE
-    val gamePlayedAt: Long = 0L         // NEW: epoch ms, for audit/ordering
+    val gameXpRewarded: Int = 0,        // XP this play paid (0 once the daily XP wins are used)
+    val gameDay: String = "",           // "yyyy-MM-dd" in AppConfig.GAMES_RESET_TIME_ZONE
+    val gamePlayedAt: Long = 0L         // epoch ms
 )
 
 object GameType {
@@ -203,23 +191,11 @@ object GameType {
     const val MEMORY_MATCH = "memory_match"
 }
 
-// ── VENDOR STATS (Phase 6) ───────────────────────────────────────────────────
-data class VendorStats(
-    val vendorID: String = "",
-    val totalCustomers: Int = 0,
-    val totalPointsDistributed: Int = 0,
-    val totalPointsRedeemed: Int = 0,
-    val totalVouchersRedeemed: Int = 0,
-    val recentPoints: List<Point> = emptyList()
-)
-
 
 /** Fields written when an account is created; leaves out the optional avatar so it can be validated later. */
 fun User.toSignUpMap(): Map<String, Any> = mapOf(
     "userID" to userID,
     "userName" to userName,
     "userEmail" to userEmail,
-    "role" to role,
-    "lifetimePoints" to lifetimePoints,
-    "currentTier" to currentTier
+    "role" to role
 )

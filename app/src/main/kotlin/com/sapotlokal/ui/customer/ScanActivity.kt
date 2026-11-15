@@ -51,10 +51,11 @@ import java.util.concurrent.Executors
  *   A modified APK can't forge this — the Security Rules on /qrcodes
  *   prevent clients from writing arbitrary records there.
  *
- * ⚠️ DEBUG HELPER: The debug panel at the bottom lets you paste a QR value
- *   manually. This is for testing without two devices. REMOVE BEFORE PHASE 7.
+ * The shop code box under the camera takes the 6-character code shown under the owner's QR,
+ *   for when the camera can't scan. It runs the same check as a scan.
  */
 class ScanActivity : AppCompatActivity() {
+    private var badgeWatch: com.google.firebase.database.ValueEventListener? = null
 
     private lateinit var binding: ActivityScanBinding
     private lateinit var cameraExecutor: ExecutorService
@@ -69,11 +70,7 @@ class ScanActivity : AppCompatActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
-        if (granted) {
-            startCamera()
-        } else {
-            showError(getString(com.sapotlokal.R.string.error_camera_permission))
-        }
+        if (granted) startCamera() else showCameraOff()
     }
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -82,6 +79,7 @@ class ScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        auth.currentUser?.uid?.let { badgeWatch = Badges.watchUnlocks(this, it, binding.root) }
         CustomerNav.bind(this, binding.customerNav, CustomerNav.Tab.SCAN)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -97,11 +95,12 @@ class ScanActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
 
-        setupDebugPanel()
+        setupCodeEntry()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        auth.currentUser?.uid?.let { Badges.stopWatching(it, badgeWatch) }
         cameraExecutor.shutdown()
     }
 
@@ -260,19 +259,10 @@ class ScanActivity : AppCompatActivity() {
         PointRepository.recordShopVisit(
             userID   = userID,
             vendorID = vendorID,
-            onResult = { success, earned, bonusNote ->
-                if (success) {
-                    // Phase 3 Weekly Missions & Gamification Hook
-                    val scanTimestamp = System.currentTimeMillis()
-                    com.sapotlokal.data.repository.MissionRepository.recordShopVisitEvent(
-                        activity = this@ScanActivity,
-                        userId = userID,
-                        vendorId = vendorID,
-                        timestamp = scanTimestamp
-                    )
-
+            onResult = { result ->
+                if (result != null) {
                     com.sapotlokal.util.FollowedShops.follow(this@ScanActivity, vendorID)
-                    // Phase 6: Subscribe customer to FCM updates for this shop
+                    // Follow this shop for "now open" notifications
                     com.google.firebase.messaging.FirebaseMessaging.getInstance()
                         .subscribeToTopic("shop_${vendorID}")
                         .addOnSuccessListener {
@@ -283,7 +273,7 @@ class ScanActivity : AppCompatActivity() {
                         }
 
                     mainHandler.post {
-                        showSuccessOverlay(vendorName, earned, bonusNote)
+                        showSuccessOverlay(vendorName, result)
                     }
                 } else {
                     mainHandler.post {
@@ -297,18 +287,19 @@ class ScanActivity : AppCompatActivity() {
 
     // ── UI helpers ────────────────────────────────────────────────────────────
 
-    private fun showSuccessOverlay(vendorName: String, earned: Int, bonusNote: String? = null) {
-        // `earned` already includes the tier multiplier (10 base × 1.0–2.0).
-        binding.tvPointsAwarded.text = getString(com.sapotlokal.R.string.points_awarded, earned)
-        binding.tvShopName.text      = if (bonusNote != null) vendorName + "\n" + bonusNote else vendorName
-        binding.tvShopName.gravity   = android.view.Gravity.CENTER
+    private fun showSuccessOverlay(vendorName: String, result: PointRepository.VisitResult) {
+        binding.tvPointsAwarded.text = if (result.rankBonus > 1.0) {
+            getString(com.sapotlokal.R.string.scan_points_at_bonus, result.points, vendorName, com.sapotlokal.util.RankText.bonus(result.rankBonus))
+        } else {
+            getString(com.sapotlokal.R.string.scan_points_at, result.points, vendorName)
+        }
+        binding.tvXpAwarded.text = getString(com.sapotlokal.R.string.scan_xp, result.xp)
         binding.successOverlay.visibility = View.VISIBLE
+        binding.successOverlay.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in))
 
-        val anim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
-        binding.successOverlay.startAnimation(anim)
-
-        // Auto-close after 2 seconds and return to CustomerHomeActivity
-        mainHandler.postDelayed({ finish() }, if (bonusNote != null) 3000L else 2000L)
+        // Back to where the customer came from once they have read it.
+        // Stay a little longer when a badge unlocked, so its snackbar can be read.
+        mainHandler.postDelayed({ finish() }, if (result.badgesUnlocked.isEmpty()) 2500L else 4000L)
     }
 
     private fun showError(message: String) {
@@ -321,27 +312,26 @@ class ScanActivity : AppCompatActivity() {
         }, 3000)
     }
 
-    // ── ⚠️ DEBUG HELPER — REMOVE BEFORE PHASE 7 ──────────────────────────────
+    // ── Typed shop code ───────────────────────────────────────────────────────
 
-    private fun setupDebugPanel() {
-        binding.btnDebugSubmit.setOnClickListener {
-            val code = binding.etDebugCode.text?.toString()?.trim() ?: return@setOnClickListener
+    /** The camera is blocked: say so once in the camera card and point to the code box below. */
+    private fun showCameraOff() {
+        binding.tvScanStatus.text = getString(com.sapotlokal.R.string.k_camera_unavailable)
+        binding.tvInstruction.text = getString(com.sapotlokal.R.string.scan_camera_off)
+    }
+
+    /** The code under the owner's QR, typed by hand. Same check as a scan. */
+    private fun setupCodeEntry() {
+        fun submit() {
+            val code = binding.etShopCode.text?.toString()?.trim()?.uppercase().orEmpty()
             if (code.isNotEmpty() && !isProcessing) {
                 isProcessing = true
                 handleScannedValue(code)
             }
         }
-
-        // Also trigger on keyboard "Done" action
-        binding.etDebugCode.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val code = binding.etDebugCode.text?.toString()?.trim() ?: ""
-                if (code.isNotEmpty() && !isProcessing) {
-                    isProcessing = true
-                    handleScannedValue(code)
-                }
-                true
-            } else false
+        binding.btnSubmitCode.setOnClickListener { submit() }
+        binding.etShopCode.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) { submit(); true } else false
         }
     }
 }

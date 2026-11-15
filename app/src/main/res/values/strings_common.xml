@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">SapotLokal</string>
+    <string name="cat_bakery">Bakery</string>
+    <string name="cat_bookstore">Bookstore</string>
+    <string name="cat_cafe">Cafe</string>
+    <string name="cat_dessert">Dessert</string>
+    <string name="cat_florist">Florist</string>
+    <string name="cat_grocery">Grocery</string>
+    <string name="cat_hardware">Hardware</string>
+    <string name="cat_other">Other</string>
+    <string name="cat_restaurant">Restaurant</string>
+    <string name="cat_salon">Salon</string>
+    <string name="cat_tailor">Tailor</string>
+    <string name="customer_profile_language">Language</string>
+    <string name="error_no_internet">No internet connection. Please check your network and try again.</string>
+    <string name="k_account_not_deleted">Could not delete your account. Nothing was removed.</string>
+    <string name="k_cancel">Cancel</string>
+    <string name="k_change_password">Change password</string>
+    <string name="k_choose_an_avatar">Choose an avatar</string>
+    <string name="k_claimed_toast">Claimed. Show its QR code at %1$s.</string>
+    <string name="k_current_password">Current password</string>
+    <string name="k_delete">Delete</string>
+    <string name="k_delete_account_msg">This permanently removes your profile, badges and avatar. Points already recorded at shops stay in those shops\' totals. This cannot be undone.\n\nEnter your password to confirm.</string>
+    <string name="k_delete_account_q">Delete account?</string>
+    <string name="k_email_address">Email address</string>
+    <string name="k_enter_password">Please enter your password.</string>
+    <string name="k_log_out">Log out</string>
+    <string name="k_log_out_q">Log out?</string>
+    <string name="k_login_not_deleted">Your data was removed but the login could not be deleted. Please contact support.</string>
+    <string name="k_new_password">New password (at least 6 characters)</string>
+    <string name="k_new_password_short">The new password needs at least 6 characters.</string>
+    <string name="k_no_terms">No extra terms from the shop.</string>
+    <string name="k_password_change_failed">Could not change the password. Try again.</string>
+    <string name="k_password_changed">Password changed</string>
+    <string name="k_password_wrong">That password is not correct.</string>
+    <string name="k_points_n">%1$d points</string>
+    <string name="k_remove_avatar">Remove avatar</string>
+    <string name="k_reset_failed">Could not send the reset email. Check your connection and try again.</string>
+    <string name="k_reset_msg">We\'ll email you a link to choose a new password.</string>
+    <string name="k_reset_password">Reset password</string>
+    <string name="k_reset_sent">If that email has an account, a reset link is on its way.</string>
+    <string name="k_save">Save</string>
+    <string name="k_send_link">Send link</string>
+    <string name="k_valid_days_after_claim">Valid for %1$d days after you claim</string>
+    <string name="k_valid_email">Please enter a valid email address.</string>
+    <string name="k_your_password">Your password</string>
+    <string name="label_shop_category">Category</string>
+    <string name="notif_channel_levels_desc">When you reach a new rank</string>
+    <string name="notif_channel_levels_name">Rank up!</string>
+    <string name="notif_channel_rewards_desc">When a voucher or reward is ready for you</string>
+    <string name="notif_channel_rewards_name">Rewards and vouchers</string>
+    <string name="notif_channel_shops_desc">When one of your shops opens</string>
+    <string name="notif_channel_shops_name">Shops opening</string>
+    <string name="notif_shop_closed_body">We\'ll tell you when it opens again.</string>
+    <string name="notif_shop_closed_title">%1$s has closed</string>
+    <string name="notif_shop_open_body">Drop by today to earn points.</string>
+    <string name="notif_shop_open_title">%1$s is open</string>
+    <string name="status_closed">Closed</string>
+    <string name="status_open">Open</string>
+    <string name="time_days_left">%1$d days left</string>
+    <string name="time_ending_soon">Ending soon</string>
+    <string name="time_expired">Expired</string>
+    <string name="time_hours_left">%1$d hours left</string>
+    <string name="time_mins_left">%1$d mins left</string>
+    <string name="time_one_day_left">1 day left</string>
+    <string name="time_one_hour_left">1 hour left</string>
+    <!-- Screen-reader labels -->
+    <string name="cd_avatar">Your avatar</string>
+    <string name="cd_flashlight">Flashlight</string>
+    <string name="cd_shop_photo">Shop photo</string>
+    <string name="cd_voucher_qr">Voucher QR code</string>
+    <!-- Language names stay in their own language in both locales. -->
+    <string name="lang_en_short" translatable="false">EN</string>
+    <string name="lang_en_name" translatable="false">English</string>
+    <string name="lang_ms_short" translatable="false">BM</string>
+    <string name="lang_ms_name" translatable="false">Bahasa Melayu</string>
+</resources>

@@ -71,7 +71,7 @@ object AvatarUi {
                     setColor(android.graphics.Color.TRANSPARENT)
                     setStroke(
                         px(if (selected) 3 else 0),
-                        ContextCompat.getColor(activity, R.color.sapot_primary)
+                        ContextCompat.getColor(activity, R.color.hu_ink)
                     )
                 }
                 contentDescription = def.label
@@ -80,7 +80,7 @@ object AvatarUi {
                 text = def.label
                 textSize = 12f
                 gravity = Gravity.CENTER
-                setTextColor(ContextCompat.getColor(activity, R.color.sapot_text_secondary))
+                setTextColor(ContextCompat.getColor(activity, R.color.hu_soft))
             }
             cell.addView(img)
             cell.addView(label)

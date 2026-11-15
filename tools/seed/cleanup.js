@@ -8,8 +8,8 @@
 
 const fs = require("fs");
 const admin = require("firebase-admin");
+const { databaseUrl } = require("./shared");
 
-const DATABASE_URL = "https://sapotlokal-cd37b-default-rtdb.asia-southeast1.firebasedatabase.app";
 const PREFIX = "seed_";
 
 function fail(message) {
@@ -43,6 +43,7 @@ async function main() {
     fail("Set GOOGLE_APPLICATION_CREDENTIALS to the path of your service-account key file (see README.md).");
   }
   const key = JSON.parse(fs.readFileSync(keyPath, "utf8"));
+  const DATABASE_URL = databaseUrl(key.project_id);
   admin.initializeApp({ credential: admin.credential.cert(key), databaseURL: DATABASE_URL });
   const db = admin.database();
 
@@ -58,18 +59,33 @@ async function main() {
   const count = {};
 
   // Records keyed by a seeded id.
-  for (const node of ["users", "vendors", "vendorPhotos", "vouchers", "userMissionTracking", "shopVisits"]) {
+  for (const node of [
+    "users", "vendors", "vendorPhotos", "vouchers",
+    "xpEvents", "userStats", "missionProgress", "badges",
+  ]) {
     const keys = await keysWithPrefix(db, node);
     mark(node, keys);
     count[node] = keys.length;
   }
+
+  // Leaderboard rows: /weeklyVisits/{weekKey}/{uid}.
+  const weeks = await db.ref("weeklyVisits").once("value");
+  let weeklyRows = 0;
+  weeks.forEach((week) => {
+    week.forEach((row) => {
+      if (row.key.startsWith(PREFIX)) {
+        updates[`weeklyVisits/${week.key}/${row.key}`] = null;
+        weeklyRows++;
+      }
+    });
+  });
+  count.weeklyVisits = weeklyRows;
 
   // Records that point at a seeded user or shop.
   const byField = [
     ["points", "userID"], ["points", "vendorID"],
     ["voucherUsers", "userID"], ["voucherUsers", "vendorID"],
     ["games", "userID"],
-    ["userMissions", "userId"], ["userMissions", "userID"],
     ["qrcodes", "vendorID"],
     ["shopNotifications", "vendorID"],
   ];
@@ -100,7 +116,10 @@ async function main() {
   console.log("\nDone. You can now delete your service-account key (see README.md).");
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+// firebase-admin keeps its database connection open, so exit explicitly once the work is done.
+main()
+  .then(() => process.exit(0))
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });

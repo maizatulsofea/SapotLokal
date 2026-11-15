@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Frame around the shop QR: tinted with the shop's own colour in code. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/hu_shop_indigo" />
+    <corners android:radius="22dp" />
+</shape>

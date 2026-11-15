@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Customer bottom bar (Hadiah Utama): Home · Shops · Scan · Rewards · Play.
+    Customer bottom bar: Home · Shops · Scan · Rewards · Play.
     Scan is a raised white circle in the middle. The active tab is ink with an orange bar;
     idle tabs are soft grey. Labels 12sp so they stay readable for older customers.
 -->

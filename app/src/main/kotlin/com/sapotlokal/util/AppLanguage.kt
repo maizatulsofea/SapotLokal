@@ -38,7 +38,7 @@ object AppLanguage {
             val isMs = current() == MS
             fun apply(tv: TextView, selected: Boolean) {
                 tv.setBackgroundResource(if (selected) R.drawable.bg_lang_selected else 0)
-                tv.setTextColor(root.context.getColor(if (selected) android.R.color.white else R.color.sapot_text_secondary))
+                tv.setTextColor(root.context.getColor(if (selected) android.R.color.white else R.color.hu_soft))
             }
             apply(en, !isMs)
             apply(ms, isMs)

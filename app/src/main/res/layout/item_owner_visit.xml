@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A recent visit on the shop owner's Home: customer initials, name, when, and the points they got. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/bg_hu_card"
+    android:gravity="center_vertical"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="10dp">
+
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:importantForAccessibility="no">
+
+        <TextView
+                android:id="@+id/tvInitials"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+            android:background="@drawable/bg_avatar_circle"
+            android:fontFamily="@font/figtree_extrabold"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:textColor="@color/hu_ink"
+            android:textSize="14sp"
+            tools:text="CW" />
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_hu_logo"
+            android:backgroundTint="@color/hu_fill"
+            android:contentDescription="@null"
+            android:padding="2dp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/HU.Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="16sp"
+            tools:text="Chong Wei" />
+
+        <TextView
+            android:id="@+id/tvWhen"
+            style="@style/HU.Text.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="2 hours ago" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/figtree_bold"
+        android:textColor="@color/hu_ok"
+        android:textSize="15sp"
+        tools:text="+40 points" />
+</LinearLayout>

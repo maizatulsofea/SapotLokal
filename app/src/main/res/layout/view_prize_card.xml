@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Top-3 prize card (Home and Play): place medal, "You came #2 last week", one Claim button. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_hu_card"
+    android:backgroundTint="@color/hu_accent_tint"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_badge_podium" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/HU.Text.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_weight="1"
+        android:textSize="17sp"
+        tools:text="You came #2 last week" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnClaim"
+        style="@style/Widget.HU.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="44dp"
+        android:paddingHorizontal="14dp"
+        android:textSize="15sp"
+        tools:text="Claim 100 XP" />
+</LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_email_empty">Please enter your email address.</string>
+    <string name="error_email_in_use">This email is already registered. Please log in instead.</string>
+    <string name="error_email_invalid">Please enter a valid email address.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_name_empty">Please enter your name.</string>
+    <string name="error_password_empty">Please enter a password.</string>
+    <string name="error_password_short">Password must be at least 6 characters.</string>
+    <string name="error_shop_address_empty">Please enter your shop address.</string>
+    <string name="error_shop_category_empty">Please pick a category.</string>
+    <string name="error_shop_name_empty">Please enter your shop name.</string>
+    <string name="error_ssm_empty">Please enter your SSM registration number.</string>
+    <string name="error_user_not_found">No account found with this email. Please sign up first.</string>
+    <string name="error_wrong_password">Incorrect password. Please try again.</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="label_email">Email</string>
+    <string name="label_name">Your name</string>
+    <string name="label_password">Password</string>
+    <string name="label_shop_address">Address</string>
+    <string name="label_shop_name">Shop name</string>
+    <string name="label_ssm_number">SSM registration number</string>
+    <string name="login_title">Welcome back</string>
+    <string name="role_customer">I\'m a customer</string>
+    <string name="role_customer_desc">Collect points at local shops</string>
+    <string name="role_picker_title">Create an account</string>
+    <string name="role_vendor">I own a shop</string>
+    <string name="role_vendor_desc">Reward the customers who keep coming back</string>
+    <string name="signup_customer_title">Join as a customer</string>
+    <string name="signup_vendor_title">Join as a shop owner</string>
+    <string name="ssm_help">We don\'t check this automatically.</string>
+    <string name="auth_log_in">Log in</string>
+    <string name="auth_new_here">New here? Create an account</string>
+    <string name="auth_password_rule">At least 6 characters</string>
+    <string name="auth_create_account">Create account</string>
+    <string name="auth_create_shop">Create shop</string>
+    <string name="auth_no_role">This account isn\'t set up yet. Create an account to continue.</string>
+</resources>

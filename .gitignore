@@ -31,9 +31,17 @@ lint/
 # OS junk
 .DS_Store
 Thumbs.db
-# Local AI-agent tooling (installed skills, per-machine settings)
-.agent/
-.gemini/
-.claude/skills/
+# Kotlin compiler caches
+.kotlin/
+
+# Node (functions/ and tools/seed/)
+node_modules/
+
+# Firebase CLI debug logs
+*-debug.log
+
+# Local AI-agent tooling (per-machine settings)
 .claude/settings.local.json
-.impeccable/config.local.json
+
+# JVM heap dumps (from Gradle/lint out-of-memory)
+*.hprof

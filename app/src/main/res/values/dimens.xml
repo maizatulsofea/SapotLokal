@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Shape and spacing tokens (BRAND_DESIGN.md §5). -->
 <resources>
-    <!-- ── Spacing (4px baseline scale) ─────────────────────────────────── -->
-    <dimen name="space_4">4dp</dimen>
-    <dimen name="space_8">8dp</dimen>
-    <dimen name="space_12">12dp</dimen>
-    <dimen name="space_16">16dp</dimen>
-    <dimen name="space_20">20dp</dimen>
-    <dimen name="space_24">24dp</dimen>
-    <dimen name="space_32">32dp</dimen>
-    <dimen name="space_40">40dp</dimen>
-
-    <!-- ── Insets ────────────────────────────────────────────────────────── -->
-    <dimen name="screen_horizontal_margin">20dp</dimen>
-    <dimen name="card_padding">20dp</dimen>
-
-    <!-- ── Radii (Figma Design Token: 17px) ──────────────────────────────── -->
-    <dimen name="radius_badge">8dp</dimen>
-    <dimen name="radius_control">10dp</dimen>
-    <dimen name="radius_card">18dp</dimen>
-
-    <!-- ── Controls ──────────────────────────────────────────────────────── -->
-    <dimen name="button_height">44dp</dimen>
-    <dimen name="min_touch_target">44dp</dimen>
-    <dimen name="icon_size">22dp</dimen>
+    <dimen name="hu_page">20dp</dimen>
+    <dimen name="hu_row_gap">12dp</dimen>
+    <dimen name="hu_radius_pill">12dp</dimen>
+    <dimen name="hu_radius_control">14dp</dimen>
+    <dimen name="hu_radius_card">18dp</dimen>
+    <dimen name="hu_radius_shop_card">20dp</dimen>
+    <dimen name="hu_radius_reward_card">22dp</dimen>
 </resources>

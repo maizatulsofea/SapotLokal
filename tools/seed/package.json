@@ -2,10 +2,11 @@
   "name": "sapotlokal-seed",
   "private": true,
   "version": "1.0.0",
-  "description": "Seeds and cleans SapotLokal test data (10 shops, 15 rewards, 10 customers).",
+  "description": "Seeds, cleans and migrates SapotLokal data (see README.md).",
   "scripts": {
     "seed": "node seed.js",
-    "cleanup": "node cleanup.js"
+    "cleanup": "node cleanup.js",
+    "migrate": "node migrate.js"
   },
   "dependencies": {
     "firebase-admin": "^12.7.0"

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_email_empty">Sila masukkan alamat e-mel anda.</string>
+    <string name="error_email_in_use">E-mel ini sudah didaftarkan. Sila log masuk.</string>
+    <string name="error_email_invalid">Sila masukkan alamat e-mel yang sah.</string>
+    <string name="error_generic">Sesuatu telah berlaku. Sila cuba lagi.</string>
+    <string name="error_name_empty">Sila masukkan nama anda.</string>
+    <string name="error_password_empty">Sila masukkan kata laluan.</string>
+    <string name="error_password_short">Kata laluan mestilah sekurang-kurangnya 6 aksara.</string>
+    <string name="error_shop_address_empty">Sila masukkan alamat kedai anda.</string>
+    <string name="error_shop_category_empty">Sila pilih kategori.</string>
+    <string name="error_shop_name_empty">Sila masukkan nama kedai anda.</string>
+    <string name="error_ssm_empty">Sila masukkan nombor pendaftaran SSM anda.</string>
+    <string name="error_user_not_found">Tiada akaun dengan e-mel ini. Sila daftar dahulu.</string>
+    <string name="error_wrong_password">Kata laluan salah. Sila cuba lagi.</string>
+    <string name="forgot_password">Lupa kata laluan?</string>
+    <string name="label_email">E-mel</string>
+    <string name="label_name">Nama anda</string>
+    <string name="label_password">Kata laluan</string>
+    <string name="label_shop_address">Alamat</string>
+    <string name="label_shop_name">Nama kedai</string>
+    <string name="label_ssm_number">Nombor pendaftaran SSM</string>
+    <string name="login_title">Selamat kembali</string>
+    <string name="role_customer">Saya pelanggan</string>
+    <string name="role_customer_desc">Kumpul mata di kedai tempatan</string>
+    <string name="role_picker_title">Buat akaun</string>
+    <string name="role_vendor">Saya ada kedai</string>
+    <string name="role_vendor_desc">Hargai pelanggan yang datang lagi</string>
+    <string name="signup_customer_title">Daftar sebagai pelanggan</string>
+    <string name="signup_vendor_title">Daftar sebagai pemilik kedai</string>
+    <string name="ssm_help">Kami tidak menyemak nombor ini secara automatik.</string>
+    <string name="auth_log_in">Log masuk</string>
+    <string name="auth_new_here">Baru di sini? Buat akaun</string>
+    <string name="auth_password_rule">Sekurang-kurangnya 6 aksara</string>
+    <string name="auth_create_account">Buat akaun</string>
+    <string name="auth_create_shop">Buat kedai</string>
+    <string name="auth_no_role">Akaun ini belum lengkap. Buat akaun untuk teruskan.</string>
+</resources>

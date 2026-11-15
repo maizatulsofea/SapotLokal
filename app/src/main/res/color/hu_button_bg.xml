@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Main button: orange; disabled turns to the quiet fill. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/hu_fill" android:state_enabled="false" />
+    <item android:color="@color/hu_accent" />
+</selector>

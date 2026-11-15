@@ -2,21 +2,15 @@ package com.sapotlokal.ui.customer
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Typeface
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.ColorUtils
 import com.sapotlokal.AppConfig
 import com.sapotlokal.R
+import com.sapotlokal.data.model.ShopCategory
 import com.sapotlokal.data.model.Vendor
 import com.sapotlokal.data.model.Voucher
 import com.sapotlokal.databinding.ItemHuRewardCardBinding
@@ -24,8 +18,8 @@ import com.sapotlokal.databinding.ItemHuShopCardBinding
 import kotlin.math.abs
 
 /**
- * Hadiah Utama building blocks shared by the customer screens: each shop's fixed colour,
- * the stacked shop card with kopi-cup stamps, the reward card, and the ticked progress bar.
+ * Building blocks shared by the customer screens: each shop's fixed colour,
+ * the shop card, the reward card and the reward row.
  */
 object ShopStyle {
 
@@ -60,104 +54,91 @@ object ShopStyle {
         }
     }
 
-    /** Visits (stamps) needed for a reward, and how many are already filled. */
-    fun stamps(balance: Int, cost: Int): Pair<Int, Int> {
-        val per = AppConfig.POINTS_PER_SHOP_VISIT.coerceAtLeast(1)
-        val visits = ((cost + per - 1) / per).coerceAtLeast(1)
-        val earned = balance / per
-        // Up to MAX_STAMPS cups fit on a phone card; longer rewards scale down proportionally.
-        if (visits <= MAX_STAMPS) return visits to earned.coerceIn(0, visits)
-        val filled = (earned.toLong() * MAX_STAMPS / visits).toInt().coerceIn(0, MAX_STAMPS)
-        return MAX_STAMPS to filled
-    }
-
-    private const val MAX_STAMPS = 8
-
-    /** Draws a row of kopi-cup stamps into [row]. */
-    fun fillStamps(row: LinearLayout, total: Int, filled: Int, tint: Int) {
-        row.removeAllViews()
-        val size = (22 * row.resources.displayMetrics.density).toInt()
-        val gap = (8 * row.resources.displayMetrics.density).toInt()
-        repeat(total) { i ->
-            val cup = ImageView(row.context).apply {
-                setImageResource(if (i < filled) R.drawable.ic_cup_full else R.drawable.ic_cup_empty)
-                imageTintList = ColorStateList.valueOf(tint)
-                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-            }
-            row.addView(cup, LinearLayout.LayoutParams(size, size).apply { if (i > 0) marginStart = gap })
-        }
+    /** Shop points this customer gets per visit at [vendor]: the shop's rate × their rank bonus. */
+    fun perVisit(vendor: Vendor?, rank: AppConfig.Rank): Int {
+        val rate = vendor?.pointsPerVisit?.takeIf { it in AppConfig.ALLOWED_POINTS_PER_VISIT } ?: AppConfig.DEFAULT_POINTS_PER_VISIT
+        return AppConfig.shopPointsForVisit(rate, rank)
     }
 }
 
 /**
- * The stacked shop card: shop colour, logo, name, points, cup stamps and one status line.
- * [nextReward] is the cheapest reward the customer hasn't reached; null when the shop has none.
+ * The shop card: the shop's photo (its colour and initials until it has one), name, points,
+ * "Cafe · Open", progress to the next reward and one status line. Used on Home, Shops and the
+ * shop page, so a shop looks the same everywhere.
  */
 object ShopCard {
 
     fun inflate(parent: ViewGroup): ItemHuShopCardBinding =
         ItemHuShopCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
+    /**
+     * [readyReward]: the cheapest reward the customer can claim now. [holdsVoucher]: they already
+     * hold an unused voucher here. [nextReward]: the cheapest reward they haven't reached.
+     * [visited]: they have been here before, even if their points are all spent.
+     */
     fun bind(
         b: ItemHuShopCardBinding,
         vendor: Vendor?,
         vendorId: String,
         balance: Int,
-        ready: Boolean,
+        readyReward: Voucher?,
+        holdsVoucher: Boolean,
         nextReward: Voucher?,
-        showStatus: Boolean = true,
-        readyReward: Voucher? = null,
-        meta: String? = null
+        visited: Boolean
     ) {
         val ctx = b.root.context
         val c = ShopStyle.colors(ctx, vendorId)
         val name = vendor?.vendorName?.ifBlank { null } ?: ctx.getString(R.string.k_shop)
-        b.root.backgroundTintList = ColorStateList.valueOf(c.bg)
-        b.tvLogo.text = ShopStyle.initials(name)
-        b.tvLogo.setTextColor(c.bg)
         b.tvName.text = name
-        b.tvName.setTextColor(c.on)
         b.tvPoints.text = ctx.getString(R.string.hu_n_pts, balance)
-        b.tvPoints.setTextColor(c.on)
+        b.tvMeta.text = listOfNotNull(
+            vendor?.let { ShopCategory.label(ctx, it.vendorCategory).ifBlank { null } },
+            vendor?.let { ctx.getString(if (it.isOpen) R.string.hu_open else R.string.hu_closed) }
+        ).joinToString(" · ")
 
-        // Ready shops show the cups of the reward they can claim (all full); others the next one.
-        // One cup = one visit: show visits earned toward the next reward still to reach, so filled
-        // and empty cups always agree with "1 visit = 10 points". Only when every reward is reached
-        // do the cups show the ready reward, all full.
-        val cost = when {
-            nextReward != null -> nextReward.pointsRequired
-            readyReward != null -> readyReward.pointsRequired
-            else -> AppConfig.POINTS_PER_SHOP_VISIT * 5
+        val status: String
+        val progress: Int?
+        when {
+            readyReward != null -> {
+                status = ctx.getString(R.string.hu_reward_name_ready, readyReward.voucherName)
+                progress = 100
+            }
+            holdsVoucher -> {
+                status = ctx.getString(R.string.hu_voucher_to_use)
+                progress = 100
+            }
+            nextReward != null && !visited -> {
+                status = ctx.getString(R.string.hu_new_to_you)
+                progress = 0
+            }
+            nextReward != null -> {
+                status = ctx.getString(R.string.hu_to_go_for, nextReward.pointsRequired - balance, nextReward.voucherName)
+                progress = (balance * 100 / nextReward.pointsRequired.coerceAtLeast(1)).coerceIn(0, 100)
+            }
+            else -> {
+                status = ctx.getString(R.string.hu_no_rewards_yet)
+                progress = null
+            }
         }
-        val per = AppConfig.POINTS_PER_SHOP_VISIT.coerceAtLeast(1)
-        val earned = balance / per
-        val (total, filled) = if (ready) {
-            // A ready shop shows the visits you have made there, all full: no unexplained empty cups.
-            val n = earned.coerceIn(1, 8)
-            n to n
-        } else {
-            val visits = ((cost + per - 1) / per).coerceIn(1, 8)
-            visits to earned.coerceAtMost(visits)
-        }
-        ShopStyle.fillStamps(b.stamps, total, filled, c.on)
+        b.tvStatus.text = status
+        b.progress.visibility = if (progress == null) View.GONE else View.VISIBLE
+        b.progress.setIndicatorColor(c.bg)
+        b.progress.progress = progress ?: 0
 
-        val status = when {
-            ready -> ctx.getString(R.string.hu_reward_ready)
-            nextReward != null -> ctx.getString(R.string.hu_to_go_for, nextReward.pointsRequired - balance, nextReward.voucherName)
-            vendor != null && !vendor.isOpen -> ctx.getString(R.string.hu_closed_now)
-            else -> ctx.getString(R.string.hu_no_rewards_yet)
+        // Photo: the shop's own picture over its colour and initials.
+        b.photoFrame.setBackgroundColor(c.bg)
+        b.tvLogo.text = ShopStyle.initials(name)
+        b.tvLogo.setTextColor(c.on)
+        b.ivPhoto.tag = vendorId
+        b.ivPhoto.setImageDrawable(null)
+        com.sapotlokal.data.repository.VendorPhotoRepository.load(vendorId) { bmp ->
+            if (bmp != null && b.ivPhoto.tag == vendorId) b.ivPhoto.setImageBitmap(bmp)
         }
-        b.tvStatus.text = if (meta.isNullOrBlank()) status else "$meta · $status"
-        b.tvStatus.setTextColor(ColorUtils.setAlphaComponent(c.on, 235))
-        b.tvStatus.visibility = if (showStatus) View.VISIBLE else View.GONE
-        b.tvReady.visibility = if (ready) View.VISIBLE else View.GONE
-        b.tvReady.backgroundTintList = ColorStateList.valueOf(c.on)
-        b.tvReady.setTextColor(c.bg)
         b.root.contentDescription = ctx.getString(R.string.hu_shop_card_cd, name, balance, status)
     }
 }
 
-/** The reward card: shop logo + name, cost, reward name, detail, photo, one action. */
+/** The reward card: shop logo + name, reward name, one detail line and one action that carries the cost. */
 object RewardCard {
 
     fun inflate(parent: ViewGroup): ItemHuRewardCardBinding =
@@ -167,7 +148,6 @@ object RewardCard {
         b: ItemHuRewardCardBinding,
         vendorId: String,
         shopName: String,
-        cost: Int,
         title: String,
         detail: String,
         action: String?,
@@ -180,7 +160,6 @@ object RewardCard {
         b.tvLogo.backgroundTintList = ColorStateList.valueOf(c.bg)
         b.tvLogo.setTextColor(c.on)
         b.tvShop.text = shopName
-        b.tvCost.text = ctx.getString(R.string.hu_n_pts, cost)
         b.tvTitle.text = title
         b.tvDetail.text = detail
         if (action != null && onAction != null) {
@@ -190,106 +169,34 @@ object RewardCard {
         } else {
             b.btnAction.visibility = View.GONE
         }
-        // Photo: the shop's own picture, otherwise its colour with its logo.
-        b.photoFallback.setBackgroundColor(ColorUtils.setAlphaComponent(c.bg, 60))
-        b.tvPhotoLogo.text = ShopStyle.initials(shopName)
-        b.tvPhotoLogo.setTextColor(c.bg)
-        // The photo area only appears when the shop has uploaded a picture.
-        b.photoFrame.visibility = View.GONE
-        b.ivPhoto.tag = vendorId
-        b.ivPhoto.setImageDrawable(null)
-        com.sapotlokal.data.repository.VendorPhotoRepository.load(vendorId) { bmp ->
-            if (bmp != null && b.ivPhoto.tag == vendorId) {
-                b.ivPhoto.setImageBitmap(bmp)
-                b.photoFrame.visibility = View.VISIBLE
-            }
-        }
-    }
-}
-
-/** The one "How points work" explanation, linked from Home, Shops, the Shop page, Rewards and Play. */
-object HowPoints {
-    fun show(context: Context) {
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.hu_how_points_title)
-            .setMessage(R.string.hu_how_points_body)
-            .setPositiveButton(R.string.hu_got_it, null)
-            .show()
-    }
-}
-
-/** Level ticks and the line under the bar, shared by Home and Play. */
-object LevelDisplay {
-    fun bind(bar: HuTickBar, line: android.widget.TextView, lifetime: Int) {
-        val ctx = bar.context
-        val tier = AppConfig.CustomerTier.fromLifetimePoints(lifetime)
-        val next = tier.nextTier
-        val level = tier.ordinal + 1
-        // One scale from 0 to the next level, ticked at every level threshold on the way.
-        val thresholds = AppConfig.CustomerTier.entries.map { it.minPoints }
-        if (next == null) {
-            bar.set(1, 1, emptyList())
-            line.text = ctx.getString(R.string.hu_level_top, level, tier.title)
-        } else {
-            bar.set(lifetime, next.minPoints, thresholds.filter { it <= next.minPoints })
-            line.text = ctx.getString(R.string.hu_level_line, level, tier.title, next.minPoints - lifetime, next.title)
-        }
     }
 }
 
 /**
- * Progress bar with labelled ticks (levels on Home and Play, reward costs on a shop page).
- * Values are absolute: [max] is the right end, [value] the fill, [ticks] the marks.
+ * "How it works" (REFRACTOR.md Phase 9): points, XP and the rank bonus in three short rows, linked
+ * from Home, Shops, the Shop page, Rewards, Play and Me. Home also shows it once to a new customer.
  */
-class HuTickBar @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null
-) : View(context, attrs) {
-
-    var max: Int = 100
-    var value: Int = 0
-    var ticks: List<Int> = emptyList()
-
-    private val d = resources.displayMetrics.density
-    private val track = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = ContextCompat.getColor(context, R.color.hu_line) }
-    private val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = ContextCompat.getColor(context, R.color.hu_accent) }
-    private val notch = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = ContextCompat.getColor(context, R.color.hu_bg) }
-    private val label = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = ContextCompat.getColor(context, R.color.hu_soft)
-        textSize = 12 * resources.displayMetrics.scaledDensity
-        typeface = ResourcesCompat.getFont(context, R.font.figtree_bold) ?: Typeface.DEFAULT_BOLD
+object HowPoints {
+    fun show(context: Context) {
+        val sheet = com.google.android.material.bottomsheet.BottomSheetDialog(context)
+        val b = com.sapotlokal.databinding.SheetHowItWorksBinding.inflate(LayoutInflater.from(context))
+        b.btnGotIt.setOnClickListener { sheet.dismiss() }
+        sheet.setContentView(b.root)
+        sheet.show()
     }
 
-    fun set(value: Int, max: Int, ticks: List<Int>) {
-        this.value = value; this.max = max.coerceAtLeast(1); this.ticks = ticks
-        invalidate()
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val h = (8 * d + 8 * d + label.textSize + 2 * d).toInt()
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), h)
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        val w = width.toFloat()
-        val barH = 8 * d
-        val r = barH / 2
-        canvas.drawRoundRect(RectF(0f, 0f, w, barH), r, r, track)
-        val fw = (w * value.coerceIn(0, max) / max).coerceAtLeast(if (value > 0) barH else 0f)
-        if (fw > 0) canvas.drawRoundRect(RectF(0f, 0f, fw, barH), r, r, fill)
-        val y = barH + 6 * d + label.textSize
-        ticks.forEach { t ->
-            val x = w * t.coerceIn(0, max) / max
-            if (t in 1 until max) canvas.drawRect(x - d, 0f, x + d, barH, notch)
-            val text = t.toString()
-            val tw = label.measureText(text)
-            val tx = (x - tw / 2).coerceIn(0f, w - tw)
-            canvas.drawText(text, tx, y, label)
-        }
+    /** First run: shows the sheet once per account on this phone (a convenience flag, not game state). */
+    fun showOnce(context: Context, uid: String) {
+        val prefs = context.getSharedPreferences("sapot_user_prefs", Context.MODE_PRIVATE)
+        val key = "seen_how_it_works_$uid"
+        if (uid.isBlank() || prefs.getBoolean(key, false)) return
+        prefs.edit().putBoolean(key, true).apply()
+        show(context)
     }
 }
 
-/** Filter chip in the Hadiah Utama style: ink when selected, quiet grey fill otherwise. */
+
+/** Filter chip: ink when selected, quiet grey fill otherwise. */
 object HuChip {
     fun make(context: Context, label: String, checked: Boolean, onClick: () -> Unit): com.google.android.material.chip.Chip {
         val states = arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf())
@@ -313,7 +220,7 @@ object HuChip {
     }
 }
 
-/** Compact reward row used on the Shop page and in Rewards. */
+/** A reward or voucher row. [showThumb] is false on the shop page, where the shop is already shown. */
 object RewardRow {
     fun inflate(parent: ViewGroup): com.sapotlokal.databinding.ItemHuRewardRowBinding =
         com.sapotlokal.databinding.ItemHuRewardRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -327,13 +234,20 @@ object RewardRow {
         state: String,
         stateIsGood: Boolean,
         action: String?,
-        onAction: (() -> Unit)?
+        onAction: (() -> Unit)?,
+        showThumb: Boolean = true
     ) {
         val ctx = b.root.context
         val c = ShopStyle.colors(ctx, vendorId)
         b.tvName.text = title
         b.tvSub.text = sub
+        b.tvSub.visibility = if (sub.isBlank()) View.GONE else View.VISIBLE
         b.tvState.text = state
+        b.tvState.visibility = if (state.isBlank()) View.GONE else View.VISIBLE
+        b.thumb.visibility = if (showThumb) View.VISIBLE else View.GONE
+        (b.tvName.parent as? View)?.let { col ->
+            (col.layoutParams as? ViewGroup.MarginLayoutParams)?.marginStart = if (showThumb) col.resources.getDimensionPixelSize(R.dimen.hu_row_gap) else 0
+        }
         b.tvState.setTextColor(ContextCompat.getColor(ctx, if (stateIsGood) R.color.hu_accent_text else R.color.hu_soft))
         b.tvThumbLogo.text = ShopStyle.initials(shopName)
         b.tvThumbLogo.setTextColor(c.bg)
@@ -345,7 +259,7 @@ object RewardRow {
         } else {
             b.btnAction.visibility = View.GONE
         }
-        b.root.contentDescription = "$title, $sub, $state"
+        b.root.contentDescription = listOf(title, sub, state).filter { it.isNotBlank() }.joinToString(", ")
         b.ivThumb.tag = vendorId
         b.ivThumb.setImageDrawable(null)
         com.sapotlokal.data.repository.VendorPhotoRepository.load(vendorId) { bmp ->

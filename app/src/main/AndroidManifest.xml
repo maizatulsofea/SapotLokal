@@ -32,10 +32,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SapotLokal">
 
-        <!-- Preload downloadable fonts -->
+        <!-- Push notifications shown by the system while the app is closed: kopi cup in Kopi Orange. -->
         <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_notify" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/hu_accent" />
 
         <!-- ── Activities ────────────────────────────────────────────────────── -->
 
@@ -53,8 +56,7 @@
 
         <!-- Placeholder activities for Phase 1 navigation skeleton -->
         <activity android:name=".ui.auth.LoginActivity"            android:exported="false" />
-        <activity android:name=".ui.auth.VendorLoginActivity"      android:exported="false" />
-        <activity android:name=".ui.customer.CustomerHomeActivity"  android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
+        <activity android:name=".ui.customer.CustomerHomeActivity"  android:exported="false" />
         <activity android:name=".ui.vendor.VendorHomeActivity"      android:exported="false" />
 
         <!-- Phase 2 auth activities -->
@@ -63,13 +65,13 @@
         <activity android:name=".ui.auth.SignUpVendorActivity"      android:exported="false" />
 
         <!-- Phase 3 & 5 customer activities -->
-        <activity android:name=".ui.customer.FindShopsActivity"    android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
-        <activity android:name=".ui.customer.ScanActivity"         android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
-        <activity android:name=".ui.customer.CustomerProfileActivity" android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
-        <activity android:name=".ui.customer.ShopDetailActivity"   android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
+        <activity android:name=".ui.customer.FindShopsActivity"    android:exported="false" />
+        <activity android:name=".ui.customer.ScanActivity"         android:exported="false" />
+        <activity android:name=".ui.customer.CustomerProfileActivity" android:exported="false" />
+        <activity android:name=".ui.customer.ShopDetailActivity"   android:exported="false" />
 
         <!-- Phase 5 voucher activities -->
-        <activity android:name=".ui.customer.MyVouchersActivity"   android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
+        <activity android:name=".ui.customer.MyVouchersActivity"   android:exported="false" />
 
         <!-- Phase 4 vendor activities -->
         <activity android:name=".ui.vendor.ShowQrActivity"         android:exported="false" />
@@ -78,15 +80,15 @@
         <activity android:name=".ui.vendor.ScanToRedeemActivity"   android:exported="false" />
 
         <!-- Phase 6 customer & vendor activities -->
-        <activity android:name=".ui.customer.ChallengesActivity"   android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
-        <activity android:name=".ui.customer.LeaderboardActivity"  android:exported="false" android:theme="@style/Theme.SapotLokal.Customer" />
-        <activity android:name=".ui.vendor.ShopSettingsActivity"   android:exported="false" />
+        <activity android:name=".ui.customer.ChallengesActivity"   android:exported="false" />
+        <activity android:name=".ui.customer.MissionsActivity"     android:exported="false" />
+        <activity android:name=".ui.customer.LeaderboardActivity"  android:exported="false" />
         <activity android:name=".ui.vendor.ShopProfileActivity"    android:exported="false" />
 
         <!-- Games (merged from SapotLokalGames) -->
-        <activity android:name=".ui.games.GamesMenuActivity"   android:exported="false" android:screenOrientation="portrait" android:theme="@style/Theme.SapotLokal.Customer" />
-        <activity android:name=".ui.games.SpinWheelActivity"   android:exported="false" android:screenOrientation="portrait" android:theme="@style/Theme.SapotLokal.Customer" />
-        <activity android:name=".ui.games.MemoryMatchActivity" android:exported="false" android:screenOrientation="portrait" android:theme="@style/Theme.SapotLokal.Customer" />
+        <activity android:name=".ui.games.GamesMenuActivity"   android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.games.SpinWheelActivity"   android:exported="false" android:screenOrientation="portrait" />
+        <activity android:name=".ui.games.MemoryMatchActivity" android:exported="false" android:screenOrientation="portrait" />
 
 
         <!-- FCM: receives push notifications (Phase 6).

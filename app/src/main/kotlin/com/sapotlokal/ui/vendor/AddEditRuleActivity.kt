@@ -11,8 +11,8 @@ import com.sapotlokal.databinding.ActivityAddEditRuleBinding
  * AddEditRuleActivity — form to add a new reward rule or edit an existing one.
  *
  * MODE DETECTION:
- *   If EXTRA_RULE_ID is present in the Intent, we're in EDIT mode — the toolbar
- *   title changes to "Edit Reward Rule" and Save calls VoucherRepository.updateRule().
+ *   If EXTRA_RULE_ID is present in the Intent, we're in EDIT mode — the
+ *   title changes to "Edit reward" and Save calls VoucherRepository.updateRule().
  *   Otherwise, we're in ADD mode and Save calls VoucherRepository.createRule().
  *
  * VALIDATION:
@@ -39,21 +39,20 @@ class AddEditRuleActivity : AppCompatActivity() {
         binding = ActivityAddEditRuleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.btnBack.setOnClickListener { finish() }
 
         vendorID = intent.getStringExtra(VendorHomeActivity.EXTRA_VENDOR_ID) ?: ""
         ruleID   = intent.getStringExtra(EXTRA_RULE_ID) ?: ""
 
         if (ruleID.isNotEmpty()) {
             // EDIT mode — pre-fill the form
-            supportActionBar?.title = getString(com.sapotlokal.R.string.kv_edit_reward_rule)
+            binding.tvTitle.text = getString(com.sapotlokal.R.string.kv_edit_reward_rule)
             binding.etRuleName.setText(intent.getStringExtra(EXTRA_RULE_NAME) ?: "")
             binding.etRuleDesc.setText(intent.getStringExtra(EXTRA_RULE_DESC) ?: "")
             val pts = intent.getIntExtra(EXTRA_RULE_PTS, 0)
             binding.etPoints.setText(if (pts > 0) pts.toString() else "")
         } else {
-            supportActionBar?.title = getString(com.sapotlokal.R.string.kv_add_reward_rule)
+            binding.tvTitle.text = getString(com.sapotlokal.R.string.kv_add_reward_rule)
         }
 
         binding.btnSaveRule.setOnClickListener { onSave() }
@@ -112,7 +111,6 @@ class AddEditRuleActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean { finish(); return true }
 
     companion object {
         const val EXTRA_RULE_ID   = "extra_rule_id"

@@ -59,7 +59,7 @@
                     android:layout_width="40dp"
                     android:layout_height="48dp"
                     android:layout_gravity="top|center_horizontal"
-                    android:contentDescription="Pointer"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_wheel_pointer" />
             </FrameLayout>
 

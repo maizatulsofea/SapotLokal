@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Shops tab (Hadiah Utama) — one job: "where can I earn?"
+    Shops tab — one job: "where can I earn?"
     Title → search → scope filter (My shops · Open now · All) → category chips
     → stacked shop colour cards with points, cup stamps, open status and the next reward.
 -->
@@ -39,15 +39,6 @@
                     android:layout_weight="1"
                     android:accessibilityHeading="true"
                     android:text="@string/hu_shops_title" />
-
-                <TextView
-                    android:id="@+id/btnHowPoints"
-                    style="@style/HU.Text.Link"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:text="@string/hu_how_points_work" />
             </LinearLayout>
 
             <EditText
@@ -68,28 +59,34 @@
                 android:textColorHint="@color/hu_soft"
                 android:textSize="16sp" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipScope"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:chipSpacingHorizontal="8dp"
-                app:selectionRequired="true"
-                app:singleSelection="true" />
-
+            <!-- One filter row: where (My shops · Open now · All shops), then the type picker chip -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="12dp"
                 android:scrollbars="none">
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupCategories"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:chipSpacingHorizontal="8dp"
-                    app:singleLine="true"
-                    app:singleSelection="true" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipScope"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingHorizontal="8dp"
+                        app:selectionRequired="true"
+                        app:singleLine="true"
+                        app:singleSelection="true" />
+
+                    <FrameLayout
+                        android:id="@+id/typeChipSlot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
             </HorizontalScrollView>
 
             <ProgressBar
